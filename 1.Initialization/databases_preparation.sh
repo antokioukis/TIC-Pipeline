@@ -79,7 +79,7 @@ sed -i '/^[[:space:]]*$/d' LTP_archaea_aligned.fasta
 # based on what you want: usearch
 usearch -makeudb_usearch LTP_archaea_compressed.fasta -output LTP_archaea_compressed.udb
 # based on what you want: vsearch
-vsearch -makeudb_usearch LTP_archaea_compressed.fasta -output LTP_archaea_compressed.udb
+#vsearch -makeudb_usearch LTP_archaea_compressed.fasta -output LTP_archaea_compressed.udb
 
 mv LTP_archaea_compressed.udb ../2.Database-Match
 

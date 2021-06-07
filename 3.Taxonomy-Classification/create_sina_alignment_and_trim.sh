@@ -20,7 +20,13 @@ python3 create_alignment_vector.py -i sina_output.fasta
 Rscript ggplot_alignment_vector.R
 
 # extract sequences that have at least N aligned bases within your region
-python3 extract_regions.py -i sina_output.fasta -s 10000 -e 25000 -l 264
+python3 extract_regions.py -i sina_output.fasta -s 10000 -e 25000 -l 100
 rm sina_output.fasta
 
 # update taxonomy classifications from sina
+python3 update_taxonomy.py
+
+# cleanup intermidiate files
+rm dataset_extracted.fasta sina_output.csv
+
+mv dataset_extracted_new_taxonomy.fasta ../4.Taxonomy-Informed-Clustering/
