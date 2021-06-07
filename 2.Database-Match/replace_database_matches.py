@@ -49,7 +49,7 @@ elif MODE == 'SILVA':
 m2_content = read_file(file_m2)
 for line in m2_content:
     original_header, match_header = line.split('\t')[:2]
-    out_file.write('>' + original_header)
+    out_file.write('>' + original_header + '\n')
     out_file.write(curr_dict[match_header] + '\n')
 
 out_file.close()

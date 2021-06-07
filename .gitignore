@@ -131,4 +131,8 @@ dmypy.json
 *.fasta
 *.fa
 *.udb
+*.arb
+*.csv
+*.png
+*.sidx
 0.Template-Data/SILVA_138_SSURef_NR99_tax_silva.fasta.gz

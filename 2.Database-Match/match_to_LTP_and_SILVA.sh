@@ -20,6 +20,11 @@ python3 replace_database_matches.py -m LTP
 # replace SILVA matches to dataset
 python3 replace_database_matches.py -m SILVA
 
+# linearize double orphans so everything is linear
+awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' < archaea_not_matched_SILVA.fasta > out.fa
+tail -n +2 out.fa > archaea_not_matched_SILVA.fasta
+rm out.fa
+
 # concatenate all replacements with sequences not matched with the databases
 cat archaea_replaced_SILVA.fasta archaea_replaced_LTP.fasta archaea_not_matched_SILVA.fasta >> archaea_total_replaced.fasta
 
