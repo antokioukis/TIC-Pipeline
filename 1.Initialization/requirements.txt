@@ -1,0 +1,10 @@
+bash:
+gunzip
+wget
+tar
+sed
+awk
+grep
+tail
+rm
+mv

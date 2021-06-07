@@ -130,3 +130,5 @@ dmypy.json
 # fasta
 *.fasta
 *.fa
+*.udb
+0.Template-Data/SILVA_138_SSURef_NR99_tax_silva.fasta.gz
