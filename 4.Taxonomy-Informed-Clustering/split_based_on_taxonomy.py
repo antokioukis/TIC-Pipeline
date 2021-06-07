@@ -86,11 +86,8 @@ for i in tqdm(range(0, len(input_contents), 2)):
     sequence = input_contents[i+1]
     curr_taxonomy = header.split('tax=')[1]
     out_file_name = check_valid_names(curr_taxonomy)
-    print(out_file_name)
-    '''
     out_file = open(MAIN_DIR + out_file_name, 'a+')
-    new_header = header.split('tax=')[0] + 'tax=' + out_file_name.split('.')[0].replace('_', ';') + ';\n'
+    new_header = header.split('tax=')[0] + 'tax=' + out_file_name.split('.')[0].replace('_', ';') + ';'
     out_file.write(new_header + '\n')
     out_file.write(sequence + '\n')
     out_file.close()
-    '''
