@@ -1,0 +1,37 @@
+#########################
+#########################
+# CONFIGURATION OPTIONS #
+#########################
+#########################
+
+
+#######################################
+# STEP 1: Initialization of Databases #
+#######################################
+
+LTP_VERSION:132
+LTP_DOWNLOAD:NO
+LTP_UNZIP:NO
+LTP_PROCESS:NO
+# -----------------------------------
+SILVA_VERSION:138
+SILVA_DOWNLOAD:NO
+SILVA_UNZIP:NO
+SILVA_PROCESS:NO
+# -----------------------------------
+CLUSTERING_TOOL:usearch
+THREADS:4
+# -----------------------------------
+SAMPLES_PROCESS_STEP:NO
+USER_FASTQ_FOLDER:/home/antonios/fastq_pipe
+TRIM_SCORE:20
+MAXDIFF:50
+MINPCTID:90
+MINMERGELEN:200
+MAXMERGELEN:600
+FORWARD_TRIM:10
+REVERSE_TRIM:10
+EXPECTED_ERROR_RATE:0.005
+# -----------------------------------
+ASV_CREATION_STEP:YES
+MIN_ZOTU_SIZE:4

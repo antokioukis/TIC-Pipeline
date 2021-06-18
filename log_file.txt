@@ -1,0 +1,1152 @@
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SRR2127221
+-----------------------------------
+
+Merge
+  Fwd SRR2127221_1.fastq
+  Rev SRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors
+
+>>> Processing Sample:SSRR2127221
+-----------------------------------
+
+Merge
+  Fwd SSRR2127221_1.fastq
+  Rev SSRR2127221_2.fastq
+  Keep read labels
+  109377 / 116006 pairs merged (94.3%)
+
+Merged length distribution:
+       200  Min
+       253  Low quartile
+       254  Median
+       292  High quartile
+       362  Max
+
+Totals:
+    116006  Pairs (116.0k)
+    109377  Merged (109.4k, 94.29%)
+     88708  Alignments with zero diffs (76.47%)
+      1350  Too many diffs (> 50) (1.16%)
+      3907  Fwd tails Q <= 20 trimmed (3.37%)
+      8718  Rev tails Q <= 20 trimmed (7.52%)
+        38  Fwd too short (< 64) after tail trimming (0.03%)
+      1432  Rev too short (< 64) after tail trimming (1.23%)
+      2377  No alignment found (2.05%)
+         0  Alignment too short (< 16) (0.00%)
+      1432  Merged too short (< 200)
+         0  Merged too long (> 600)
+      1360  Staggered pairs (1.17%) merged & trimmed
+    106.28  Mean alignment length
+    270.77  Mean merged length
+      0.48  Mean fwd expected errors
+      1.35  Mean rev expected errors
+      0.21  Mean merged expected errors

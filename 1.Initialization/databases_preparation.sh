@@ -7,6 +7,7 @@
 # LTP
 let LTP_version=132
 #extract file
+wget https://www.arb-silva.de/fileadmin/silva_databases/previous_living_tree/LTP_release_132/LTPs132_datasets.fasta.tar.gz -P ../0.Template-Data
 tar -xvzf ../0.Template-Data/LTPs${LTP_version}_datasets.fasta.tar.gz
 
 # SILVA
@@ -113,3 +114,17 @@ usearch -makeudb_usearch SILVA_archaea_compressed.fasta -output SILVA_archaea_co
 vsearch -makeudb_usearch SILVA_archaea_compressed.fasta -output SILVA_archaea_compressed.udb
 
 mv SILVA_archaea_compressed.udb ../2.Database-Match
+
+
+#############################
+# Preprocessing sort_me_rna #
+#############################
+
+wget https://github.com/biocore/sortmerna/releases/download/v4.3.3/sortmerna-4.3.3-Linux.sh
+chmod +x sortmerna-4.3.3-Linux.sh
+./sortmerna-4.3.3-Linux.sh
+# on the command prompts of the install, we propose to use: y and y
+
+# download archaea and bacteria databases used for filtering out chimeras
+wget https://github.com/biocore/sortmerna/raw/master/data/rRNA_databases/silva-bac-16s-id90.fasta -P ../0.Template-Data
+wget https://github.com/biocore/sortmerna/raw/master/data/rRNA_databases/silva-arc-16s-id95.fasta -P ../0.Template-Data

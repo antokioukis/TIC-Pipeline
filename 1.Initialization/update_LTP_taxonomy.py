@@ -8,12 +8,12 @@ def read_file(filename):
     return content
 
 
-ltp_info = read_file('LTP_archaea_deep_taxonomy.txt')
+ltp_info = read_file('LTP_info.csv')
 ltp_species = read_file('LTP_species_identifiers.txt')
 
 ltp_dict = dict()
 for line in ltp_info:
-    tokens = line.split()
+    tokens = line.split('\t')
     ltp_dict[tokens[0]] = tokens[1]
 
 
@@ -23,7 +23,7 @@ for line in ltp_species:
     species_dict[tokens[0]] = tokens[1].replace(' ', '_')
 
 
-ltp_file = read_file('LTP_archaea_aligned.fasta')
+ltp_file = read_file('clean_LTP_DNA_aligned.fasta')
 out_file = open('LTP_clean_ready.fasta', 'w+')
 for line in ltp_file:
     if line[0] == '>':
@@ -34,10 +34,10 @@ for line in ltp_file:
         out_file.write(line + '\n')
 out_file.close()
 
-system('mv LTP_clean_ready.fasta LTP_archaea_aligned.fasta')
+system('mv LTP_clean_ready.fasta clean_LTP_DNA_aligned.fasta')
 
 
-compressed_file = read_file('LTP_archaea_compressed.fasta')
+compressed_file = read_file('clean_LTP_DNA_compressed.fasta')
 out_file = open('t.fasta', 'w+')
 for line in compressed_file:
     if line[0] == '>':
@@ -47,4 +47,4 @@ for line in compressed_file:
     else:
         out_file.write(line.replace('-', '').replace('U', 'T') + '\n')
 out_file.close()
-system('mv t.fasta LTP_archaea_compressed.fasta')
+system('mv t.fasta clean_LTP_DNA_compressed.fasta')

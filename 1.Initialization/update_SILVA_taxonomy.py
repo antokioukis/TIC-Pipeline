@@ -1,5 +1,6 @@
 from os import system
 
+
 # return list with each line an element, clear of whitespace
 def read_file(filename):
     with open(filename) as f:
@@ -8,7 +9,7 @@ def read_file(filename):
     return content
 
 
-SILVA_contents = read_file('SILVA_archaea_compressed.fasta')
+SILVA_contents = read_file('clean_SILVA_DNA_compressed.fasta')
 out_file = open('t.fasta', 'w+')
 for line in SILVA_contents:
     if line[0] == '>':
@@ -19,4 +20,4 @@ for line in SILVA_contents:
         out_file.write(line + '\n')
 out_file.close()
 
-system('mv t.fasta SILVA_archaea_compressed.fasta')
+system('mv t.fasta clean_SILVA_DNA_compressed.fasta')
