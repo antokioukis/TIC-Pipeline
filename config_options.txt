@@ -13,15 +13,21 @@ LTP_VERSION:132
 LTP_DOWNLOAD:NO
 LTP_UNZIP:NO
 LTP_PROCESS:NO
+
 # -----------------------------------
 SILVA_VERSION:138
 SILVA_DOWNLOAD:NO
 SILVA_UNZIP:NO
 SILVA_PROCESS:NO
+
 # -----------------------------------
 CLUSTERING_TOOL:usearch
 THREADS:4
-# -----------------------------------
+
+############################
+# STEP 2: CREATION OF ASVS #
+############################
+
 SAMPLES_PROCESS_STEP:NO
 USER_FASTQ_FOLDER:/home/antonios/fastq_pipe
 TRIM_SCORE:20
@@ -32,6 +38,10 @@ MAXMERGELEN:600
 FORWARD_TRIM:10
 REVERSE_TRIM:10
 EXPECTED_ERROR_RATE:0.005
+
 # -----------------------------------
 ASV_CREATION_STEP:YES
 MIN_ZOTU_SIZE:4
+SORT_ME_RNA_DB1:/home/antonios/sort_me_rna_dbs/silva-bac-16s-id90.fasta
+SORT_ME_RNA_DB2:/home/antonios/sort_me_rna_dbs/silva-arc-16s-id95.fasta
+SORT_ME_RNA_TOOL:/home/antonios/sortmerna-4.3.3-Linux/bin/sortmerna
