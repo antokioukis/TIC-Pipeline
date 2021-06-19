@@ -123,6 +123,18 @@ for line in config_file_contents:
         INPUT_FASTA_EXTRACTION = tokens[1]
     elif tokens[0] == 'OUTPUT_FASTA_EXTRACTION':
         OUTPUT_FASTA_EXTRACTION = tokens[1]
+    elif tokens[0] == 'TAXONOMIC_CLUSTERING_STEP':
+        TAXONOMIC_CLUSTERING_STEP = tokens[1]
+    elif tokens[0] == 'CLUSTERING_DIRECTORY':
+        CLUSTERING_DIRECTORY = tokens[1]
+    elif tokens[0] == 'INPUT_FASTA_CLUSTERING':
+        INPUT_FASTA_CLUSTERING = tokens[1]
+    elif tokens[0] == 'FAMILY_IDENTITY':
+        FAMILY_IDENTITY = tokens[1]
+    elif tokens[0] == 'GENERA_IDENTITY':
+        GENERA_IDENTITY = tokens[1]
+    elif tokens[0] == 'SPECIES_IDENTITY':
+        SPECIES_IDENTITY = tokens[1]
 
     else:
         print('Configuration File Not valid')
@@ -274,3 +286,34 @@ if EXTRACTION_STEP == 'YES':
         system('python3 4.Taxonomy-Classification/update_taxonomy.py ' + arguments_list)
 elif EXTRACTION_STEP == 'NO':
     print('Skipping Region Extraction Step')
+
+if TAXONOMIC_CLUSTERING_STEP == 'YES':
+    print('Taxonomic Clustering')
+    if not isfile(INPUT_FASTA_CLUSTERING):
+        print('Specified INPUT_FASTA_CLUSTERING File not present')
+        print('Exiting')
+        exit(1)
+    if int(FAMILY_IDENTITY) > 100 or int(FAMILY_IDENTITY) < 0:
+        print('FAMILY_IDENTITY over the limits of 0, 100')
+        print('Exiting')
+        exit(1)
+    if int(GENERA_IDENTITY) > 100 or int(GENERA_IDENTITY) < 0:
+        print('GENERA_IDENTITY over the limits of 0, 100')
+        print('Exiting')
+        exit(1)
+    if int(SPECIES_IDENTITY) > 100 or int(SPECIES_IDENTITY) < 0:
+        print('SPECIES_IDENTITY over the limits of 0, 100')
+        print('Exiting')
+        exit(1)
+    else:
+        arguments_list = ' '.join([CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING])
+        cmd = 'python3 5.Taxonomy-Informed-Clustering/split_based_on_taxonomy.py '
+        cmd += ' -d ' + CLUSTERING_DIRECTORY + ' -i ' + INPUT_FASTA_CLUSTERING
+        # system(cmd)
+        arguments_list = ' '.join([CLUSTERING_DIRECTORY, FAMILY_IDENTITY, GENERA_IDENTITY, SPECIES_IDENTITY])
+        cmd = 'python3 5.Taxonomy-Informed-Clustering/update_taxonomy.py '
+        cmd += ' -f ' + FAMILY_IDENTITY + ' -g ' + GENERA_IDENTITY + ' -s ' + SPECIES_IDENTITY
+        cmd += ' -t ' + CLUSTERING_TOOL + ' -n ' + THREADS + ' -d ' + CLUSTERING_DIRECTORY
+        # system(cmd)
+elif TAXONOMIC_CLUSTERING_STEP == 'NO':
+    print('Skipping Taxonomic Clustering Step')

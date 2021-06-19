@@ -1,6 +1,6 @@
 import argparse
 from os import chdir, system, mkdir, remove
-from os.path import isfile, getsize
+from os.path import isfile, getsize, isdir
 from shutil import copyfile
 from tqdm import tqdm
 import multiprocessing
@@ -55,7 +55,8 @@ def vsearch_clustering(curr_fasta, similarity_limit):
         # print(curr_fasta)
     elif TOOL == 'usearch':
         cmd_0 = USEARCH_BIN_CLUST + curr_fasta + ' -id ' + similarity_limit + ' -strand both'
-        cmd_1 = ' -centroids -top_hits_only ' + centroids_file + ' -uc ' + uc_file + VSEARCH_TAIL
+        cmd_1 = ' -top_hits_only -centroids ' + centroids_file + ' -uc ' + uc_file + VSEARCH_TAIL
+        # print(cmd_0 + cmd_1)
     system(cmd_0 + cmd_1)
 
 
@@ -206,11 +207,11 @@ def vsearch_blast(curr_fasta, similarity_limit):
             cmd_0 = USEARCH_BIN_BLAST + curr_fasta + ' -id ' + similarity_limit + ' -db ' + targets_file
             cmd_1 = ' -dbmask none -qmask none -strand both -blast6out ' + b6_file
             cmd_2 = ' -notmatched ' + not_matched_file + VSEARCH_TAIL
-        print(cmd_0 + cmd_1 + cmd_2)
+        # print(cmd_0 + cmd_1 + cmd_2)
         system(cmd_0 + cmd_1 + cmd_2)
-        print(targets_file)
+        # print(targets_file)
         remove(targets_file)
-    print(curr_fasta)
+    # print(curr_fasta)
     remove(curr_fasta)
 
 
@@ -583,7 +584,9 @@ def handle_blast_matches_family_with_class(curr_fasta, level):
             if level == 'family':
                 new_taxonomy = ';'.join(target_taxonomy.split(';')[:-3]) + ';'
                 new_taxonomy += ';'.join(initial_taxonomy.split(';')[-3:-1])
-            new_dir = '/'.join(new_taxonomy.split(';')[:-2]) + '/'
+            new_dir = '/'.join(new_taxonomy.split(';')[:-1]) + '/'
+            if not isdir(MAIN_DIR + '/species_stats/' + new_dir):
+                mkdir(MAIN_DIR + '/species_stats/' + new_dir)
             new_stats_file_name = MAIN_DIR + '/species_stats/' + new_dir + new_taxonomy.replace(';', '_') + '.stats'
             # print(new_stats_file_name)
             if not isfile(initial_stats_file):
@@ -600,6 +603,8 @@ def handle_blast_matches_family_with_class(curr_fasta, level):
             old_centroids_file_name = MAIN_DIR + '/species_centroids/' + initial_dir
             old_centroids_file_name += initial_taxonomy.replace(';', '_')[:-1] + '.fasta'
             old_centroids_seqs_dict = fasta2dict(old_centroids_file_name)
+            if not isdir(MAIN_DIR + '/species_centroids/' + new_dir):
+                mkdir(MAIN_DIR + '/species_centroids/' + new_dir)
             new_centroids_file_name = MAIN_DIR + '/species_centroids/' + new_dir
             new_centroids_file_name += new_taxonomy.replace(';', '_') + '.fasta'
             # print(old_centroids_file_name)
@@ -917,15 +922,12 @@ def search_unknown_family_in_known_family():
         handle_blast_matches_order(curr_query_family)
         cluster_not_matched(curr_query_family, family_similarity)
         update_family_stats(curr_query_family)
-        # print(curr_query_family)
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        # print(curr_dir)
-        #find Micrarchaeales/ -name 'GOTU*' -maxdepth 1 | xargs -n 1 rm -r
         system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
     update_family_centroids()
     for curr_query_family in all_family_queries_fastas:
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -type d -empty -delete -maxdepth 1 ')
+        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
     clean_bases()
     clean_centroids()
     chdir(MAIN_DIR)
@@ -933,7 +935,6 @@ def search_unknown_family_in_known_family():
 
 def search_unknown_order_in_orders():
     curr_level_fastas = get_curr_level_fastas(2)
-    #gather_species(3, '.base.fasta')
     for curr_class_fasta in curr_level_fastas:
         if 'base' in curr_class_fasta:
             continue
@@ -969,14 +970,15 @@ def search_unknown_order_in_orders():
         cluster_not_matched(curr_query_family, family_similarity)
         update_family_stats_unk_order(curr_query_family)
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -type d -empty -delete -maxdepth 1 ')
+        system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
     update_family_centroids_unk_order()
     for curr_query_family in all_family_queries_fastas:
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -type d -empty -delete -maxdepth 1 ')
+        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
     clean_bases()
     clean_centroids()
     chdir(MAIN_DIR)
+
 
 def search_unknown_class_in_classes():
     chdir(MAIN_DIR)
@@ -1015,13 +1017,14 @@ def search_unknown_class_in_classes():
         cluster_not_matched(curr_query_family, family_similarity)
         update_family_stats(curr_query_family, 'class')
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -type d -empty -delete -maxdepth 1 ')
+        system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
     update_family_centroids('class')
     for curr_query_family in all_family_queries_fastas:
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -type d -empty -delete -maxdepth 1')
+        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
     clean_bases()
     clean_centroids()
+    chdir(MAIN_DIR)
 
 
 def search_unknown_phyla_in_total():
@@ -1060,11 +1063,11 @@ def search_unknown_phyla_in_total():
         cluster_not_matched(curr_query_family, family_similarity)
         update_family_stats(curr_query_family, 'phylum')
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -type d -empty -delete -maxdepth 1 ')
+        system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
     update_family_centroids('phylum')
     for curr_query_family in all_family_queries_fastas:
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -type d -empty -delete -maxdepth 1 ')
+        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
     clean_bases()
     clean_centroids()
     chdir(MAIN_DIR + '/species_centroids')
@@ -1123,10 +1126,6 @@ USEARCH_BIN_CLUST = 'usearch  -threads ' + THREADS + ' -cluster_fast '
 USEARCH_BIN_BLAST = 'usearch -threads ' + THREADS + ' -usearch_global '
 
 print('Known Genera Clustering starting. Similarity Threshold:' + str(species_similarity))
-# the 5 is the number of underscores, required in the filename to identify
-# those fastas that the last known taxonomy level is genera
-# since split_based_on_taxonomy.py splits the original fasta
-# based on that logic
 genera_level_fastas = get_curr_level_fastas(5)
 create_species_of_known_genera(genera_level_fastas)
 print('Known Genera Clustering done')
@@ -1143,30 +1142,13 @@ search_unknown_genera_in_known_genera()
 gather_species(4, '.base.fasta')
 search_unknown_family_in_known_family()
 gather_species(3, '.base.fasta')
-'''
-species_number=2132984
-genera_number=416853
-family_number=60197
 search_unknown_order_in_orders()
-print(species_number)
-print(genera_number)
-print(family_number)
 gather_species(2, '.base.fasta')
-species_number=2757687
-genera_number=543878
-family_number=92085
 search_unknown_class_in_classes()
-print(species_number)
-print(genera_number)
-print(family_number)
 gather_species(1, '.base.fasta')
-species_number=2784451
-genera_number=551545
-family_number=95016
 search_unknown_phyla_in_total()
 print(species_number)
-print(genera_number)
-print(family_number)
+'''
 2817576
 556065
 95732

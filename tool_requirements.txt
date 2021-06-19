@@ -1,0 +1,8 @@
+usearch
+sina
+silva-arb
+sortmerna
+sort_me_rna_db_archaea
+sort_me_rna_db_bacteria
+python3
+R

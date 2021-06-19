@@ -72,7 +72,6 @@ def create_zotu_table():
     chdir('2.ASV-Creation/')
     cmd = CLUSTERING_TOOL + " -otutab " + USER_FASTQ_FOLDER + '/merged.fasta -zotus good_ZOTUS.fa'
     cmd += " -otutabout ZOTUs-Table.tab -id 0.97  -threads " + THREADS + " > /dev/null 2>&1"
-    print(cmd)
     system(cmd)
     try:
         system(cmd)
