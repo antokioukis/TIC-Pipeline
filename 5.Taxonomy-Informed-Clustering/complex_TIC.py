@@ -1028,7 +1028,7 @@ def search_unknown_class_in_classes():
 
 
 def search_unknown_phyla_in_total():
-    curr_level_fastas = get_curr_level_fastas(0)    
+    curr_level_fastas = get_curr_level_fastas(0)
     for curr_class_fasta in curr_level_fastas:
         if 'base' in curr_class_fasta:
             continue
