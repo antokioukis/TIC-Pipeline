@@ -1,4 +1,5 @@
-import argparse
+from sys import argv
+from os import system
 
 
 # return list with each line an element, clear of whitespace
@@ -9,47 +10,67 @@ def read_file(filename):
     return content
 
 
-# read arguments for the three levels of similarity
-# as well as the absolute path of the MAIN_DIR
-parser = argparse.ArgumentParser()
-parser.add_argument("-m", "--mode", required=True, help="Mode: LTP or SILVA", type=str)
-args = parser.parse_args()
-
-if not (args.mode == 'LTP') and not(args.mode == 'SILVA'):
-    print('Mode not used by program, available options (LTP, SILVA)')
-    exit()
-
-MODE = str(args.mode)
-
-LTP_dict = dict()
-LTP_contents = read_file('../1.Initialization/LTP_archaea_compressed.fasta')
-for i in range(0, len(LTP_contents), 2):
-    header = LTP_contents[i][1:]
-    sequence = LTP_contents[i+1]
-    LTP_dict[header] = sequence
-
-
-SILVA_dict = dict()
-SILVA_contents = read_file('../1.Initialization/SILVA_archaea_compressed.fasta')
-for i in range(0, len(SILVA_contents), 2):
-    header = SILVA_contents[i][1:]
-    sequence = SILVA_contents[i+1]
-    SILVA_dict[header] = sequence
+def fasta_to_dict(fil):
+    dic = {}
+    cur_scaf = ''
+    cur_seq = []
+    for line in open(fil):
+        if line.startswith(">") and cur_scaf == '':
+            cur_scaf = line.split(' ')[0]
+        elif line.startswith(">") and cur_scaf != '':
+            dic[cur_scaf] = ''.join(cur_seq)
+            cur_scaf = line.split(' ')[0]
+            cur_seq = []
+        else:
+            cur_seq.append(line.rstrip())
+    dic[cur_scaf] = ''.join(cur_seq)
+    new_dict = dict()
+    for key, value in dic.items():
+        new_key = key.split(';')[0][1:]
+        # print(new_key)
+        new_dict[new_key] = value
+    return new_dict
 
 
-if MODE == 'LTP':
-    file_m2 = 'archaea_LTP.m2'
-    curr_dict = LTP_dict
-    out_file = open('archaea_replaced_LTP.fasta', 'w+')
-elif MODE == 'SILVA':
-    out_file = open('archaea_replaced_SILVA.fasta', 'w+')
-    curr_dict = SILVA_dict
-    file_m2 = 'archaea_SILVA.m2'
+DOUBLE_NOT_MATCHED = argv[1]
+LTP_SEQUENCES = argv[2]
+SILVA_SEQUENCES = argv[3]
+LTP_MATCHES = argv[4]
+SILVA_MATCHES = argv[5]
+REPLACEMENT_OUT_FILE = argv[6]
 
-m2_content = read_file(file_m2)
-for line in m2_content:
-    original_header, match_header = line.split('\t')[:2]
-    out_file.write('>' + original_header + '\n')
-    out_file.write(curr_dict[match_header] + '\n')
 
-out_file.close()
+def replace_LTP_matches():
+    out_file = open('3.Database-Match/double_replaced.fasta', 'w+')
+    replacement_contents = read_file(LTP_MATCHES)
+    LTP_dict = fasta_to_dict(LTP_SEQUENCES)
+    for line in replacement_contents:
+        tokens = line.split('\t')
+        query = tokens[0]
+        target = tokens[1].split(';')[0]
+        out_file.write('>' + query + '\n')
+        out_file.write(LTP_dict[target] + '\n')
+    out_file.close()
+
+
+def replace_SILVA_matches():
+    out_file = open('3.Database-Match/double_replaced.fasta', 'a')
+    replacement_contents = read_file(SILVA_MATCHES)
+    SILVA_dict = fasta_to_dict(SILVA_SEQUENCES)
+    for line in replacement_contents:
+        tokens = line.split('\t')
+        query = tokens[0]
+        target = tokens[1].split(';')[0]
+        out_file.write('>' + query + '\n')
+        out_file.write(SILVA_dict[target] + '\n')
+    out_file.close()
+
+
+def append_not_matched():
+    cmd = 'cat 3.Database-Match/double_replaced.fasta 3.Database-Match/not_matched_SILVA.fasta>> ' + REPLACEMENT_OUT_FILE
+    system(cmd)
+
+
+replace_LTP_matches()
+replace_SILVA_matches()
+append_not_matched()

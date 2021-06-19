@@ -18,10 +18,10 @@ def find_differences(s):
     return positions
 
 
-def create_vector(input_file):
+def create_vector(input_file, out_dir):
     position_vector = [0] * 50000
     content = read_file(input_file)
-    position_vector_file = open("alignment_vector.csv", "w+")
+    position_vector_file = open(out_dir + "/alignment_vector.csv", "w+")
     for i in range(len(content)):
         if(">" not in content[i]):
             align_pos = find_differences(content[i])
@@ -36,8 +36,10 @@ def create_vector(input_file):
 # as well as the absolute path of the MAIN_DIR
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input_file", required=True, help="Input FASTA file", type=str)
+parser.add_argument("-o", "--out_dir", required=True, help="Output DIR", type=str)
 args = parser.parse_args()
 
 input_file = str(args.input_file)
+out_dir = str(args.out_dir)
 
-create_vector(input_file)
+create_vector(input_file, out_dir)

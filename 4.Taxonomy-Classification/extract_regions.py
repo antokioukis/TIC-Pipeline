@@ -1,50 +1,45 @@
-import argparse
-from os.path import isfile
+from sys import argv
 
 
-def read_file(filename):
-    with open(filename) as f:
-        content = f.readlines()
-    content = [x.strip() for x in content]
-    return content
-
-
-def count_seq(input_file):
-    out_file = open('dataset_extracted.fasta', 'a+')
-    ali_contents = read_file(input_file)
-    for line in ali_contents:
-        if line[0] == '>':
-            header = line
+def fasta_to_dict(fil):
+    dic = {}
+    cur_scaf = ''
+    cur_seq = []
+    for line in open(fil):
+        if line.startswith(">") and cur_scaf == '':
+            cur_scaf = line.split(' ')[0]
+        elif line.startswith(">") and cur_scaf != '':
+            dic[cur_scaf] = ''.join(cur_seq)
+            cur_scaf = line.split(' ')[0]
+            cur_seq = []
         else:
-            trimmed_sequence = line[START_REGION: END_REGION]
-            collapsed_sequence = trimmed_sequence.replace('-', '').replace('.', '')
-            if len(collapsed_sequence) >= BASES_LOW_LIMIT:
-                out_file.write(header + '\n')
-                out_file.write(trimmed_sequence + '\n')
+            cur_seq.append(line.rstrip())
+    dic[cur_scaf] = ''.join(cur_seq)
+    new_dict = dict()
+    for key, value in dic.items():
+        new_key = key.split(';')[0][1:]
+        # print(new_key)
+        new_dict[new_key] = value
+    return new_dict
+
+
+def count_seq():
+    out_file = open(OUTPUT_FASTA_EXTRACTION, 'w+')
+    ali_contents = fasta_to_dict(INPUT_FASTA_EXTRACTION)
+    for key, value in ali_contents.items():
+        trimmed_sequence = value[EXTRACTION_REGION_START: EXTRACTION_REGION_END]
+        collapsed_sequence = trimmed_sequence.replace('-', '').replace('.', '')
+        if len(collapsed_sequence) >= BASES_LOW_LIMIT:
+            out_file.write('>' + key)
+            out_file.write(collapsed_sequence + '\n')
     out_file.close()
 
 
-# read arguments for the three levels of similarity
-# as well as the absolute path of the MAIN_DIR
-parser = argparse.ArgumentParser()
-parser.add_argument("-i", "--input", required=True, help="Input File", type=str)
-parser.add_argument("-s", "--start", required=True, help="Start Region", type=int)
-parser.add_argument("-e", "--end", required=True, help="End Region", type=int)
-parser.add_argument("-l", "--limit", required=True, help="Aligned Bases Limit", type=int)
+INPUT_FASTA_EXTRACTION = argv[1]
+EXTRACTION_REGION_START = int(argv[2])
+EXTRACTION_REGION_END = int(argv[3])
+EXTRACTION_REGION_LIMIT = int(argv[4])
+BASES_LOW_LIMIT = EXTRACTION_REGION_LIMIT * 0.8
+OUTPUT_FASTA_EXTRACTION = argv[5]
 
-args = parser.parse_args()
-
-if int(args.start) <= 0 or int(args.end) >= 50000 or int(args.start) >= int(args.end):
-    print('Start or End region over the limits of 0, 50000')
-    exit()
-if not isfile(str(args.input)):
-    print('Input file not present')
-    exit()
-
-
-input_file = str(args.input)
-START_REGION = int(args.start)
-END_REGION = int(args.end)
-BASES_REQ = int(args.limit)
-BASES_LOW_LIMIT = BASES_REQ * 0.8
-count_seq(input_file)
+count_seq()

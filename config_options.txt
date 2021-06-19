@@ -10,15 +10,15 @@
 #######################################
 
 LTP_VERSION:132
-LTP_DOWNLOAD:NO
-LTP_UNZIP:NO
-LTP_PROCESS:NO
+LTP_DOWNLOAD:YES
+LTP_UNZIP:YES
+LTP_PROCESS:YES
 
 # -----------------------------------
 SILVA_VERSION:138
-SILVA_DOWNLOAD:NO
-SILVA_UNZIP:NO
-SILVA_PROCESS:NO
+SILVA_DOWNLOAD:YES
+SILVA_UNZIP:YES
+SILVA_PROCESS:YES
 
 # -----------------------------------
 CLUSTERING_TOOL:usearch
@@ -28,7 +28,7 @@ THREADS:4
 # STEP 2: CREATION OF ASVS #
 ############################
 
-SAMPLES_PROCESS_STEP:NO
+SAMPLES_PROCESS_STEP:YES
 USER_FASTQ_FOLDER:/home/antonios/fastq_pipe
 TRIM_SCORE:20
 MAXDIFF:50
@@ -45,3 +45,44 @@ MIN_ZOTU_SIZE:4
 SORT_ME_RNA_DB1:/home/antonios/sort_me_rna_dbs/silva-bac-16s-id90.fasta
 SORT_ME_RNA_DB2:/home/antonios/sort_me_rna_dbs/silva-arc-16s-id95.fasta
 SORT_ME_RNA_TOOL:/home/antonios/sortmerna-4.3.3-Linux/bin/sortmerna
+
+##############################################
+# STEP 3: MATCHING and REPLACING SILVA + LTP #
+##############################################
+
+MATCHING_STEP:YES
+ASV_FILE:/home/antonios/TIC-Pipeline/2.ASV-Creation/good_ZOTUS.fa
+LTP_UDB_DB:/home/antonios/TIC-Pipeline/3.Database-Match/LTP_compressed.udb
+SILVA_UDB_DB:/home/antonios/TIC-Pipeline/3.Database-Match/SILVA_compressed.udb
+MATCHING_TOOL:usearch
+MATCH_IDENTITY:98
+
+# -----------------------------------
+REPLACEMENT_STEP:YES
+DOUBLE_NOT_MATCHED:/home/antonios/TIC-Pipeline/3.Database-Match/not_matched_SILVA.fasta
+LTP_SEQUENCES:/home/antonios/TIC-Pipeline/1.Initialization/clean_LTP_DNA_compressed.fasta
+SILVA_SEQUENCES:/home/antonios/TIC-Pipeline/1.Initialization/clean_SILVA_DNA_compressed.fasta
+LTP_MATCHES:/home/antonios/TIC-Pipeline/3.Database-Match/match_LTP.m2
+SILVA_MATCHES:/home/antonios/TIC-Pipeline/3.Database-Match/match_SILVA.m2
+REPLACEMENT_OUT_FILE:/home/antonios/TIC-Pipeline/double_replaced.fasta
+
+
+####################################################
+# STEP 4: ALIGNMENT, CLASSIFICATION AND EXTRACTION #
+####################################################
+
+ALIGNMENT_CLASSIFICATION_STEP:YES
+SILVA_ARB:/home/antonios/sina_tool/SILVA_138.1_SSURef_NR99_12_06_20_opt.arb
+SINA_EXECUTABLE:/home/antonios/sina_tool/sina-1.7.2-linux/sina
+INPUT_FASTA_ALI_CLASS:/home/antonios/TIC-Pipeline/double_replaced.fasta
+OUTPUT_FASTA_ALI_CLASS:/home/antonios/TIC-Pipeline/sina_output.fasta
+PDF_REGION_OUTPUT:/home/antonios/regions_extract.pdf
+
+# -----------------------------------
+
+EXTRACTION_STEP:YES
+INPUT_FASTA_EXTRACTION:/home/antonios/TIC-Pipeline/sina_output.fasta
+EXTRACTION_REGION_START:10000
+EXTRACTION_REGION_END:25000
+EXTRACTION_REGION_LIMIT:100
+OUTPUT_FASTA_EXTRACTION:/home/antonios/TIC-Pipeline/double_replaced_extracted.fasta

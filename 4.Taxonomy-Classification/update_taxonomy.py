@@ -1,4 +1,6 @@
 from tqdm import tqdm
+from sys import argv
+from os import system
 
 
 def read_file(filename):
@@ -8,8 +10,11 @@ def read_file(filename):
     return content
 
 
+OUTPUT_FASTA_EXTRACTION = argv[1]
+OUTPUT_CSV_ALI_CLASS = argv[2]
+
 sina_dict = dict()
-sina_csv = read_file('sina_output.csv')[1:]
+sina_csv = read_file(OUTPUT_CSV_ALI_CLASS)[1:]
 for i in tqdm(range(len(sina_csv))):
     curr_line = sina_csv[i]
     line_tokens = curr_line.split(',')
@@ -18,8 +23,7 @@ for i in tqdm(range(len(sina_csv))):
     sina_dict[original_header] = new_taxonomy
 
 
-#filepath = 'dataset_extracted.fasta'
-filepath = 'sina_output.fasta'
+filepath = OUTPUT_FASTA_EXTRACTION
 out_fasta = open('dataset_extracted_new_taxonomy.fasta', 'w+')
 with open(filepath) as fp:
     line = fp.readline()
@@ -31,5 +35,6 @@ with open(filepath) as fp:
             out_fasta.write(line)
         line = fp.readline()
 
-
 out_fasta.close()
+
+system('mv dataset_extracted_new_taxonomy.fasta ' + OUTPUT_FASTA_EXTRACTION)

@@ -124,7 +124,7 @@ def process_LTP(version):
     if status:
         return 1
     chdir(top_directory)
-    remove('./1.Initialization/' + out_file_compressed_name)
+    # remove('./1.Initialization/' + out_file_compressed_name)
     remove('./1.Initialization/LTP_info.csv')
     remove('./1.Initialization/LTP_species_identifiers.txt')
     return 0
