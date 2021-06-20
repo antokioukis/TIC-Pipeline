@@ -187,7 +187,7 @@ def gather_species(curr_level, suffix):
         remove(threaded_fasta)
 
 
-def vsearch_blast(curr_fasta, similarity_limit):
+def vsearch_blast(curr_fasta, similarity_limit, print_flag=0):
     chdir(MAIN_DIR)
     start_of_curr_fasta = curr_fasta.split('.')[0]
     targets_file = start_of_curr_fasta + '.base.fasta'
@@ -197,6 +197,8 @@ def vsearch_blast(curr_fasta, similarity_limit):
     # all of those sequence should go immediately to genera clustering joining the not matched
     # so just copy the file to not matched
     if not isfile(targets_file):
+        if print_flag:
+            print(curr_fasta)
         copyfile(curr_fasta, not_matched_file)
     else:
         if TOOL == 'vsearch':
@@ -207,7 +209,8 @@ def vsearch_blast(curr_fasta, similarity_limit):
             cmd_0 = USEARCH_BIN_BLAST + curr_fasta + ' -id ' + similarity_limit + ' -db ' + targets_file
             cmd_1 = ' -dbmask none -qmask none -strand both -blast6out ' + b6_file
             cmd_2 = ' -notmatched ' + not_matched_file + VSEARCH_TAIL
-        # print(cmd_0 + cmd_1 + cmd_2)
+        #if print_flag:
+        #    print(cmd_0 + cmd_1 + cmd_2)
         system(cmd_0 + cmd_1 + cmd_2)
         # print(targets_file)
         remove(targets_file)
@@ -431,11 +434,19 @@ def update_genera_stats(curr_fasta):
             species_hit_with_GOTU = query_seq_identifier + 'tax=' + new_taxonomy
             out_line = 'S' + '\t' + species_hit_with_GOTU + '\n'
             out_file.write(out_line)
-            out_file.close()
             genera_dict[line_tokens[8]] = target_hit_genera_num
             old_taxonomy_dir = '/'.join((old_taxonomy.split(';')[:-2]))
             initial_stats_file = MAIN_DIR + '/species_stats/' + old_taxonomy_dir + '/'
             initial_stats_file += old_taxonomy.replace(';', '_')[:-1] + '.stats'
+            initial_contents = read_file(initial_stats_file)
+            for init_line in initial_contents[1:]:
+                header = init_line.split('\t')[1].split('tax=')[0]
+                palia_taxonomy = init_line.split('\t')[1].split('tax=')[1]
+                palio_species = palia_taxonomy.split(';')[-2][4:]
+                nea_grammi = header + 'tax=' + ';'.join(palia_taxonomy.split(';')[:-2]) + ';GOTU' 
+                nea_grammi += str(target_hit_genera_num) + ';SOTU' + palio_species + ';'
+                out_file.write('H\t' + nea_grammi + '\n')
+            out_file.close()
             remove(initial_stats_file)
     remove(uc_file)
 
@@ -491,7 +502,7 @@ def search_unknown_genera_in_known_genera():
     all_genera_queries_fastas = glob('*.genera_queries.fasta')
     # print(all_genera_queries_fastas)
     for curr_query_genera in all_genera_queries_fastas:
-        vsearch_blast(curr_query_genera, genera_similarity)
+        vsearch_blast(curr_query_genera, genera_similarity, print_flag=0)
         handle_blast_matches_genera(curr_query_genera)
         cluster_not_matched(curr_query_genera, genera_similarity)
         update_genera_stats(curr_query_genera)
@@ -746,20 +757,20 @@ def update_family_stats(curr_fasta, level='none'):
                 new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';FOTU' + str(target_hit_family_num)
                 new_taxonomy += ';' + ';'.join(old_taxonomy.split(';')[-3:]) + '\n'
                 out_file_name = curr_name + '_FOTU' + str(target_hit_family_num) + curr_gotu_species_number + '.stats'
-            # print(out_file_name)
             new_dir = create_directory('/'.join(out_file_name.split('_')[:-1]), 'species_stats')
-            # print(new_dir + out_file_name)
             out_file = open(MAIN_DIR + '/' + new_dir + out_file_name, 'a')
             species_hit_with_FOTU = query_seq_identifier + new_taxonomy
             out_line = 'S' + '\t' + species_hit_with_FOTU + '\n'
             out_file.write(out_line)
-            out_file.close()
             family_dict[line_tokens[8]] = target_hit_family_num
-            # print(old_taxonomy)
             old_dir = '/'.join(old_taxonomy.split(';')[:-2]) + '/'
-            # print(old_dir)
             initial_stats_file = MAIN_DIR + '/species_stats/' + old_dir + old_taxonomy.replace(';', '_')[:-1] + '.stats'
-            # print(initial_stats_file)
+            initial_contents = read_file(initial_stats_file)
+            for init_line in initial_contents[1:]:
+                header = init_line.split('\t')[1].split('tax=')[0]
+                nea_grammi = header + 'tax=' + new_taxonomy + '\n'
+                out_file.write('H\t' + nea_grammi)
+            out_file.close()
             remove(initial_stats_file)
     remove(uc_file)
 
@@ -817,12 +828,17 @@ def update_family_stats_unk_order(curr_fasta):
             species_hit_with_FOTU = query_seq_identifier + new_taxonomy
             out_line = 'S' + '\t' + species_hit_with_FOTU + '\n'
             out_file.write(out_line)
-            out_file.close()
             family_dict[line_tokens[8]] = target_hit_family_num
             initial_stats_name_dir = '/'.join(old_taxonomy.split(';')[:-2])
             initial_stats_file = MAIN_DIR + '/species_stats/' + initial_stats_name_dir + '/'
             initial_stats_file += old_taxonomy.replace(';', '_')[:-1] + '.stats'
             # print(initial_stats_file)
+            initial_contents = read_file(initial_stats_file)
+            for init_line in initial_contents[1:]:
+                header = init_line.split('\t')[1].split('tax=')[0]
+                nea_grammi = header + 'tax=' + new_taxonomy + '\n'
+                out_file.write('H\t' + nea_grammi)
+            out_file.close()
             remove(initial_stats_file)
     remove(uc_file)
 
@@ -891,8 +907,10 @@ def update_family_centroids_unk_order():
 
 def search_unknown_family_in_known_family():
     chdir(MAIN_DIR)
-    unk_family_fastas = glob('*les.fasta')
+    unk_family_fastas = glob('*.fasta')
     for curr_unk_family in unk_family_fastas:
+        if 'base' in curr_unk_family:
+            continue
         vsearch_blast(curr_unk_family, species_similarity)
         handle_blast_matches_species(curr_unk_family)
         cluster_not_matched(curr_unk_family, species_similarity)

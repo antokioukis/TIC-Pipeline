@@ -85,13 +85,14 @@ try:
     mkdir(MAIN_DIR)
 except BaseException:
     print(MAIN_DIR + ' already present please select other directory or move the present directory to another location')
+    exit()
 
 input_contents = read_file(input_file)
 for i in tqdm(range(0, len(input_contents), 2)):
     header = input_contents[i]
     sequence = input_contents[i+1]
     curr_taxonomy = header.split('tax=')[1]
-    out_file_name = check_valid_names(curr_taxonomy)
+    out_file_name = check_valid_names(curr_taxonomy).replace('(', '').replace(')', '')
     out_file = open(MAIN_DIR + out_file_name, 'a+')
     new_header = header.split('tax=')[0] + 'tax=' + out_file_name.split('.')[0].replace('_', ';') + ';'
     out_file.write(new_header + '\n')

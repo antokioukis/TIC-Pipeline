@@ -215,7 +215,7 @@ if TAXONOMIC_CLUSTERING_STEP == 'YES':
         arguments_list = ' '.join([CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING])
         cmd = 'python3 3.Taxonomy-Informed-Clustering/split_based_on_taxonomy.py '
         cmd += ' -d ' + CLUSTERING_DIRECTORY + ' -i ' + INPUT_FASTA_CLUSTERING
-        #system(cmd)
+        system(cmd)
         arguments_list = ' '.join([CLUSTERING_DIRECTORY, FAMILY_IDENTITY, GENERA_IDENTITY, SPECIES_IDENTITY])
         cmd = 'python3 3.Taxonomy-Informed-Clustering/complex_TIC.py '
         cmd += ' -f ' + FAMILY_IDENTITY + ' -g ' + GENERA_IDENTITY + ' -s ' + SPECIES_IDENTITY
