@@ -9,7 +9,7 @@ OUTPUT_FASTA_ALI_CLASS = argv[5]
 
 cmd = SINA_EXECUTABLE + ' --in=' + INPUT_FASTA_ALI_CLASS + ' --out=' + OUTPUT_FASTA_ALI_CLASS + ' --db='
 cmd += SILVA_ARB + ' --turn all --search --meta-fmt csv --lca-fields=tax_slv  --fasta-write-dna'
-#system(cmd)
+system(cmd)
 
 cmd = 'python3 2.Taxonomy-Classification/create_alignment_vector.py '
 cmd += '-i ' + OUTPUT_FASTA_ALI_CLASS + ' -o 2.Taxonomy-Classification'

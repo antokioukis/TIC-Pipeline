@@ -187,7 +187,7 @@ def gather_species(curr_level, suffix):
         remove(threaded_fasta)
 
 
-def vsearch_blast(curr_fasta, similarity_limit, print_flag=0):
+def vsearch_blast(curr_fasta, similarity_limit):
     chdir(MAIN_DIR)
     start_of_curr_fasta = curr_fasta.split('.')[0]
     targets_file = start_of_curr_fasta + '.base.fasta'
@@ -197,8 +197,6 @@ def vsearch_blast(curr_fasta, similarity_limit, print_flag=0):
     # all of those sequence should go immediately to genera clustering joining the not matched
     # so just copy the file to not matched
     if not isfile(targets_file):
-        if print_flag:
-            print(curr_fasta)
         copyfile(curr_fasta, not_matched_file)
     else:
         if TOOL == 'vsearch':
@@ -209,12 +207,8 @@ def vsearch_blast(curr_fasta, similarity_limit, print_flag=0):
             cmd_0 = USEARCH_BIN_BLAST + curr_fasta + ' -id ' + similarity_limit + ' -db ' + targets_file
             cmd_1 = ' -dbmask none -qmask none -strand both -blast6out ' + b6_file
             cmd_2 = ' -notmatched ' + not_matched_file + VSEARCH_TAIL
-        #if print_flag:
-        #    print(cmd_0 + cmd_1 + cmd_2)
         system(cmd_0 + cmd_1 + cmd_2)
-        # print(targets_file)
         remove(targets_file)
-    # print(curr_fasta)
     remove(curr_fasta)
 
 
@@ -443,7 +437,7 @@ def update_genera_stats(curr_fasta):
                 header = init_line.split('\t')[1].split('tax=')[0]
                 palia_taxonomy = init_line.split('\t')[1].split('tax=')[1]
                 palio_species = palia_taxonomy.split(';')[-2][4:]
-                nea_grammi = header + 'tax=' + ';'.join(palia_taxonomy.split(';')[:-2]) + ';GOTU' 
+                nea_grammi = header + 'tax=' + ';'.join(palia_taxonomy.split(';')[:-2]) + ';GOTU'
                 nea_grammi += str(target_hit_genera_num) + ';SOTU' + palio_species + ';'
                 out_file.write('H\t' + nea_grammi + '\n')
             out_file.close()
@@ -502,7 +496,7 @@ def search_unknown_genera_in_known_genera():
     all_genera_queries_fastas = glob('*.genera_queries.fasta')
     # print(all_genera_queries_fastas)
     for curr_query_genera in all_genera_queries_fastas:
-        vsearch_blast(curr_query_genera, genera_similarity, print_flag=0)
+        vsearch_blast(curr_query_genera, genera_similarity)
         handle_blast_matches_genera(curr_query_genera)
         cluster_not_matched(curr_query_genera, genera_similarity)
         update_genera_stats(curr_query_genera)
