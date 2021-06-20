@@ -44,14 +44,14 @@ def sort_merged():
 
 def unoise():
     cmd = CLUSTERING_TOOL + " -unoise3 " + USER_FASTQ_FOLDER + '/sorted.fasta -minsize ' + MIN_ZOTU_SIZE
-    cmd += ' -zotus 2.ASV-Creation/zotus.fasta -tabbedout 2.ASV-Creation/denoising.tab '
+    cmd += ' -zotus 1.ASV-Creation/zotus.fasta -tabbedout 1.ASV-Creation/denoising.tab '
     cmd += '> /dev/null 2>&1'
     system(cmd)
 
 
 def remove_chimeras():
     top_directory = getcwd()
-    chdir('2.ASV-Creation/')
+    chdir('1.ASV-Creation/')
     print(">>> Filtering out non 16S ZOTUs ... ")
     cmd = SORT_ME_RNA_TOOL + ' --ref ' + SORT_ME_RNA_DB1 + ' --ref ' + SORT_ME_RNA_DB2
     cmd += ' --reads zotus.fasta --fastx --aligned good_ZOTUS --other other_ZOTUS'
@@ -69,7 +69,7 @@ def remove_chimeras():
 
 def create_zotu_table():
     top_directory = getcwd()
-    chdir('2.ASV-Creation/')
+    chdir('1.ASV-Creation/')
     cmd = CLUSTERING_TOOL + " -otutab " + USER_FASTQ_FOLDER + '/merged.fasta -zotus good_ZOTUS.fa'
     cmd += " -otutabout ZOTUs-Table.tab -id 0.97  -threads " + THREADS + " > /dev/null 2>&1"
     system(cmd)

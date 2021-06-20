@@ -1,5 +1,6 @@
 import argparse
 from tqdm import tqdm
+from os import mkdir
 
 
 def read_file(filename):
@@ -79,6 +80,11 @@ parser.add_argument("-i", "--input", required=True, help="Input File")
 args = parser.parse_args()
 MAIN_DIR = args.data_dir + '/'
 input_file = args.input
+
+try:
+    mkdir(MAIN_DIR)
+except BaseException:
+    print(MAIN_DIR + ' already present please select other directory or move the present directory to another location')
 
 input_contents = read_file(input_file)
 for i in tqdm(range(0, len(input_contents), 2)):

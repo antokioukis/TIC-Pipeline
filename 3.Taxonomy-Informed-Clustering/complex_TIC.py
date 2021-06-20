@@ -1106,9 +1106,7 @@ if args.genus_similarity <= args.family_similarity:
 if args.species_similarity <= args.family_similarity:
     print('Species Similarity <= Family Similarity, exiting')
     exit()
-if not (args.tool == 'usearch') and not(args.tool == 'vsearch'):
-    print('Clustering + Blasting tool not used by program')
-    exit()
+
 
 # user input 97 transform it to 0.97
 # same for genus and family
@@ -1147,9 +1145,3 @@ gather_species(2, '.base.fasta')
 search_unknown_class_in_classes()
 gather_species(1, '.base.fasta')
 search_unknown_phyla_in_total()
-print(species_number)
-'''
-2817576
-556065
-95732
-'''
