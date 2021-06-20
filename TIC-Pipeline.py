@@ -11,26 +11,15 @@ def read_file(filename):
 
 
 config_file_contents = read_file('config_options.txt')
+inifile_contents = read_file('tool_and_db_options.ini')
+for ini_line in inifile_contents:
+    config_file_contents.append(ini_line)
 for line in config_file_contents:
     if not line or line[0] == '#':
         continue
     tokens = line.split(':')
-    if tokens[0] == 'LTP_VERSION':
-        LTP_VERSION = tokens[1]
-    elif tokens[0] == 'LTP_DOWNLOAD':
-        LTP_DOWNLOAD = tokens[1]
-    elif tokens[0] == 'LTP_UNZIP':
-        LTP_UNZIP = tokens[1]
-    elif tokens[0] == 'LTP_PROCESS':
-        LTP_PROCESS = tokens[1]
-    elif tokens[0] == 'SILVA_VERSION':
-        SILVA_VERSION = tokens[1]
-    elif tokens[0] == 'SILVA_DOWNLOAD':
-        SILVA_DOWNLOAD = tokens[1]
-    elif tokens[0] == 'SILVA_UNZIP':
-        SILVA_UNZIP = tokens[1]
-    elif tokens[0] == 'SILVA_PROCESS':
-        SILVA_PROCESS = tokens[1]
+    if tokens[0] == 'TESTING_MODE':
+        TESTING_MODE = tokens[1]
     elif tokens[0] == 'CLUSTERING_TOOL':
         CLUSTERING_TOOL = tokens[1]
     elif tokens[0] == 'SAMPLES_PROCESS_STEP':
@@ -67,38 +56,10 @@ for line in config_file_contents:
         SORT_ME_RNA_TOOL = tokens[1]
     elif tokens[0] == 'MIN_ZOTU_SIZE':
         MIN_ZOTU_SIZE = tokens[1]
-    elif tokens[0] == 'SORT_ME_RNA_DB1':
-        SORT_ME_RNA_DB1 = tokens[1]
-    elif tokens[0] == 'SORT_ME_RNA_DB2':
-        SORT_ME_RNA_DB2 = tokens[1]
-    elif tokens[0] == 'SORT_ME_RNA_TOOL':
-        SORT_ME_RNA_TOOL = tokens[1]
     elif tokens[0] == 'MATCHING_STEP':
         MATCHING_STEP = tokens[1]
     elif tokens[0] == 'ASV_FILE':
         ASV_FILE = tokens[1]
-    elif tokens[0] == 'LTP_UDB_DB':
-        LTP_UDB_DB = tokens[1]
-    elif tokens[0] == 'SILVA_UDB_DB':
-        SILVA_UDB_DB = tokens[1]
-    elif tokens[0] == 'MATCHING_TOOL':
-        MATCHING_TOOL = tokens[1]
-    elif tokens[0] == 'MATCH_IDENTITY':
-        MATCH_IDENTITY = float(tokens[1])
-    elif tokens[0] == 'REPLACEMENT_STEP':
-        REPLACEMENT_STEP = tokens[1]
-    elif tokens[0] == 'DOUBLE_NOT_MATCHED':
-        DOUBLE_NOT_MATCHED = tokens[1]
-    elif tokens[0] == 'LTP_SEQUENCES':
-        LTP_SEQUENCES = tokens[1]
-    elif tokens[0] == 'SILVA_SEQUENCES':
-        SILVA_SEQUENCES = tokens[1]
-    elif tokens[0] == 'LTP_MATCHES':
-        LTP_MATCHES = tokens[1]
-    elif tokens[0] == 'SILVA_MATCHES':
-        SILVA_MATCHES = tokens[1]
-    elif tokens[0] == 'REPLACEMENT_OUT_FILE':
-        REPLACEMENT_OUT_FILE = tokens[1]
     elif tokens[0] == 'ALIGNMENT_CLASSIFICATION_STEP':
         ALIGNMENT_CLASSIFICATION_STEP = tokens[1]
     elif tokens[0] == 'SILVA_ARB':
@@ -135,18 +96,23 @@ for line in config_file_contents:
         GENERA_IDENTITY = tokens[1]
     elif tokens[0] == 'SPECIES_IDENTITY':
         SPECIES_IDENTITY = tokens[1]
-
     else:
         print('Configuration File Not valid')
-        print('Option ' + tokens[0] + ' Not recognised')
+        print('Option ' + tokens[0] + ' not recognised')
         print('Exiting')
         exit(1)
 
 print('Configuration File Valid and Complete')
-arguments_list = ' '.join([CLUSTERING_TOOL, LTP_DOWNLOAD, LTP_UNZIP, LTP_PROCESS, LTP_VERSION, SILVA_DOWNLOAD,
-                           SILVA_UNZIP, SILVA_PROCESS, SILVA_VERSION
-                           ])
-system('python3 1.Initialization/database_preparation.py ' + arguments_list)
+
+if TESTING_MODE == 'YES':
+    print('This is the testing mode of the TIC-Pipeline.')
+    arguments_list = ' '.join([SILVA_ARB, SINA_EXECUTABLE, SORT_ME_RNA_DB1, SORT_ME_RNA_DB2,
+                               SORT_ME_RNA_TOOL, CLUSTERING_TOOL
+                               ])
+    system('python3 0.Setup_and_Testing/testing.py ' + arguments_list)
+    exit()
+elif TESTING_MODE == 'NO':
+    print('This is the production mode of the TIC-Pipeline.')
 
 if SAMPLES_PROCESS_STEP == 'YES':
     print('Processing Samples')
@@ -159,7 +125,7 @@ if SAMPLES_PROCESS_STEP == 'YES':
                                    MINMERGELEN, MAXMERGELEN, FORWARD_TRIM, REVERSE_TRIM, EXPECTED_ERROR_RATE, THREADS,
                                    MINPCTID
                                    ])
-        system('python3 2.ASV-Creation/process_samples.py ' + arguments_list)
+        system('python3 1.ASV-Creation/process_samples.py ' + arguments_list)
 elif SAMPLES_PROCESS_STEP == 'NO':
     print('Skipping Processing of Samples')
 
@@ -176,66 +142,6 @@ if ASV_CREATION_STEP == 'YES':
         system('python3 2.ASV-Creation/create_ASVs.py ' + arguments_list)
 elif ASV_CREATION_STEP == 'NO':
     print('Skipping Creation of ASVs')
-
-if MATCHING_STEP == 'YES':
-    print('MATCHING ASVs')
-    if not isfile(ASV_FILE):
-        print('Specified ASV File not present')
-        print('Exiting')
-        exit(1)
-    if not isfile(LTP_UDB_DB):
-        print('Specified LTP_UDB_DB File not present')
-        print('Exiting')
-        exit(1)
-    if not isfile(SILVA_UDB_DB):
-        print('Specified SILVA_UDB_DB File not present')
-        print('Exiting')
-        exit(1)
-    if MATCH_IDENTITY > 100:
-        print('Specified Matching Identity over 100.')
-        print('Exiting')
-        exit(1)
-    if MATCH_IDENTITY <= 0:
-        print('Specified Matching Identity over 100.')
-        print('Exiting')
-        exit(1)
-    else:
-        arguments_list = ' '.join([ASV_FILE, LTP_UDB_DB, SILVA_UDB_DB, MATCHING_TOOL, THREADS, str(MATCH_IDENTITY/100)
-                                   ])
-        system('python3 3.Database-Match/create_matches.py ' + arguments_list)
-elif MATCHING_STEP == 'NO':
-    print('Skipping Matching of ASVs')
-
-if REPLACEMENT_STEP == 'YES':
-    print('Replacing ASVs with SILVA and LTP sequences')
-    if not isfile(DOUBLE_NOT_MATCHED):
-        print('Specified DOUBLE_NOT_MATCHED File not present')
-        print('Exiting')
-        exit(1)
-    if not isfile(LTP_SEQUENCES):
-        print('Specified LTP_SEQUENCES File not present')
-        print('Exiting')
-        exit(1)
-    if not isfile(SILVA_SEQUENCES):
-        print('Specified SILVA_SEQUENCES File not present')
-        print('Exiting')
-        exit(1)
-    if not isfile(LTP_MATCHES):
-        print('Specified LTP_MATCHES File not present')
-        print('Exiting')
-        exit(1)
-    if not isfile(SILVA_MATCHES):
-        print('Specified SILVA_MATCHES File not present')
-        print('Exiting')
-        exit(1)
-    else:
-        arguments_list = ' '.join([DOUBLE_NOT_MATCHED, LTP_SEQUENCES, SILVA_SEQUENCES,
-                                   LTP_MATCHES, SILVA_MATCHES, REPLACEMENT_OUT_FILE
-                                   ])
-        system('python3 3.Database-Match/replace_database_matches.py ' + arguments_list)
-elif MATCHING_STEP == 'NO':
-    print('Skipping Replacing ASVs')
-
 
 if ALIGNMENT_CLASSIFICATION_STEP == 'YES':
     print('Classifying with SINA and SILVA ARB')
@@ -254,7 +160,7 @@ if ALIGNMENT_CLASSIFICATION_STEP == 'YES':
     else:
         arguments_list = ' '.join([SILVA_ARB, SINA_EXECUTABLE, INPUT_FASTA_ALI_CLASS, PDF_REGION_OUTPUT,
                                    OUTPUT_FASTA_ALI_CLASS])
-        system('python3 4.Taxonomy-Classification/create_sina_alignment.py ' + arguments_list)
+        system('python3 2.Taxonomy-Classification/create_sina_alignment.py ' + arguments_list)
 elif ALIGNMENT_CLASSIFICATION_STEP == 'NO':
     print('Skipping Alignment and Classification Step')
 
@@ -280,10 +186,10 @@ if EXTRACTION_STEP == 'YES':
     else:
         arguments_list = ' '.join([INPUT_FASTA_EXTRACTION, EXTRACTION_REGION_START, EXTRACTION_REGION_END,
                                    EXTRACTION_REGION_LIMIT, OUTPUT_FASTA_EXTRACTION])
-        system('python3 4.Taxonomy-Classification/extract_regions.py ' + arguments_list)
+        system('python3 2.Taxonomy-Classification/extract_regions.py ' + arguments_list)
         OUTPUT_CSV_ALI_CLASS = OUTPUT_FASTA_ALI_CLASS.split('.')[0] + '.csv'
         arguments_list = ' '.join([OUTPUT_FASTA_EXTRACTION, OUTPUT_CSV_ALI_CLASS])
-        system('python3 4.Taxonomy-Classification/update_taxonomy.py ' + arguments_list)
+        system('python3 2.Taxonomy-Classification/update_taxonomy.py ' + arguments_list)
 elif EXTRACTION_STEP == 'NO':
     print('Skipping Region Extraction Step')
 
@@ -307,11 +213,11 @@ if TAXONOMIC_CLUSTERING_STEP == 'YES':
         exit(1)
     else:
         arguments_list = ' '.join([CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING])
-        cmd = 'python3 5.Taxonomy-Informed-Clustering/split_based_on_taxonomy.py '
+        cmd = 'python3 3.Taxonomy-Informed-Clustering/split_based_on_taxonomy.py '
         cmd += ' -d ' + CLUSTERING_DIRECTORY + ' -i ' + INPUT_FASTA_CLUSTERING
         # system(cmd)
         arguments_list = ' '.join([CLUSTERING_DIRECTORY, FAMILY_IDENTITY, GENERA_IDENTITY, SPECIES_IDENTITY])
-        cmd = 'python3 5.Taxonomy-Informed-Clustering/update_taxonomy.py '
+        cmd = 'python3 3.Taxonomy-Informed-Clustering/complex_TIC.py '
         cmd += ' -f ' + FAMILY_IDENTITY + ' -g ' + GENERA_IDENTITY + ' -s ' + SPECIES_IDENTITY
         cmd += ' -t ' + CLUSTERING_TOOL + ' -n ' + THREADS + ' -d ' + CLUSTERING_DIRECTORY
         # system(cmd)

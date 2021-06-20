@@ -1,2 +1,0 @@
-LTP_VERSION:VERSION_NUMBER || Present || Present-Unzipped
-SILVA_VERSION:VERSION_NUMBER || Present || Present-Unzipped
