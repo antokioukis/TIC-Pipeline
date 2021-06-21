@@ -47,16 +47,9 @@ def vsearch_clustering(curr_fasta, similarity_limit):
     start_of_curr_fasta = curr_fasta.split('.')[0]
     centroids_file = start_of_curr_fasta + '.centroids.fasta'
     uc_file = start_of_curr_fasta + '.uc'
-    if TOOL == 'vsearch':
-        # print(uc_file)
-        cmd_0 = VSEARCH_BIN_CLUST + curr_fasta + ' --id ' + similarity_limit + ' --qmask none --top_hits_only '
-        cmd_1 = ' --centroids ' + centroids_file + ' --strand both --uc ' + uc_file + VSEARCH_TAIL
-        # print(cmd_0 + cmd_1)
-        # print(curr_fasta)
-    elif TOOL == 'usearch':
-        cmd_0 = USEARCH_BIN_CLUST + curr_fasta + ' -id ' + similarity_limit + ' -strand both'
-        cmd_1 = ' -top_hits_only -centroids ' + centroids_file + ' -uc ' + uc_file + VSEARCH_TAIL
-        # print(cmd_0 + cmd_1)
+    cmd_0 = USEARCH_BIN_CLUST + curr_fasta + ' -id ' + similarity_limit + ' -strand both'
+    cmd_1 = ' -top_hits_only -centroids ' + centroids_file + ' -uc ' + uc_file + VSEARCH_TAIL
+    # print(cmd_0 + cmd_1)
     system(cmd_0 + cmd_1)
 
 
@@ -199,14 +192,9 @@ def vsearch_blast(curr_fasta, similarity_limit):
     if not isfile(targets_file):
         copyfile(curr_fasta, not_matched_file)
     else:
-        if TOOL == 'vsearch':
-            cmd_0 = VSEARCH_BIN_BLAST + curr_fasta + ' --id ' + similarity_limit + ' --db ' + targets_file
-            cmd_1 = ' --qmask none --dbmask none --top_hits_only --strand both --blast6out ' + b6_file
-            cmd_2 = ' --notmatched ' + not_matched_file + VSEARCH_TAIL
-        elif TOOL == 'usearch':
-            cmd_0 = USEARCH_BIN_BLAST + curr_fasta + ' -id ' + similarity_limit + ' -db ' + targets_file
-            cmd_1 = ' -dbmask none -qmask none -strand both -blast6out ' + b6_file
-            cmd_2 = ' -notmatched ' + not_matched_file + VSEARCH_TAIL
+        cmd_0 = USEARCH_BIN_BLAST + curr_fasta + ' -id ' + similarity_limit + ' -db ' + targets_file
+        cmd_1 = ' -dbmask none -qmask none -strand both -blast6out ' + b6_file
+        cmd_2 = ' -notmatched ' + not_matched_file + VSEARCH_TAIL
         system(cmd_0 + cmd_1 + cmd_2)
         remove(targets_file)
     remove(curr_fasta)
@@ -753,7 +741,7 @@ def update_family_stats(curr_fasta, level='none'):
                 out_file_name = curr_name + '_FOTU' + str(target_hit_family_num) + curr_gotu_species_number + '.stats'
             new_dir = create_directory('/'.join(out_file_name.split('_')[:-1]), 'species_stats')
             out_file = open(MAIN_DIR + '/' + new_dir + out_file_name, 'a')
-            species_hit_with_FOTU = query_seq_identifier + new_taxonomy
+            species_hit_with_FOTU = query_seq_identifier + 'tax=' + new_taxonomy
             out_line = 'S' + '\t' + species_hit_with_FOTU + '\n'
             out_file.write(out_line)
             family_dict[line_tokens[8]] = target_hit_family_num
@@ -819,7 +807,7 @@ def update_family_stats_unk_order(curr_fasta):
             out_file_name += curr_gotu_species_number + '.stats'
             # print(MAIN_DIR + '/' + new_dir + out_file_name)
             out_file = open(MAIN_DIR + '/' + new_dir + out_file_name, 'a')
-            species_hit_with_FOTU = query_seq_identifier + new_taxonomy
+            species_hit_with_FOTU = query_seq_identifier + 'tax=' + new_taxonomy
             out_line = 'S' + '\t' + species_hit_with_FOTU + '\n'
             out_file.write(out_line)
             family_dict[line_tokens[8]] = target_hit_family_num
@@ -1129,11 +1117,11 @@ MAIN_DIR = args.data_dir
 TOOL = args.tool
 THREADS = str(args.threads)
 
-VSEARCH_BIN_CLUST = 'vsearch --threads ' + THREADS + ' --cluster_fast '
-VSEARCH_BIN_BLAST = 'vsearch --threads ' + THREADS + ' --usearch_global '
+VSEARCH_BIN_CLUST = TOOL + ' --threads ' + THREADS + ' --cluster_fast '
+VSEARCH_BIN_BLAST = TOOL + ' --threads ' + THREADS + ' --usearch_global '
 
-USEARCH_BIN_CLUST = 'usearch  -threads ' + THREADS + ' -cluster_fast '
-USEARCH_BIN_BLAST = 'usearch -threads ' + THREADS + ' -usearch_global '
+USEARCH_BIN_CLUST = TOOL + ' --threads ' + THREADS + ' -cluster_fast '
+USEARCH_BIN_BLAST = TOOL + ' --threads ' + THREADS + ' -usearch_global '
 
 print('Known Genera Clustering starting. Similarity Threshold:' + str(species_similarity))
 genera_level_fastas = get_curr_level_fastas(5)

@@ -96,6 +96,18 @@ for line in config_file_contents:
         GENERA_IDENTITY = tokens[1]
     elif tokens[0] == 'SPECIES_IDENTITY':
         SPECIES_IDENTITY = tokens[1]
+    elif tokens[0] == 'RESULTS_CREATION_STEP':
+        RESULTS_CREATION_STEP = tokens[1]
+    elif tokens[0] == 'OUTPUT_ASV_FASTA_WITH_TAXONOMY':
+        OUTPUT_ASV_FASTA_WITH_TAXONOMY = tokens[1]
+    elif tokens[0] == 'INPUT_FASTA_CLUSTERING':
+        INPUT_FASTA_CLUSTERING = tokens[1]
+    elif tokens[0] == 'OUTPUT_ASV_TABLE':
+        OUTPUT_ASV_TABLE = tokens[1]
+    elif tokens[0] == 'OUTPUT_FOLDER':
+        OUTPUT_FOLDER = tokens[1]
+    elif tokens[0] == 'KRONA_TOOL':
+        KRONA_TOOL = tokens[1]
     else:
         print('Configuration File Not valid')
         print('Option ' + tokens[0] + ' not recognised')
@@ -223,3 +235,26 @@ if TAXONOMIC_CLUSTERING_STEP == 'YES':
         system(cmd)
 elif TAXONOMIC_CLUSTERING_STEP == 'NO':
     print('Skipping Taxonomic Clustering Step')
+
+if RESULTS_CREATION_STEP == 'YES':
+    print('Creating Results')
+    if isdir(OUTPUT_FOLDER):
+        print('Specified OUTPUT_FOLDER Directory already present')
+        print('Exiting')
+        exit(1)
+    elif not isdir(CLUSTERING_DIRECTORY):
+        print('Specified CLUSTERING_DIRECTORY Directory already present')
+        print('Exiting')
+        exit(1)
+    elif not isfile(INPUT_FASTA_CLUSTERING):
+        print('Specified INPUT_FASTA_CLUSTERING File not present')
+        print('Exiting')
+        exit(1)
+    else:
+        arguments_list = ' '.join([OUTPUT_FOLDER, OUTPUT_ASV_FASTA_WITH_TAXONOMY, OUTPUT_ASV_TABLE,
+                                   CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL,
+                                   INPUT_FASTA_EXTRACTION, OUTPUT_FASTA_EXTRACTION,
+                                   CLUSTERING_DIRECTORY])
+        system('python3 4.Results_Processing/create_fasta_and_table.py ' + arguments_list)
+elif ALIGNMENT_CLASSIFICATION_STEP == 'NO':
+    print('Skipping Alignment and Classification Step')

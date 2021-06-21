@@ -1,2 +1,4 @@
 wget
 tqdm
+biopython
+matplotlib
