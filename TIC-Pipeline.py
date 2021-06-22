@@ -108,6 +108,8 @@ for line in config_file_contents:
         OUTPUT_FOLDER = tokens[1]
     elif tokens[0] == 'KRONA_TOOL':
         KRONA_TOOL = tokens[1]
+    elif tokens[0] == 'RAPID_NJ':
+        RAPID_NJ = tokens[1]
     else:
         print('Configuration File Not valid')
         print('Option ' + tokens[0] + ' not recognised')
@@ -119,7 +121,7 @@ print('Configuration File Valid and Complete')
 if TESTING_MODE == 'YES':
     print('This is the testing mode of the TIC-Pipeline.')
     arguments_list = ' '.join([SILVA_ARB, SINA_EXECUTABLE, SORT_ME_RNA_DB1, SORT_ME_RNA_DB2,
-                               SORT_ME_RNA_TOOL, CLUSTERING_TOOL
+                               SORT_ME_RNA_TOOL, CLUSTERING_TOOL, RAPID_NJ
                                ])
     system('python3 0.Setup_and_Testing/testing.py ' + arguments_list)
     exit()
@@ -149,7 +151,7 @@ if ASV_CREATION_STEP == 'YES':
         exit(1)
     else:
         arguments_list = ' '.join([USER_FASTQ_FOLDER, CLUSTERING_TOOL, THREADS, MIN_ZOTU_SIZE,
-                                   SORT_ME_RNA_DB1, SORT_ME_RNA_DB2, SORT_ME_RNA_TOOL
+                                   SORT_ME_RNA_DB1, SORT_ME_RNA_DB2, SORT_ME_RNA_TOOL, RAPID_NJ
                                    ])
         system('python3 1.ASV-Creation/create_ASVs.py ' + arguments_list)
 elif ASV_CREATION_STEP == 'NO':
@@ -243,7 +245,7 @@ if RESULTS_CREATION_STEP == 'YES':
         print('Exiting')
         exit(1)
     elif not isdir(CLUSTERING_DIRECTORY):
-        print('Specified CLUSTERING_DIRECTORY Directory already present')
+        print('Specified CLUSTERING_DIRECTORY Directory not present')
         print('Exiting')
         exit(1)
     elif not isfile(INPUT_FASTA_CLUSTERING):
@@ -252,9 +254,9 @@ if RESULTS_CREATION_STEP == 'YES':
         exit(1)
     else:
         arguments_list = ' '.join([OUTPUT_FOLDER, OUTPUT_ASV_FASTA_WITH_TAXONOMY, OUTPUT_ASV_TABLE,
-                                   CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL,
-                                   INPUT_FASTA_EXTRACTION, OUTPUT_FASTA_EXTRACTION,
-                                   CLUSTERING_DIRECTORY])
+                                   CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL])
         system('python3 4.Results_Processing/create_fasta_and_table.py ' + arguments_list)
+        arguments_list = ' '.join([INPUT_FASTA_EXTRACTION, OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY])
+        # system('python3 4.Results_Processing/cleaning.py ' + arguments_list)
 elif ALIGNMENT_CLASSIFICATION_STEP == 'NO':
     print('Skipping Alignment and Classification Step')

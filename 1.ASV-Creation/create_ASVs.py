@@ -9,6 +9,7 @@ MIN_ZOTU_SIZE = argv[4]
 SORT_ME_RNA_DB1 = argv[5]
 SORT_ME_RNA_DB2 = argv[6]
 SORT_ME_RNA_TOOL = argv[7]
+RAPID_NJ = argv[8]
 
 
 def merging_all_samples():
@@ -82,6 +83,12 @@ def create_zotu_table():
     chdir(top_directory)
 
 
+def create_rapid_nj_tree():
+    cmd = RAPID_NJ + " 1.ASV-Creation/good_ZOTUS.fa --input-format fa --cores " + THREADS + " --alignment-type d --output-format t "
+    cmd += "--no-negative-length -x 1.ASV-Creation/NJ_ZOTUs_tree.tre"
+    system(cmd)
+
+
 def create_ASVs():
     merging_all_samples()
     dereplication_merged()
@@ -95,3 +102,4 @@ def create_ASVs():
 
 
 create_ASVs()
+# create_rapid_nj_tree()

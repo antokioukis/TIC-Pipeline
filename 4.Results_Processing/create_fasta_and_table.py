@@ -38,10 +38,6 @@ CLUSTERING_DIRECTORY = argv[4]
 INPUT_FASTA_CLUSTERING = argv[5]
 KRONA_TOOL = argv[6]
 
-INPUT_FASTA_EXTRACTION = argv[7]
-OUTPUT_FASTA_EXTRACTION = argv[8]
-CLUSTERING_DIRECTORY = argv[9]
-
 mkdir(OUTPUT_FOLDER)
 zotus_seqs_dict = fasta2dict(INPUT_FASTA_CLUSTERING)
 all_stats = glob(CLUSTERING_DIRECTORY + '/species_stats/**/*.stats', recursive=True)
@@ -91,16 +87,78 @@ for key, value in taxonomy_counters_dict.items():
     out_file.write(str(value) + '\t' + key.replace(';', '\t') + '\n')
 out_file.close()
 
-system('0.Setup_and_Testing/' + KRONA_TOOL + ' ' + OUTPUT_FOLDER + 'for_krona.tab')
+system(KRONA_TOOL + ' ' + OUTPUT_FOLDER + 'for_krona.tab')
 system('mv text.krona.html ' + OUTPUT_FOLDER + '/krona_plot.html')
 system('rm ' + OUTPUT_FOLDER + 'for_krona.tab')
 
 
-file_list = ['1.ASV-Creation/good_ZOTUS.log', '1.ASV-Creation/good_ZOTUS.fa', '1.ASV-Creation/denoising.tab',
-             '1.ASV-Creation/other_ZOTUS.fa', '1.ASV-Creation/ZOTUs-Table.tab',
-             '2.Taxonomy-Classification/alignment_vector.csv', INPUT_FASTA_EXTRACTION,
-             OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY]
+def create_annotation():
+    annot_1 = open(OUTPUT_FOLDER + '/annot.txt', 'w+')
+    guide = open(OUTPUT_FOLDER + '/guide.txt', 'w+')
+    phyla = list()
+    classes = list()
+    orders = list()
+    families = list()
+    for i in taxonomy_counters_dict.keys():
+        tokens = i.split(';')
+        cut_taxonomy = '.'.join([tokens[0], tokens[1], tokens[2], tokens[3], tokens[4]])
+        guide.write(cut_taxonomy + '\n')
+        curr_phylum = tokens[0] + '.' + tokens[1]
+        if curr_phylum not in phyla:
+            phyla.append(curr_phylum)
+        curr_class = curr_phylum + '.' + tokens[2]
+        if curr_class not in classes:
+            classes.append(curr_class)
+        curr_order = curr_class + '.' + tokens[3]
+        if curr_order not in orders:
+            orders.append(curr_order)
+        curr_family = curr_order + '.' + tokens[4]
+        if curr_family not in families:
+            families.append(curr_family)
 
-for i in file_list:
-    print(i)
-    system('rm -r ' + i)
+    annot_1.write('title\tTaxonomic Tree\n')
+    annot_1.write('title_font_size\t33\n')
+    annot_1.write('total_plotted_degrees\t340\n')
+    annot_1.write('annotation_background_alpha\t0.1\n')
+    annot_1.write('start_rotation\t270\n')
+    annot_1.write('internal_label\t1\tDomain\n')
+    annot_1.write('internal_label\t2\tPhyla\n')
+    annot_1.write('internal_label\t3\tClasses\n')
+    annot_1.write('internal_label\t4\tOrders\n')
+    annot_1.write('internal_label\t5\tFamilies\n')
+    annot_1.write('internal_labels_rotation\t270\n')
+    for i in phyla:
+        phrase_1 = i + '\tclade_marker_shape\th\n'
+        annot_1.write(phrase_1)
+        if 'UNK' in i:
+            phrase_1 = i + '\tclade_marker_color\tred\n'
+            annot_1.write(phrase_1)
+    for i in classes:
+        phrase_1 = i + '\tclade_marker_shape\tp\n'
+        annot_1.write(phrase_1)
+        if 'UNK' in i:
+            phrase_1 = i + '\tclade_marker_color\tred\n'
+            annot_1.write(phrase_1)
+    for i in orders:
+        phrase_1 = i + '\tclade_marker_shape\td\n'
+        annot_1.write(phrase_1)
+        if 'UNK' in i:
+            phrase_1 = i + '\tclade_marker_color\tred\n'
+            annot_1.write(phrase_1)
+    for i in families:
+        phrase_1 = i + '\tclade_marker_shape\ts\n'
+        annot_1.write(phrase_1)
+        if 'FOTU' in i:
+            phrase_1 = i + '\tclade_marker_color\tred\n'
+            annot_1.write(phrase_1)
+    annot_1.close()
+    guide.close()
+
+
+create_annotation()
+cmd = "graphlan_annotate --annot " + OUTPUT_FOLDER + "/annot.txt " + OUTPUT_FOLDER + '/guide.txt '
+cmd += OUTPUT_FOLDER + "/guide.xml"
+system(cmd)
+system("graphlan " + OUTPUT_FOLDER + "/guide.xml " + OUTPUT_FOLDER + "/step.png --dpi 300 --size 6.5")
+system("rm " + OUTPUT_FOLDER + "/annot.txt " + OUTPUT_FOLDER + '/guide.txt ' + OUTPUT_FOLDER + "/guide.xml")
+# system('mv 1.ASV-Creation/NJ_ZOTUs_tree.tre ' + OUTPUT_FOLDER)

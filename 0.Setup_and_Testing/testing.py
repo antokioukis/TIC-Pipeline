@@ -11,6 +11,8 @@ SORT_ME_RNA_DB1 = argv[3]
 SORT_ME_RNA_DB2 = argv[4]
 SORT_ME_RNA_TOOL = argv[5]
 CLUSTERING_TOOL = argv[6]
+RAPID_NJ = argv[7]
+
 
 if not isfile(SILVA_ARB):
     print('SILVA_ARB: ' + SILVA_ARB + ' not found')
@@ -41,6 +43,14 @@ if not isfile(CLUSTERING_TOOL):
 if not access(CLUSTERING_TOOL, X_OK):
     print('CLUSTERING_TOOL: ' + CLUSTERING_TOOL + ' not executable')
     FLAG = 1
+
+
+if not isfile(RAPID_NJ):
+    print('RAPID_NJ: ' + RAPID_NJ + ' not found')
+if not access(RAPID_NJ, X_OK):
+    print('RAPID_NJ: ' + RAPID_NJ + ' not executable')
+    FLAG = 1
+
 
 if FLAG:
     print('Testing failed, please correct the errors reported.')

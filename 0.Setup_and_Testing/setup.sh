@@ -1,6 +1,6 @@
 echo 'Downloading usearch version 11, 32-bit version'
 wget http://129.187.44.105:8082/usearch
-chmod +x usearch11_32bit
+chmod +x usearch
 echo '    Done'
 
 
@@ -31,6 +31,15 @@ tar -xvzf sina-1.7.2-linux.tar.gz
 rm sina-1.7.2-linux.tar.gz
 echo '    Done'
 
+echo 'Downloading rapidNJ tool'
+wget http://129.187.44.105:8082/rapidNJ.tar.gz
+tar -xvzf rapidNJ.tar.gz
+rm rapidNJ.tar.gz
+cd rapidNJ
+make
+cd ..
+echo '    Done'
+
 echo 'Downloading Krona tool'
 wget http://129.187.44.105:8082/KronaTools-2.8.tar
 tar -xf KronaTools-2.8.tar
@@ -46,7 +55,7 @@ echo 'SORT_ME_RNA_DB2:'$CWD'/silva-arc-16s-id95.fasta' >> ../tool_and_db_options
 echo 'SORT_ME_RNA_TOOL:'$CWD'/sortmerna-4.3.3-Linux/bin/sortmerna' >> ../tool_and_db_options.ini
 echo 'CLUSTERING_TOOL:'$CWD'/usearch' >> ../tool_and_db_options.ini
 echo 'KRONA_TOOL:'$CWD'/KronaTools-2.8/scripts/ImportText.pl' >> ../tool_and_db_options.ini
-
+echo 'RAPID_NJ:'$CWD'/rapidNJ/bin/rapidnj' >> ../tool_and_db_options.ini
 
 echo 'Installing python packages'
 pip3 install -r python_requirements.txt
