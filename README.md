@@ -1,3 +1,5 @@
+![TIC-Pipeline](https://drive.google.com/file/d/15H3ohkgYZbvXmyS7UgyClSYTr7LWR6TT/view?usp=sharing)
+
 # TIC-Pipeline
 
 TIC-Pipeline is a suite that processes FASTQ files to create ASVs based on the latest golden standards,
@@ -20,7 +22,7 @@ TIC-Pipeline is composed of 4 steps that can be run independently or as a set.
     3.Taxonomy-Informed-Clustering
     4.Results_Processing
 
-Running them in the given order simplifies the process as the outputs of each step are often the inputs of the next. There is also an extra folder where the original data is recommended to be placed to keep the analysis of one study in a compact and organized structure. Inside the Original-Data folder are contained the template files that served as basis for the TIC-Pipeline presentation that can be used for training purposes. Before running any script, please make sure you have read and fully understood the corresponding ReadMe file that can be found in each folder.
+Running them in the given order simplifies the process as the outputs of each step are often the inputs of the next. There is also an extra folder where the original data is recommended to be placed to keep the analysis of one study in a compact and organized structure. Inside the Original-Data folder are contained the template files that served as basis for the TIC-Pipeline presentation that can be used for training purposes. Before running any script, please make sure you have read and fully understood the corresponding section of the documentation for each step.
 
 ## Requirements:
 TIC-Pipeline is a mix of bash, Python and R scripts. Due to relience on bash tools we propose the usage of a Linux system for simplifying running the scripts.

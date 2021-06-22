@@ -134,6 +134,30 @@ if SAMPLES_PROCESS_STEP == 'YES':
         print('Specified Directory with FASTQ files not present')
         print('Exiting')
         exit(1)
+    if int(FORWARD_TRIM) < 5:
+        print('FORWARD_TRIM is <5')
+        print('Exiting')
+        exit(1)
+    if int(FORWARD_TRIM) > 25:
+        print('FORWARD_TRIM is >25')
+        print('Exiting')
+        exit(1)
+    if int(REVERSE_TRIM) < 5:
+        print('REVERSE_TRIM is <5')
+        print('Exiting')
+        exit(1)
+    if int(REVERSE_TRIM) > 25:
+        print('REVERSE_TRIM is >25')
+        print('Exiting')
+        exit(1)
+    if int(TRIM_SCORE) < 3:
+        print('REVERSE_TRIM is <3')
+        print('Exiting')
+        exit(1)
+    if int(TRIM_SCORE) > 20:
+        print('REVERSE_TRIM is >20')
+        print('Exiting')
+        exit(1)
     else:
         arguments_list = ' '.join([CLUSTERING_TOOL, MAXDIFF, USER_FASTQ_FOLDER, TRIM_SCORE,
                                    MINMERGELEN, MAXMERGELEN, FORWARD_TRIM, REVERSE_TRIM, EXPECTED_ERROR_RATE, THREADS,
