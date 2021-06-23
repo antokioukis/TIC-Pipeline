@@ -165,7 +165,7 @@ def process_samples():
     except BaseException:
         pass
     try:
-        remove('trimmed.fasta')
+        remove('trimmed.fastq')
     except BaseException:
         pass
     try:

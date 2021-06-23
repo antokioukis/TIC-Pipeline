@@ -33,14 +33,14 @@ MIN_ZOTU_SIZE:4
 # STEP 2: ALIGNMENT, CLASSIFICATION AND EXTRACTION #
 ####################################################
 
-ALIGNMENT_CLASSIFICATION_STEP:YES
+ALIGNMENT_CLASSIFICATION_STEP:NO
 INPUT_FASTA_ALI_CLASS:/home/antonios/TIC-Pipeline/1.ASV-Creation/good_ZOTUS.fa
 OUTPUT_FASTA_ALI_CLASS:/home/antonios/TIC-Pipeline/sina_output.fasta
 PDF_REGION_OUTPUT:/home/antonios/regions_extract.pdf
 
 # -----------------------------------
 
-EXTRACTION_STEP:YES
+EXTRACTION_STEP:NO
 INPUT_FASTA_EXTRACTION:/home/antonios/TIC-Pipeline/sina_output.fasta
 EXTRACTION_REGION_START:10000
 EXTRACTION_REGION_END:25000
@@ -51,7 +51,7 @@ OUTPUT_FASTA_EXTRACTION:/home/antonios/TIC-Pipeline/zotus_with_tax.fasta
 # STEP 3: Taxonomy-Informed-Clustering #
 ########################################
 
-TAXONOMIC_CLUSTERING_STEP:YES
+TAXONOMIC_CLUSTERING_STEP:NO
 CLUSTERING_DIRECTORY:/home/antonios/TIC-Pipeline/aaa
 INPUT_FASTA_CLUSTERING:/home/antonios/TIC-Pipeline/zotus_with_tax.fasta
 FAMILY_IDENTITY:89
@@ -62,7 +62,7 @@ SPECIES_IDENTITY:97
 # STEP 4: Results Creation #
 ############################
 
-RESULTS_CREATION_STEP:YES
+RESULTS_CREATION_STEP:NO
 OUTPUT_FOLDER:/home/antonios/TIC-Pipeline/results/
 OUTPUT_ASV_FASTA_WITH_TAXONOMY:zotus_with_taxonomy.fasta
 OUTPUT_ASV_TABLE:zotus_with_taxonomy.tab
