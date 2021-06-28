@@ -5,6 +5,7 @@ from shutil import copyfile
 from tqdm import tqdm
 import multiprocessing
 from glob import glob
+from random import shuffle
 
 
 VSEARCH_TAIL = ' 1>/dev/null 2>/dev/null'
@@ -163,6 +164,7 @@ def threaded_gather_species(all_species_centroids, thread_number, curr_level, su
 def gather_species(curr_level, suffix):
     chdir(MAIN_DIR + '/species_centroids')
     all_species_centroids = glob('**/*.fasta', recursive=True)
+    shuffle(all_species_centroids)
     splitted_species_centroids_list = split_list(all_species_centroids, int(THREADS))
     processes = [multiprocessing.Process(target=threaded_gather_species,
                  args=(splitted_species_centroids_list[x], x, curr_level, suffix)) for x in range(int(THREADS))]
@@ -271,6 +273,7 @@ def gather_known_genera(cut_limit):
     chdir(MAIN_DIR + '/species_centroids')
     all_species_centroids = glob('**/*.fasta', recursive=True)
     # print(all_species_centroids)
+    shuffle(all_species_centroids)
     splitted_species_centroids_list = split_list(all_species_centroids, int(THREADS))
     processes = [multiprocessing.Process(target=threaded_gather_known_genera,
                  args=(splitted_species_centroids_list[x], x, cut_limit)) for x in range(int(THREADS))]
@@ -300,6 +303,7 @@ def threaded_gather_unknown_genera(all_species_centroids, thread_number, undersc
 def gather_unknown_genera(underscores, cut_limit):
     chdir(MAIN_DIR + '/species_centroids')
     all_species_centroids = glob('**/*.fasta', recursive=True)
+    shuffle(all_species_centroids)
     splitted_species_centroids_list = split_list(all_species_centroids, int(THREADS))
     processes = [multiprocessing.Process(target=threaded_gather_unknown_genera,
                  args=(splitted_species_centroids_list[x], x, underscores, cut_limit)) for x in range(int(THREADS))]
@@ -691,6 +695,9 @@ def update_family_stats(curr_fasta, level='none'):
             elif level == 'phylum':
                 new_stats_file_name = curr_name + '_UNKPHYLUM_UNKCLASS_UNKORDER_FOTU' + str(family_number)
                 new_stats_file_name += curr_gotu_species_number + '.stats'
+            elif level == 'order':
+                new_stats_file_name = curr_name + '_UNKORDER_FOTU' + str(family_number)
+                new_stats_file_name += curr_gotu_species_number + '.stats'
             else:
                 new_stats_file_name = curr_name + '_FOTU' + str(family_number) + curr_gotu_species_number + '.stats'
             new_taxonomy_no_species = '_'.join(new_stats_file_name.split('_')[:-1])
@@ -706,11 +713,14 @@ def update_family_stats(curr_fasta, level='none'):
                 sequence_identifier = stats_line_tokens[1].split('tax=')[0]
                 # print(stats_line)
                 old_taxonomy = stats_line_tokens[1].split('tax=')[1]
-                if level == 'class':
+                if level == 'order':
+                    new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';UNKCLASS;UNKORDER;FOTU'
+                    new_taxonomy += str(family_number) + ';' + ';'.join(old_taxonomy.split(';')[-3:]) + '\n'
+                elif level == 'class':
                     new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';UNKCLASS;UNKORDER;FOTU'
                     new_taxonomy += str(family_number) + ';' + ';'.join(old_taxonomy.split(';')[-3:]) + '\n'
                 elif level == 'phylum':
-                    new_taxonomy = 'Archaea;UNKPHYLUM;UNKCLASS;UNKORDER;FOTU'
+                    new_taxonomy = old_taxonomy.split(';')[0] + ';UNKPHYLUM;UNKCLASS;UNKORDER;FOTU'
                     new_taxonomy += str(family_number) + ';' + ';'.join(old_taxonomy.split(';')[-3:]) + '\n'
                 else:
                     new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';FOTU' + str(family_number)
@@ -725,7 +735,12 @@ def update_family_stats(curr_fasta, level='none'):
             query_seq_identifier = line_tokens[8].split('tax=')[0]
             curr_gotu_species_number = '_GOTU' + line_tokens[8].split('GOTU')[1][:-1].replace(';', '_')
             old_taxonomy = line_tokens[8].split('tax=')[1]
-            if level == 'class':
+            if level == 'order':  # RECHECK
+                new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';UNKORDER;FOTU'
+                new_taxonomy += str(target_hit_family_num) + ';' + ';'.join(old_taxonomy.split(';')[-3:]) + '\n'
+                out_file_name = curr_name + '_UNKORDER_FOTU' + str(target_hit_family_num)
+                out_file_name += curr_gotu_species_number + '.stats'
+            elif level == 'class':
                 new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';UNKCLASS;UNKORDER;FOTU'
                 new_taxonomy += str(target_hit_family_num) + ';' + ';'.join(old_taxonomy.split(';')[-3:]) + '\n'
                 out_file_name = curr_name + '_UNKCLASS_UNKORDER_FOTU' + str(target_hit_family_num)
@@ -757,74 +772,6 @@ def update_family_stats(curr_fasta, level='none'):
     remove(uc_file)
 
 
-def update_family_stats_unk_order(curr_fasta):
-    chdir(MAIN_DIR)
-    global family_number
-    global family_dict
-    curr_name = curr_fasta.split('.')[0]
-    uc_file = curr_name + '.uc'
-    if not isfile(uc_file) or not(getsize(uc_file)):
-        return
-    uc_content = read_file(uc_file)
-    for line in uc_content:
-        line_tokens = line.split('\t')
-        if (line[0] == 'S'):
-            # print(line)
-            family_number += 1
-            curr_gotu_species_number = '_GOTU' + line_tokens[8].split('GOTU')[1][:-1].replace(';', '_')
-            new_stats_file_name = curr_name + '_UNKORDER_FOTU' + str(family_number) + curr_gotu_species_number + '.stats'
-            new_stats_name_dir = '_'.join(new_stats_file_name.split('_')[:-1])
-            new_dir = create_directory(new_stats_name_dir, 'species_stats')
-            # print(MAIN_DIR + '/' + new_dir + new_stats_file_name)
-            new_stats_file = open(MAIN_DIR + '/' + new_dir + new_stats_file_name, 'w+')
-            initial_stats_name_dir = '/'.join((curr_name + curr_gotu_species_number).split('_')[:-1]) + '/'
-            initial_stats_file = MAIN_DIR + '/species_stats/' + initial_stats_name_dir
-            initial_stats_file += curr_name + curr_gotu_species_number + '.stats'
-            # print(initial_stats_file)
-            initial_stats_contents = read_file(initial_stats_file)
-            for stats_line in initial_stats_contents:
-                stats_line_tokens = stats_line.split('\t')
-                sequence_identifier = stats_line_tokens[1].split('tax=')[0]
-                old_taxonomy = stats_line_tokens[1].split('tax=')[1]
-                new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';UNKORDER;FOTU' + str(family_number)
-                new_taxonomy += ';' + ';'.join(old_taxonomy.split(';')[-3:]) + '\n'
-                # print(new_taxonomy)
-                new_stats_file.write(stats_line_tokens[0] + '\t' + sequence_identifier + 'tax=' + new_taxonomy)
-            new_stats_file.close()
-            family_dict[line_tokens[8]] = family_number
-            remove(initial_stats_file)
-        elif(line[0] == 'H'):
-            # print(line)
-            target_hit_family_num = str(family_dict[line_tokens[9]])
-            query_seq_identifier = line_tokens[8].split('tax=')[0]
-            curr_gotu_species_number = '_GOTU' + line_tokens[8].split('GOTU')[1][:-1].replace(';', '_')
-            old_taxonomy = line_tokens[8].split('tax=')[1]
-            new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';UNKORDER;FOTU' + str(target_hit_family_num)
-            new_taxonomy += curr_gotu_species_number.replace('_', ';') + ';'
-            new_dir = create_directory('_'.join(new_taxonomy.split(';')[:-2]), 'species_stats')
-            # print(new_dir)
-            out_file_name = curr_name + '_UNKORDER_FOTU' + str(target_hit_family_num)
-            out_file_name += curr_gotu_species_number + '.stats'
-            # print(MAIN_DIR + '/' + new_dir + out_file_name)
-            out_file = open(MAIN_DIR + '/' + new_dir + out_file_name, 'a')
-            species_hit_with_FOTU = query_seq_identifier + 'tax=' + new_taxonomy
-            out_line = 'S' + '\t' + species_hit_with_FOTU + '\n'
-            out_file.write(out_line)
-            family_dict[line_tokens[8]] = target_hit_family_num
-            initial_stats_name_dir = '/'.join(old_taxonomy.split(';')[:-2])
-            initial_stats_file = MAIN_DIR + '/species_stats/' + initial_stats_name_dir + '/'
-            initial_stats_file += old_taxonomy.replace(';', '_')[:-1] + '.stats'
-            # print(initial_stats_file)
-            initial_contents = read_file(initial_stats_file)
-            for init_line in initial_contents[1:]:
-                header = init_line.split('\t')[1].split('tax=')[0]
-                nea_grammi = header + 'tax=' + new_taxonomy + '\n'
-                out_file.write('H\t' + nea_grammi)
-            out_file.close()
-            remove(initial_stats_file)
-    remove(uc_file)
-
-
 def update_family_centroids(level='none'):
     # print(family_dict)
     for key, value in family_dict.items():
@@ -837,13 +784,18 @@ def update_family_centroids(level='none'):
         # print(old_fasta_file_name)
         old_seqs_dict = fasta2dict(old_fasta_file_name)
         if(level == 'phylum'):
-            new_taxonomy = 'Archaea;UNKPHYLUM;UNKCLASS;UNKORDER;FOTU' + str(curr_FOTU)
+            new_taxonomy = old_taxonomy.split(';')[0] + ';UNKPHYLUM;UNKCLASS;UNKORDER;FOTU' + str(curr_FOTU)
             new_taxonomy += ';' + ';'.join(old_taxonomy.split(';')[-3:][:-1]) + ';\n'
             new_fasta_file_name = new_taxonomy.replace(';', '_')[:-2] + '.fasta'
         elif(level == 'class'):
             new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';UNKCLASS;UNKORDER;FOTU' + str(curr_FOTU)
             new_taxonomy += ';' + ';'.join(old_taxonomy.split(';')[-3:][:-1]) + ';\n'
             new_fasta_file_name = '_'.join(old_taxonomy.split(';')[:-3]) + '_UNKCLASS_UNKORDER_FOTU' + str(curr_FOTU)
+            new_fasta_file_name += '_' + '_'.join(old_taxonomy.split(';')[-3:][:-1]) + '.fasta'
+        elif(level == 'order'):
+            new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';UNKORDER;FOTU' + str(curr_FOTU)
+            new_taxonomy += ';' + ';'.join(old_taxonomy.split(';')[-3:][:-1]) + ';\n'
+            new_fasta_file_name = '_'.join(old_taxonomy.split(';')[:-3]) + '_UNKORDER_FOTU' + str(curr_FOTU)
             new_fasta_file_name += '_' + '_'.join(old_taxonomy.split(';')[-3:][:-1]) + '.fasta'
         else:
             new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';FOTU' + str(curr_FOTU)
@@ -862,34 +814,9 @@ def update_family_centroids(level='none'):
         remove(old_fasta_file_name)
 
 
-def update_family_centroids_unk_order():
-    # print(family_dict)
-    for key, value in family_dict.items():
-        curr_FOTU = value
-        old_taxonomy = key.split('tax=')[1]
-        sequence_identifier = key.split('tax=')[0]
-        old_dir = MAIN_DIR + '/species_centroids/' + '/'.join(old_taxonomy.split(';')[:-2]) + '/'
-        # print(old_dir)
-        old_fasta_file_name = old_dir + old_taxonomy.replace(';', '_')[:-1] + '.fasta'
-        # print(old_fasta_file_name)
-        new_taxonomy = ';'.join(old_taxonomy.split(';')[:-3]) + ';UNKORDER;FOTU' + str(curr_FOTU)
-        new_taxonomy += ';' + ';'.join(old_taxonomy.split(';')[-3:][:-1]) + ';\n'
-        new_fasta_file_name = '_'.join(old_taxonomy.split(';')[:-3]) + '_UNKORDER_FOTU' + str(curr_FOTU)
-        new_fasta_file_name += '_' + '_'.join(old_taxonomy.split(';')[-3:][:-1]) + '.fasta'
-        new_fasta_for_dir = '_'.join(new_fasta_file_name.split('_')[:-1])
-        new_dir = create_directory(new_fasta_for_dir, 'species_centroids')
-        # print(MAIN_DIR + '/' + new_dir + new_fasta_file_name)
-        old_seqs_dict = fasta2dict(old_fasta_file_name)
-        new_fasta_file = open(MAIN_DIR + '/' + new_dir + new_fasta_file_name, 'w+')
-        new_fasta_file.write('>' + sequence_identifier + 'tax=' + new_taxonomy)
-        new_fasta_file.write(old_seqs_dict[key] + '\n')
-        new_fasta_file.close()
-        remove(old_fasta_file_name)
-
-
 def search_unknown_family_in_known_family():
     chdir(MAIN_DIR)
-    unk_family_fastas = glob('*.fasta')
+    unk_family_fastas = get_curr_level_fastas(3)
     for curr_unk_family in unk_family_fastas:
         if 'base' in curr_unk_family:
             continue
@@ -933,8 +860,10 @@ def search_unknown_family_in_known_family():
     chdir(MAIN_DIR)
 
 
-def search_unknown_order_in_orders():
-    curr_level_fastas = get_curr_level_fastas(2)
+def search_unknown_order_in_orders(level_fastas_num, known_genera_num, unknown_genera_num,
+                                   unknown_genera_cut_num, unknown_families_num, unknown_families_cut_num, curr_level):
+    chdir(MAIN_DIR)
+    curr_level_fastas = get_curr_level_fastas(level_fastas_num)
     for curr_class_fasta in curr_level_fastas:
         if 'base' in curr_class_fasta:
             continue
@@ -945,8 +874,8 @@ def search_unknown_order_in_orders():
         update_species_centroids(curr_class_fasta)
     for i in glob('*.base.fasta'):
         remove(i)
-    gather_known_genera(4)
-    gather_unknown_genera(3, 1)
+    gather_known_genera(known_genera_num)
+    gather_unknown_genera(unknown_genera_num, unknown_genera_cut_num)
     chdir(MAIN_DIR)
     genera_dict.clear()
     all_genera_queries_fastas = glob('*.genera_queries.fasta')
@@ -958,8 +887,8 @@ def search_unknown_order_in_orders():
     update_genera_centroids()
     clean_bases()
     clean_centroids()
-    gather_known_genera(4)
-    gather_unknown_genera(4, 2)
+    gather_known_genera(known_genera_num)
+    gather_unknown_genera(unknown_families_num, unknown_families_cut_num)
     chdir(MAIN_DIR)
     family_dict.clear()
     all_family_queries_fastas = glob('*.genera_queries.fasta')
@@ -968,114 +897,16 @@ def search_unknown_order_in_orders():
         vsearch_blast(curr_query_family, family_similarity)
         handle_blast_matches_family_with_class(curr_query_family, 'family')
         cluster_not_matched(curr_query_family, family_similarity)
-        update_family_stats_unk_order(curr_query_family)
+        update_family_stats(curr_query_family, curr_level)
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
         system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
-    update_family_centroids_unk_order()
+    update_family_centroids(curr_level)
     for curr_query_family in all_family_queries_fastas:
         curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
         system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
     clean_bases()
     clean_centroids()
     chdir(MAIN_DIR)
-
-
-def search_unknown_class_in_classes():
-    chdir(MAIN_DIR)
-    curr_level_fastas = get_curr_level_fastas(1)
-    for curr_class_fasta in curr_level_fastas:
-        if 'base' in curr_class_fasta:
-            continue
-        vsearch_blast(curr_class_fasta, species_similarity)
-        handle_blast_matches_species(curr_class_fasta)
-        cluster_not_matched(curr_class_fasta, species_similarity)
-        update_species_stats(curr_class_fasta)
-        update_species_centroids(curr_class_fasta)
-    for i in glob('*.base.fasta'):
-        remove(i)
-    gather_known_genera(5)
-    gather_unknown_genera(2, 1)
-    chdir(MAIN_DIR)
-    genera_dict.clear()
-    all_genera_queries_fastas = glob('*.genera_queries.fasta')
-    for curr_query_genera in all_genera_queries_fastas:
-        vsearch_blast(curr_query_genera, genera_similarity)
-        handle_blast_matches_family_with_class(curr_query_genera, 'genus')
-        cluster_not_matched(curr_query_genera, genera_similarity)
-        update_genera_stats(curr_query_genera)
-    update_genera_centroids()
-    clean_bases()
-    clean_centroids()
-    gather_known_genera(5)
-    gather_unknown_genera(3, 2)
-    chdir(MAIN_DIR)
-    family_dict.clear()
-    all_family_queries_fastas = glob('*.genera_queries.fasta')
-    for curr_query_family in all_family_queries_fastas:
-        vsearch_blast(curr_query_family, family_similarity)
-        handle_blast_matches_family_with_class(curr_query_family, 'family')
-        cluster_not_matched(curr_query_family, family_similarity)
-        update_family_stats(curr_query_family, 'class')
-        curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
-    update_family_centroids('class')
-    for curr_query_family in all_family_queries_fastas:
-        curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
-    clean_bases()
-    clean_centroids()
-    chdir(MAIN_DIR)
-
-
-def search_unknown_phyla_in_total():
-    curr_level_fastas = get_curr_level_fastas(0)
-    for curr_class_fasta in curr_level_fastas:
-        if 'base' in curr_class_fasta:
-            continue
-        vsearch_blast(curr_class_fasta, species_similarity)
-        handle_blast_matches_species(curr_class_fasta)
-        cluster_not_matched(curr_class_fasta, species_similarity)
-        update_species_stats(curr_class_fasta)
-        update_species_centroids(curr_class_fasta)
-    for i in glob('*.base.fasta'):
-        remove(i)
-    gather_known_genera(6)
-    gather_unknown_genera(1, 1)
-    chdir(MAIN_DIR)
-    genera_dict.clear()
-    all_genera_queries_fastas = glob('*.genera_queries.fasta')
-    for curr_query_genera in all_genera_queries_fastas:
-        vsearch_blast(curr_query_genera, genera_similarity)
-        handle_blast_matches_family_with_class(curr_query_genera, 'genus')
-        cluster_not_matched(curr_query_genera, genera_similarity)
-        update_genera_stats(curr_query_genera)
-    update_genera_centroids()
-    clean_bases()
-    clean_centroids()
-    gather_known_genera(6)
-    gather_unknown_genera(2, 2)
-    chdir(MAIN_DIR)
-    family_dict.clear()
-    all_family_queries_fastas = glob('*.genera_queries.fasta')
-    for curr_query_family in all_family_queries_fastas:
-        vsearch_blast(curr_query_family, family_similarity)
-        handle_blast_matches_family_with_class(curr_query_family, 'family')
-        cluster_not_matched(curr_query_family, family_similarity)
-        update_family_stats(curr_query_family, 'phylum')
-        curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_stats/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
-    update_family_centroids('phylum')
-    for curr_query_family in all_family_queries_fastas:
-        curr_dir = curr_query_family.split('.')[0].replace('_', '/') + '/'
-        system('find ' + MAIN_DIR + '/species_centroids/' + curr_dir + ' -maxdepth 1 -type d -empty -delete')
-    clean_bases()
-    clean_centroids()
-    chdir(MAIN_DIR + '/species_centroids')
-    # print(glob('**/*.fasta', recursive=True))
-    for i in glob('**/*.fasta', recursive=True):
-        if not i.split('/')[-1].count('_') == 6:
-            print(i.split('/')[-1])
-            exit()
 
 
 # read arguments for the three levels of similarity
@@ -1140,8 +971,8 @@ search_unknown_genera_in_known_genera()
 gather_species(4, '.base.fasta')
 search_unknown_family_in_known_family()
 gather_species(3, '.base.fasta')
-search_unknown_order_in_orders()
+search_unknown_order_in_orders(2, 4, 3, 1, 4, 2, 'order')
 gather_species(2, '.base.fasta')
-search_unknown_class_in_classes()
+search_unknown_order_in_orders(1, 5, 2, 1, 3, 2, 'class')
 gather_species(1, '.base.fasta')
-search_unknown_phyla_in_total()
+search_unknown_order_in_orders(0, 6, 1, 1, 2, 2, 'phylum')
