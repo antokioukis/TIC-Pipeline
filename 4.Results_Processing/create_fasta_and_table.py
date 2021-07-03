@@ -37,11 +37,13 @@ OUTPUT_ASV_TABLE = argv[3]
 CLUSTERING_DIRECTORY = argv[4]
 INPUT_FASTA_CLUSTERING = argv[5]
 KRONA_TOOL = argv[6]
+OUTPUT_SOTU_FASTA_WITH_TAXONOMY = argv[7]
 
 mkdir(OUTPUT_FOLDER)
 zotus_seqs_dict = fasta2dict(INPUT_FASTA_CLUSTERING)
 all_stats = glob(CLUSTERING_DIRECTORY + '/species_stats/**/*.stats', recursive=True)
 output_fasta = open(OUTPUT_FOLDER + '/' + OUTPUT_ASV_FASTA_WITH_TAXONOMY, 'w+')
+output_fasta_sotu_centroids = open(OUTPUT_FOLDER + '/' + OUTPUT_SOTU_FASTA_WITH_TAXONOMY, 'w+')
 for curr_stats in all_stats:
     stats_contents = read_file(curr_stats)
     for line in stats_contents:
@@ -51,6 +53,11 @@ for curr_stats in all_stats:
         clean_zotu_name = zotu_with_taxonomy.split(';')[0]
         output_fasta.write('>' + zotu_with_taxonomy + '\n')
         output_fasta.write(zotus_seqs_dict[clean_zotu_name] + '\n')
+        status = line.split('\t')[0]
+        if status == 'S':
+            output_fasta_sotu_centroids.write('>' + zotu_with_taxonomy + '\n')
+            output_fasta_sotu_centroids.write(zotus_seqs_dict[clean_zotu_name] + '\n')
+output_fasta_sotu_centroids.close()
 output_fasta.close()
 
 zotus_with_taxonomy_contents = read_file(OUTPUT_FOLDER + '/' + OUTPUT_ASV_FASTA_WITH_TAXONOMY)
@@ -116,7 +123,6 @@ def create_annotation():
         if curr_family not in families:
             families.append(curr_family)
 
-    annot_1.write('title\tTaxonomic Tree\n')
     annot_1.write('title_font_size\t33\n')
     annot_1.write('total_plotted_degrees\t340\n')
     annot_1.write('annotation_background_alpha\t0.1\n')
@@ -162,3 +168,62 @@ system(cmd)
 system("graphlan " + OUTPUT_FOLDER + "/guide.xml " + OUTPUT_FOLDER + "/step.png --dpi 300 --size 6.5")
 system("rm " + OUTPUT_FOLDER + "/annot.txt " + OUTPUT_FOLDER + '/guide.txt ' + OUTPUT_FOLDER + "/guide.xml")
 # system('mv 1.ASV-Creation/NJ_ZOTUs_tree.tre ' + OUTPUT_FOLDER)
+
+
+sotu_zotu_map_dict = dict()
+zotus_taxonomy = read_file(OUTPUT_FOLDER + '/zotus_with_taxonomy.tab')[1:]
+for line in zotus_taxonomy:
+    tokens = line.split('\t')
+    taxonomy = tokens[-1]
+    sotu = taxonomy.split(';')[-2]
+    zotu = tokens[0]
+    if sotu in sotu_zotu_map_dict.keys():
+        sotu_zotu_map_dict[sotu] = sotu_zotu_map_dict[sotu] + ',' + zotu
+    else:
+        sotu_zotu_map_dict[sotu] = zotu
+
+taxonomies = list()
+for line in zotus_taxonomy:
+    tokens = line.split('\t')
+    taxonomy = tokens[-1]
+    if taxonomy not in taxonomies:
+        taxonomies.append(taxonomy)
+
+out_file = open(OUTPUT_FOLDER + '/sotus_with_taxonomy.tab', 'w+')
+for taxonomy in taxonomies:
+    out_line = taxonomy.split(';')[-2]
+    curr_taxonomy_sample_sizes = list()
+    for line in zotus_taxonomy:
+        tokens = line.split('\t')
+        curr_taxonomy = tokens[-1]
+        if curr_taxonomy == taxonomy:
+            samples_reads = '\t'.join(tokens[1:-1])
+            curr_taxonomy_sample_sizes.append(samples_reads)
+    samples_num = curr_taxonomy_sample_sizes[0].count('\t') + 1
+    for i in range(samples_num):
+        athroisma = 0
+        for line in curr_taxonomy_sample_sizes:
+            token = line.split('\t')[i]
+            athroisma += int(token)
+        out_line += '\t' + str(athroisma)
+    out_line += '\t' + taxonomy + '\n'
+    out_file.write(out_line)
+out_file.close()
+
+
+out_file = open(OUTPUT_FOLDER + '/denoised_map_sotu.tab', 'w+')
+for key, value in sotu_zotu_map_dict.items():
+    zotus = value.split(',')
+    for zotu in zotus:
+        out_file.write(zotu + '\t' + key + '\n')
+out_file.close()
+
+
+out_file = open(OUTPUT_FOLDER + '/sotu_sizes.tab', 'w+')
+for key, value in sotu_zotu_map_dict.items():
+    zotus = str(value.count(',') + 1)
+    out_file.write(key + '\t' + zotus + '\n')
+out_file.close()
+
+system('sort -k 2 -n -r ' + OUTPUT_FOLDER + '/sotu_sizes.tab > t2')
+system('mv t2 ' + OUTPUT_FOLDER + '/sotu_sizes.tab')

@@ -66,3 +66,4 @@ RESULTS_CREATION_STEP:YES
 OUTPUT_FOLDER:/home/antonios/TIC-Pipeline/results/
 OUTPUT_ASV_FASTA_WITH_TAXONOMY:zotus_with_taxonomy.fasta
 OUTPUT_ASV_TABLE:zotus_with_taxonomy.tab
+OUTPUT_SOTU_FASTA_WITH_TAXONOMY:sotu_with_taxonomy.fasta

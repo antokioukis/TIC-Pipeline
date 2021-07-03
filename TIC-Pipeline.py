@@ -110,6 +110,8 @@ for line in config_file_contents:
         KRONA_TOOL = tokens[1]
     elif tokens[0] == 'RAPID_NJ':
         RAPID_NJ = tokens[1]
+    elif tokens[0] == 'OUTPUT_SOTU_FASTA_WITH_TAXONOMY':
+        OUTPUT_SOTU_FASTA_WITH_TAXONOMY = tokens[1]
     else:
         print('Configuration File Not valid')
         print('Option ' + tokens[0] + ' not recognised')
@@ -278,9 +280,10 @@ if RESULTS_CREATION_STEP == 'YES':
         exit(1)
     else:
         arguments_list = ' '.join([OUTPUT_FOLDER, OUTPUT_ASV_FASTA_WITH_TAXONOMY, OUTPUT_ASV_TABLE,
-                                   CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL])
+                                   CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL,
+                                   OUTPUT_SOTU_FASTA_WITH_TAXONOMY])
         system('python3 4.Results_Processing/create_fasta_and_table.py ' + arguments_list)
         arguments_list = ' '.join([INPUT_FASTA_EXTRACTION, OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY])
-        # system('python3 4.Results_Processing/cleaning.py ' + arguments_list)
+        system('python3 4.Results_Processing/cleaning.py ' + arguments_list)
 elif ALIGNMENT_CLASSIFICATION_STEP == 'NO':
     print('Skipping Alignment and Classification Step')
