@@ -24,8 +24,8 @@ for line in config_file_contents:
         CLUSTERING_TOOL = tokens[1]
     elif tokens[0] == 'SAMPLES_PROCESS_STEP':
         SAMPLES_PROCESS_STEP = tokens[1]
-    elif tokens[0] == 'ASV_CREATION_STEP':
-        ASV_CREATION_STEP = tokens[1]
+    elif tokens[0] == 'DENOISING_STEP':
+        DENOISING_STEP = tokens[1]
     elif tokens[0] == 'USER_FASTQ_FOLDER':
         USER_FASTQ_FOLDER = tokens[1]
     elif tokens[0] == 'TRIM_SCORE':
@@ -46,16 +46,14 @@ for line in config_file_contents:
         EXPECTED_ERROR_RATE = tokens[1]
     elif tokens[0] == 'THREADS':
         THREADS = tokens[1]
-    elif tokens[0] == 'MIN_ZOTU_SIZE':
-        MIN_ZOTU_SIZE = tokens[1]
+    elif tokens[0] == 'MIN_DENOISED_SIZE':
+        MIN_DENOISED_SIZE = tokens[1]
     elif tokens[0] == 'SORT_ME_RNA_DB1':
         SORT_ME_RNA_DB1 = tokens[1]
     elif tokens[0] == 'SORT_ME_RNA_DB2':
         SORT_ME_RNA_DB2 = tokens[1]
     elif tokens[0] == 'SORT_ME_RNA_TOOL':
         SORT_ME_RNA_TOOL = tokens[1]
-    elif tokens[0] == 'MIN_ZOTU_SIZE':
-        MIN_ZOTU_SIZE = tokens[1]
     elif tokens[0] == 'MATCHING_STEP':
         MATCHING_STEP = tokens[1]
     elif tokens[0] == 'ASV_FILE':
@@ -165,23 +163,23 @@ if SAMPLES_PROCESS_STEP == 'YES':
                                    MINMERGELEN, MAXMERGELEN, FORWARD_TRIM, REVERSE_TRIM, EXPECTED_ERROR_RATE, THREADS,
                                    MINPCTID
                                    ])
-        system('python3 1.ASV-Creation/process_samples.py ' + arguments_list)
+        system('python3 1.Denoising/process_samples.py ' + arguments_list)
 elif SAMPLES_PROCESS_STEP == 'NO':
     print('Skipping Processing of Samples')
 
-if ASV_CREATION_STEP == 'YES':
-    print('Creating ASVs')
+if DENOISING_STEP == 'YES':
+    print('Denoising Samples')
     if not isdir(USER_FASTQ_FOLDER):
         print('Specified Directory with FASTQ files not present')
         print('Exiting')
         exit(1)
     else:
-        arguments_list = ' '.join([USER_FASTQ_FOLDER, CLUSTERING_TOOL, THREADS, MIN_ZOTU_SIZE,
+        arguments_list = ' '.join([USER_FASTQ_FOLDER, CLUSTERING_TOOL, THREADS, MIN_DENOISED_SIZE,
                                    SORT_ME_RNA_DB1, SORT_ME_RNA_DB2, SORT_ME_RNA_TOOL, RAPID_NJ
                                    ])
-        system('python3 1.ASV-Creation/create_ASVs.py ' + arguments_list)
-elif ASV_CREATION_STEP == 'NO':
-    print('Skipping Creation of ASVs')
+        system('python3 1.Denoising/create_ASVs.py ' + arguments_list)
+elif DENOISING_STEP == 'NO':
+    print('Skipping Denoising')
 
 if ALIGNMENT_CLASSIFICATION_STEP == 'YES':
     print('Classifying with SINA and SILVA ARB')

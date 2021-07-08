@@ -6,8 +6,8 @@ OUTPUT_FASTA_EXTRACTION = argv[2]
 CLUSTERING_DIRECTORY = argv[3]
 
 
-file_list = ['1.ASV-Creation/good_ZOTUS.log', '1.ASV-Creation/good_ZOTUS.fa', '1.ASV-Creation/denoising.tab',
-             '1.ASV-Creation/other_ZOTUS.fa', '1.ASV-Creation/ZOTUs-Table.tab',
+file_list = ['1.Denoising/good_ZOTUS.log', '1.Denoising/good_ZOTUS.fa', '1.Denoising/denoising.tab',
+             '1.Denoising/other_ZOTUS.fa', '1.Denoising/ZOTUs-Table.tab',
              '2.Taxonomy-Classification/alignment_vector.csv', INPUT_FASTA_EXTRACTION,
              OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY]
 

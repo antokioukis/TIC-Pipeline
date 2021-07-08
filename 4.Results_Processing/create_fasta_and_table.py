@@ -70,7 +70,7 @@ for line in zotus_with_taxonomy_contents:
         zotus_taxonomy_dict[zotu_name] = taxonomy
 
 
-tab_contents = read_file('1.ASV-Creation/ZOTUs-Table.tab')
+tab_contents = read_file('1.Denoising/ZOTUs-Table.tab')
 out_tab = open(OUTPUT_FOLDER + '/' + OUTPUT_ASV_TABLE, 'w+')
 for line in tab_contents:
     if line[0] == '#':
@@ -167,7 +167,7 @@ cmd += OUTPUT_FOLDER + "/guide.xml"
 system(cmd)
 system("graphlan " + OUTPUT_FOLDER + "/guide.xml " + OUTPUT_FOLDER + "/step.png --dpi 300 --size 6.5")
 system("rm " + OUTPUT_FOLDER + "/annot.txt " + OUTPUT_FOLDER + '/guide.txt ' + OUTPUT_FOLDER + "/guide.xml")
-# system('mv 1.ASV-Creation/NJ_ZOTUs_tree.tre ' + OUTPUT_FOLDER)
+# system('mv 1.Denoising/NJ_ZOTUs_tree.tre ' + OUTPUT_FOLDER)
 
 
 sotu_zotu_map_dict = dict()
