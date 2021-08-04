@@ -227,3 +227,24 @@ out_file.close()
 
 system('sort -k 2 -n -r ' + OUTPUT_FOLDER + '/sotu_sizes.tab > t2')
 system('mv t2 ' + OUTPUT_FOLDER + '/sotu_sizes.tab')
+
+
+sotus_taxonomy_contents = read_file(OUTPUT_FOLDER + 'sotus_with_taxonomy.tab')
+out_file_s_g = open(OUTPUT_FOLDER + 'sotus_to_gotus_map.tab', 'w+')
+out_file_g_f = open(OUTPUT_FOLDER + 'gotus_to_fotus_map.tab', 'w+')
+sotus_to_gotus_dict = dict()
+gotus_to_fotus_dict = dict()
+for line in sotus_taxonomy_contents:
+    taxonomy = line.split('\t')[-1]
+    sotu = taxonomy.split(';')[-2]
+    gotu = taxonomy.split(';')[-3]
+    fotu = taxonomy.split(';')[-4]
+    out_file_s_g.write(sotu + '\t' + gotu + '\n')
+    out_file_g_f.write(gotu + '\t' + fotu + '\n')
+out_file_s_g.close()
+out_file_g_f.close()
+
+system('sort ' + OUTPUT_FOLDER + '/sotus_to_gotus_map.tab | uniq > t2')
+system('mv t2 ' + OUTPUT_FOLDER + '/sotus_to_gotus_map.tab')
+system('sort ' + OUTPUT_FOLDER + '/gotus_to_fotus_map.tab | uniq > t2')
+system('mv t2 ' + OUTPUT_FOLDER + '/gotus_to_fotus_map.tab')
