@@ -3,6 +3,10 @@ wget http://129.187.44.105:8082/usearch
 chmod +x usearch
 echo '    Done'
 
+echo 'Downloading vsearch version 2.17, 64-bit version'
+wget http://129.187.44.105:8082/vsearch
+chmod +x vsearch
+echo '    Done'
 
 echo 'Downloading SORT_ME_RNA_DATABASES'
 wget http://129.187.44.105:8082/sort_me_rna_dbs/silva-bac-16s-id90.fasta
