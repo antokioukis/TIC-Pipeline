@@ -948,11 +948,12 @@ MAIN_DIR = args.data_dir
 TOOL = args.tool
 THREADS = str(args.threads)
 
-VSEARCH_BIN_CLUST = TOOL + ' --threads ' + THREADS + ' --cluster_fast '
-VSEARCH_BIN_BLAST = TOOL + ' --threads ' + THREADS + ' --usearch_global '
-
-USEARCH_BIN_CLUST = TOOL + ' --threads ' + THREADS + ' -cluster_fast '
-USEARCH_BIN_BLAST = TOOL + ' --threads ' + THREADS + ' -usearch_global '
+if TOOL == 'vsearch':
+    USEARCH_BIN_CLUST = TOOL + ' --threads ' + THREADS + ' --cluster_fast '
+    USEARCH_BIN_BLAST = TOOL + ' --threads ' + THREADS + ' --usearch_global '
+elif TOOL == 'usearch':
+    USEARCH_BIN_CLUST = TOOL + ' --threads ' + THREADS + ' -cluster_fast '
+    USEARCH_BIN_BLAST = TOOL + ' --threads ' + THREADS + ' -usearch_global '
 
 print('Known Genera Clustering starting. Similarity Threshold:' + str(species_similarity))
 genera_level_fastas = get_curr_level_fastas(5)
