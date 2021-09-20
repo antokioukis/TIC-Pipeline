@@ -1,6 +1,6 @@
-![TIC-Pipeline](https://drive.google.com/file/d/15H3ohkgYZbvXmyS7UgyClSYTr7LWR6TT/view?usp=sharing)
+<img src=http://129.187.44.105:8082/tic_pipeline_logo.png width="700">
 
-# TIC-Pipeline
+# A list of Python scripts for the analysis of microbial profiles and illumination of the diversity contained within
 
 TIC-Pipeline is a suite that processes FASTQ files to create ASVs based on the latest golden standards,
 and then performs a diversity analysis of the ASVs.
