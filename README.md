@@ -1,4 +1,5 @@
-![TIC-Pipeline](https://drive.google.com/file/d/15H3ohkgYZbvXmyS7UgyClSYTr7LWR6TT/view?usp=sharing)
+
+![TIC-LOGO-v2](https://user-images.githubusercontent.com/8244618/139100265-7fb3319d-93a9-47f4-a617-ffe82a33b77d.png)
 
 # TIC-Pipeline
 
