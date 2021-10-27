@@ -23,30 +23,47 @@ def merging_all_samples():
                 if not line:
                     break
                 if line[0] == '>':
-                    output_file.write(line[:-1] + 'barcodelabel=' + sample_name + ';\n')
+                    output_file.write(line[:-1] + ';barcodelabel=' + sample_name + '\n')
                 else:
                     output_file.write(line)
     output_file.close()
 
 
 def dereplication_merged():
-    cmd = CLUSTERING_TOOL + " -fastx_uniques " + USER_FASTQ_FOLDER + '/merged.fasta -sizeout '
-    cmd += '-sizein -threads ' + THREADS + ' -fastaout ' + USER_FASTQ_FOLDER + '/dereped.fasta '
-    cmd += '> /dev/null 2>&1'
+    if 'usearch' in CLUSTERING_TOOL:
+        cmd = CLUSTERING_TOOL + " -fastx_uniques " + USER_FASTQ_FOLDER + '/merged.fasta -sizeout '
+        cmd += '-sizein -threads ' + THREADS + ' -fastaout ' + USER_FASTQ_FOLDER + '/dereped.fasta '
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+    else:
+        cmd = CLUSTERING_TOOL + " --derep_fulllength " + USER_FASTQ_FOLDER + '/merged.fasta -sizeout '
+        cmd += '-sizein -threads ' + THREADS + ' --output ' + USER_FASTQ_FOLDER + '/dereped.fasta '
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+    #print(cmd)
     system(cmd)
 
 
 def sort_merged():
-    cmd = CLUSTERING_TOOL + " -sortbysize " + USER_FASTQ_FOLDER + '/dereped.fasta'
-    cmd += ' -fastaout ' + USER_FASTQ_FOLDER + '/sorted.fasta '
-    cmd += '> /dev/null 2>&1'
+    if 'usearch' in CLUSTERING_TOOL:
+        cmd = CLUSTERING_TOOL + " -sortbysize " + USER_FASTQ_FOLDER + '/dereped.fasta'
+        cmd += ' -fastaout ' + USER_FASTQ_FOLDER + '/sorted.fasta '
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+    else:
+        cmd = CLUSTERING_TOOL + " -sortbysize " + USER_FASTQ_FOLDER + '/dereped.fasta'
+        cmd += ' -output ' + USER_FASTQ_FOLDER + '/sorted.fasta '
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
 def unoise():
-    cmd = CLUSTERING_TOOL + " -unoise3 " + USER_FASTQ_FOLDER + '/sorted.fasta -minsize ' + MIN_ZOTU_SIZE
-    cmd += ' -zotus 1.Denoising/zotus.fasta -tabbedout 1.Denoising/denoising.tab '
-    cmd += '> /dev/null 2>&1'
+    if 'usearch' in CLUSTERING_TOOL:
+        cmd = CLUSTERING_TOOL + " -unoise3 " + USER_FASTQ_FOLDER + '/sorted.fasta -minsize ' + MIN_ZOTU_SIZE
+        cmd += ' -zotus 1.Denoising/zotus.fasta '
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+    else:
+        cmd = CLUSTERING_TOOL + " -cluster_unoise " + USER_FASTQ_FOLDER + '/sorted.fasta -minsize ' + MIN_ZOTU_SIZE
+        cmd += ' -centroids 1.Denoising/zotus.fasta '
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+    #print(cmd)
     system(cmd)
 
 
@@ -71,22 +88,17 @@ def remove_chimeras():
 def create_zotu_table():
     top_directory = getcwd()
     chdir('1.Denoising/')
-    cmd = CLUSTERING_TOOL + " -otutab " + USER_FASTQ_FOLDER + '/merged.fasta -zotus good_ZOTUS.fa'
-    cmd += " -otutabout ZOTUs-Table.tab -id 0.97  -threads " + THREADS + " > /dev/null 2>&1"
-    system(cmd)
+    cmd = top_directory + "/0.Setup_and_Testing/usearch -otutab " + USER_FASTQ_FOLDER + '/merged.fasta -zotus good_ZOTUS.fa'
+    cmd += " -otutabout ZOTUs-Table.tab -id 0.97  -threads " + THREADS
+    cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     try:
+        print(cmd)
         system(cmd)
     except BaseException:
         print("ZOTU table formation command failed\n")
     else:
         print("Done.\n\n")
     chdir(top_directory)
-
-
-def create_rapid_nj_tree():
-    cmd = RAPID_NJ + " 1.Denoising/good_ZOTUS.fa --input-format fa --cores " + THREADS + " --alignment-type d "
-    cmd += "--output-format t --no-negative-length -x 1.Denoising/NJ_ZOTUs_tree.tre"
-    system(cmd)
 
 
 def create_ASVs():
@@ -102,4 +114,3 @@ def create_ASVs():
 
 
 create_ASVs()
-# create_rapid_nj_tree()

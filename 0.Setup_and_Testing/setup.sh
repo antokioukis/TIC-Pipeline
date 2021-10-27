@@ -51,6 +51,9 @@ rm KronaTools-2.8.tar
 sudo ./KronaTools-2.8/install.pl
 echo '    Done'
 
+
+# download template data
+
 CWD=$(pwd)
 echo 'SILVA_ARB:'$CWD'/SILVA_138.1_SSURef_NR99_12_06_20_opt.arb' >> ../tool_and_db_options.ini
 echo 'SINA_EXECUTABLE:'$CWD'/sina-1.7.2-linux/sina' >> ../tool_and_db_options.ini
@@ -60,6 +63,7 @@ echo 'SORT_ME_RNA_TOOL:'$CWD'/sortmerna-4.3.3-Linux/bin/sortmerna' >> ../tool_an
 echo 'CLUSTERING_TOOL:'$CWD'/usearch' >> ../tool_and_db_options.ini
 echo 'KRONA_TOOL:'$CWD'/KronaTools-2.8/scripts/ImportText.pl' >> ../tool_and_db_options.ini
 echo 'RAPID_NJ:'$CWD'/rapidNJ/bin/rapidnj' >> ../tool_and_db_options.ini
+echo 'AL_CLUSTERING_TOOL:'$CWD'/usearch' >> ../tool_and_db_options.ini
 
 echo 'Installing python packages'
 pip3 install -r python_requirements.txt

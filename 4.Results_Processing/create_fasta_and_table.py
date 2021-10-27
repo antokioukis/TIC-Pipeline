@@ -1,5 +1,5 @@
 from sys import argv
-from os import mkdir, system
+from os import mkdir, system, getcwd
 from glob import glob
 
 
@@ -38,6 +38,8 @@ CLUSTERING_DIRECTORY = argv[4]
 INPUT_FASTA_CLUSTERING = argv[5]
 KRONA_TOOL = argv[6]
 OUTPUT_SOTU_FASTA_WITH_TAXONOMY = argv[7]
+SILVA_ARB = argv[8]
+SINA_EXECUTABLE = argv[9]
 
 mkdir(OUTPUT_FOLDER)
 zotus_seqs_dict = fasta2dict(INPUT_FASTA_CLUSTERING)
@@ -65,22 +67,21 @@ zotus_taxonomy_dict = dict()
 for line in zotus_with_taxonomy_contents:
     if line[0] == '>':
         tokens = line.split('tax=')
-        zotu_name = tokens[0][1:-1]
+        zotu_name = tokens[0].split(';')[0][1:]
         taxonomy = tokens[1]
         zotus_taxonomy_dict[zotu_name] = taxonomy
 
 
-tab_contents = read_file('1.Denoising/ZOTUs-Table.tab')
 out_tab = open(OUTPUT_FOLDER + '/' + OUTPUT_ASV_TABLE, 'w+')
+tab_contents = read_file('1.Denoising/ZOTUs-Table.tab')
 for line in tab_contents:
     if line[0] == '#':
-        new_line = line + '\tTaxonomy\n'
-    else:
-        clean_zotu_name = line.split('\t')[0]
+        out_tab.write(line + '\tTaxonomy\n')
+    clean_zotu_name = line.split('\t')[0]
+    if clean_zotu_name in zotus_taxonomy_dict.keys():
         new_line = line + '\t' + zotus_taxonomy_dict[clean_zotu_name] + '\n'
-    out_tab.write(new_line)
+        out_tab.write(new_line)
 out_tab.close()
-
 
 taxonomy_counters_dict = dict()
 for value in zotus_taxonomy_dict.values():
@@ -167,8 +168,6 @@ cmd += OUTPUT_FOLDER + "/guide.xml"
 system(cmd)
 system("graphlan " + OUTPUT_FOLDER + "/guide.xml " + OUTPUT_FOLDER + "/step.png --dpi 300 --size 6.5")
 system("rm " + OUTPUT_FOLDER + "/annot.txt " + OUTPUT_FOLDER + '/guide.txt ' + OUTPUT_FOLDER + "/guide.xml")
-# system('mv 1.Denoising/NJ_ZOTUs_tree.tre ' + OUTPUT_FOLDER)
-
 
 sotu_zotu_map_dict = dict()
 zotus_taxonomy = read_file(OUTPUT_FOLDER + '/zotus_with_taxonomy.tab')[1:]
@@ -190,6 +189,8 @@ for line in zotus_taxonomy:
         taxonomies.append(taxonomy)
 
 out_file = open(OUTPUT_FOLDER + '/sotus_with_taxonomy.tab', 'w+')
+header = read_file(OUTPUT_FOLDER + '/zotus_with_taxonomy.tab')[0]
+out_file.write(header + '\n')
 for taxonomy in taxonomies:
     out_line = taxonomy.split(';')[-2]
     curr_taxonomy_sample_sizes = list()
@@ -211,40 +212,102 @@ for taxonomy in taxonomies:
 out_file.close()
 
 
-out_file = open(OUTPUT_FOLDER + '/denoised_map_sotu.tab', 'w+')
-for key, value in sotu_zotu_map_dict.items():
-    zotus = value.split(',')
-    for zotu in zotus:
-        out_file.write(zotu + '\t' + key + '\n')
+out_file = open(OUTPUT_FOLDER + '/zotu_sotu_map.tab', 'w+')
+out_file.write('ZOTUs\tSOTU\n')
+contents = read_file(OUTPUT_FOLDER + '/zotus_with_taxonomy.tab')[1:]
+for line in contents:
+    taxonomy = line.split('\t')[-1]
+    zotu = line.split('\t')[0]
+    sotu = taxonomy.split(';')[-2]
+    out_file.write(zotu + '\t' + sotu + '\n')
 out_file.close()
 
-
-out_file = open(OUTPUT_FOLDER + '/sotu_sizes.tab', 'w+')
-for key, value in sotu_zotu_map_dict.items():
-    zotus = str(value.count(',') + 1)
-    out_file.write(key + '\t' + zotus + '\n')
-out_file.close()
-
-system('sort -k 2 -n -r ' + OUTPUT_FOLDER + '/sotu_sizes.tab > t2')
-system('mv t2 ' + OUTPUT_FOLDER + '/sotu_sizes.tab')
-
-
-sotus_taxonomy_contents = read_file(OUTPUT_FOLDER + 'sotus_with_taxonomy.tab')
-out_file_s_g = open(OUTPUT_FOLDER + 'sotus_to_gotus_map.tab', 'w+')
-out_file_g_f = open(OUTPUT_FOLDER + 'gotus_to_fotus_map.tab', 'w+')
-sotus_to_gotus_dict = dict()
-gotus_to_fotus_dict = dict()
-for line in sotus_taxonomy_contents:
+out_file = open(OUTPUT_FOLDER + '/sotu_gotu_map.tab', 'w+')
+out_file.write('SOTUs\tGOTU\n')
+contents = read_file(OUTPUT_FOLDER + '/zotus_with_taxonomy.tab')[1:]
+passed_sotus = list()
+for line in contents:
     taxonomy = line.split('\t')[-1]
     sotu = taxonomy.split(';')[-2]
     gotu = taxonomy.split(';')[-3]
-    fotu = taxonomy.split(';')[-4]
-    out_file_s_g.write(sotu + '\t' + gotu + '\n')
-    out_file_g_f.write(gotu + '\t' + fotu + '\n')
-out_file_s_g.close()
-out_file_g_f.close()
+    if sotu not in passed_sotus:
+        out_file.write(sotu + '\t' + gotu + '\n')
+        passed_sotus.append(sotu)
+out_file.close()
 
-system('sort ' + OUTPUT_FOLDER + '/sotus_to_gotus_map.tab | uniq > t2')
-system('mv t2 ' + OUTPUT_FOLDER + '/sotus_to_gotus_map.tab')
-system('sort ' + OUTPUT_FOLDER + '/gotus_to_fotus_map.tab | uniq > t2')
-system('mv t2 ' + OUTPUT_FOLDER + '/gotus_to_fotus_map.tab')
+out_file = open(OUTPUT_FOLDER + '/gotu_fotu_map.tab', 'w+')
+out_file.write('GOTUs\tFOTU\n')
+contents = read_file(OUTPUT_FOLDER + '/zotus_with_taxonomy.tab')[1:]
+passed_gotus = list()
+for line in contents:
+    taxonomy = line.split('\t')[-1]
+    gotu = taxonomy.split(';')[-3]
+    fotu = taxonomy.split(';')[-4]
+    if gotu not in passed_gotus:
+        out_file.write(gotu + '\t' + fotu + '\n')
+        passed_gotus.append(gotu)
+out_file.close()
+
+
+def sina_alignment():
+    cmd = SINA_EXECUTABLE + ' --in=' + OUTPUT_FOLDER + OUTPUT_ASV_FASTA_WITH_TAXONOMY + ' --out=test_z.fasta --db='
+    cmd += SILVA_ARB + ' --turn all --fasta-write-dna >/dev/null 2>/dev/null'
+    system(cmd)
+    #
+    cmd = SINA_EXECUTABLE + ' --in=' + OUTPUT_FOLDER + OUTPUT_SOTU_FASTA_WITH_TAXONOMY + ' --out=test_s.fasta --db='
+    cmd += SILVA_ARB + ' --turn all --fasta-write-dna >/dev/null 2>/dev/null'
+    system(cmd)
+
+
+# from the alignment get every column that has 1 base at least aligned
+# so tree creation is correct and goes faster
+def extract_columns(input_file_name):
+    good_points = list()
+    filepath = input_file_name
+    with open(filepath) as fp:
+        line = fp.readline()
+        while line:
+            if not line[0] == '>':
+                counter = 0
+                for curr_char in line:
+                    if curr_char in ['A', 'C', 'G', 'T']:
+                        good_points.append(counter)
+                    counter += 1
+            line = fp.readline()
+    #
+    good_points = list(set(good_points))
+    #
+    out_file = open('for_tree.fasta', 'w+')
+    with open(filepath) as fp:
+        line = fp.readline()
+        while line:
+            if line[0] == '>':
+                header = line.split(';')[0] + '\n'
+            else:
+                curr_seq = ''
+                for number in good_points:
+                    curr_seq += line[number]
+                out_file.write(header)
+                out_file.write(curr_seq + '\n')
+            line = fp.readline()
+    out_file.close()
+    system('mv for_tree.fasta ' + input_file_name)
+
+
+def create_trees():
+    top_dir = getcwd()
+    extract_columns('test_s.fasta')
+    extract_columns('test_z.fasta')
+    rapidnj = top_dir + "/0.Setup_and_Testing/rapidNJ/bin/rapidnj "
+    cmd1 = rapidnj + "test_s.fasta -n -o t -x " + OUTPUT_FOLDER + "/sotu_nj.tre"
+    cmd2 = rapidnj + "test_z.fasta -n -o t -x " + OUTPUT_FOLDER + "/zotu_nj.tre"
+    # cmd3 = "/crc/crc/binaries/FastTree -gtr -gamma -quiet -nt < test_s.fasta > sotu_aml.tre"
+    # cmd4 = "/crc/crc/binaries/FastTree -gtr -gamma -quiet -nt < test_z.fasta > zotu_aml.tre"
+    system(cmd1)
+    system(cmd2)
+    # print(cmd3)
+    # print(cmd4)
+
+
+sina_alignment()
+create_trees()

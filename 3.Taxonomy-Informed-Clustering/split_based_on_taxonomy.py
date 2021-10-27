@@ -52,23 +52,23 @@ def check_valid_names(input_taxonomy):
         valid_names_list.append(domain)
     else:
         return('other.fasta')
-    if phylum:
+    if phylum and not (phylum == 'uncultured' or phylum == 'unknown'):
         valid_names_list.append(phylum)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if class_s:
+    if class_s and not (class_s == 'uncultured' or class_s == 'unknown'):
         valid_names_list.append(class_s)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if order_o:
+    if order_o and not (order_o == 'uncultured' or order_o == 'unknown'):
         valid_names_list.append(order_o)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if family:
+    if family and not (family == 'uncultured' or family == 'unknown'):
         valid_names_list.append(family)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if genus:
+    if genus and not (genus == 'uncultured' or genus == 'unknown'):
         valid_names_list.append(genus)
     return('_'.join(valid_names_list) + '.fasta')
 

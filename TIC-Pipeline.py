@@ -24,8 +24,8 @@ for line in config_file_contents:
         CLUSTERING_TOOL = tokens[1]
     elif tokens[0] == 'SAMPLES_PROCESS_STEP':
         SAMPLES_PROCESS_STEP = tokens[1]
-    elif tokens[0] == 'DENOISING_STEP':
-        DENOISING_STEP = tokens[1]
+    elif tokens[0] == 'ASV_CREATION_STEP':
+        ASV_CREATION_STEP = tokens[1]
     elif tokens[0] == 'USER_FASTQ_FOLDER':
         USER_FASTQ_FOLDER = tokens[1]
     elif tokens[0] == 'TRIM_SCORE':
@@ -167,7 +167,7 @@ if SAMPLES_PROCESS_STEP == 'YES':
 elif SAMPLES_PROCESS_STEP == 'NO':
     print('Skipping Processing of Samples')
 
-if DENOISING_STEP == 'YES':
+if ASV_CREATION_STEP == 'YES':
     print('Denoising Samples')
     if not isdir(USER_FASTQ_FOLDER):
         print('Specified Directory with FASTQ files not present')
@@ -178,7 +178,7 @@ if DENOISING_STEP == 'YES':
                                    SORT_ME_RNA_DB1, SORT_ME_RNA_DB2, SORT_ME_RNA_TOOL, RAPID_NJ
                                    ])
         system('python3 1.Denoising/create_ASVs.py ' + arguments_list)
-elif DENOISING_STEP == 'NO':
+elif ASV_CREATION_STEP == 'NO':
     print('Skipping Denoising')
 
 if ALIGNMENT_CLASSIFICATION_STEP == 'YES':
@@ -279,7 +279,7 @@ if RESULTS_CREATION_STEP == 'YES':
     else:
         arguments_list = ' '.join([OUTPUT_FOLDER, OUTPUT_ASV_FASTA_WITH_TAXONOMY, OUTPUT_ASV_TABLE,
                                    CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL,
-                                   OUTPUT_SOTU_FASTA_WITH_TAXONOMY])
+                                   OUTPUT_SOTU_FASTA_WITH_TAXONOMY, SILVA_ARB, SINA_EXECUTABLE])
         system('python3 4.Results_Processing/create_fasta_and_table.py ' + arguments_list)
         arguments_list = ' '.join([INPUT_FASTA_EXTRACTION, OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY])
         system('python3 4.Results_Processing/cleaning.py ' + arguments_list)

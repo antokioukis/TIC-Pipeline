@@ -948,10 +948,10 @@ MAIN_DIR = args.data_dir
 TOOL = args.tool
 THREADS = str(args.threads)
 
-if TOOL == 'vsearch':
+if 'vsearch' in TOOL:
     USEARCH_BIN_CLUST = TOOL + ' --threads ' + THREADS + ' --cluster_fast '
     USEARCH_BIN_BLAST = TOOL + ' --threads ' + THREADS + ' --usearch_global '
-elif TOOL == 'usearch':
+else:
     USEARCH_BIN_CLUST = TOOL + ' --threads ' + THREADS + ' -cluster_fast '
     USEARCH_BIN_BLAST = TOOL + ' --threads ' + THREADS + ' -usearch_global '
 

@@ -13,7 +13,7 @@ THREADS:4
 # STEP 1: CREATION OF ASVS #
 ############################
 
-SAMPLES_PROCESS_STEP:YES
+SAMPLES_PROCESS_STEP:NO
 USER_FASTQ_FOLDER:/home/antonios/fastq_pipe
 TRIM_SCORE:20
 MAXDIFF:50
@@ -26,24 +26,24 @@ EXPECTED_ERROR_RATE:0.005
 
 # -----------------------------------
 
-ASV_CREATION_STEP:YES
-MIN_ZOTU_SIZE:4
+ASV_CREATION_STEP:NO
+MIN_DENOISED_SIZE:4
 
 ####################################################
 # STEP 2: ALIGNMENT, CLASSIFICATION AND EXTRACTION #
 ####################################################
 
-ALIGNMENT_CLASSIFICATION_STEP:YES
-INPUT_FASTA_ALI_CLASS:/home/antonios/TIC-Pipeline/1.ASV-Creation/good_ZOTUS.fa
+ALIGNMENT_CLASSIFICATION_STEP:NO
+INPUT_FASTA_ALI_CLASS:/home/antonios/TIC-Pipeline/1.Denoising/good_ZOTUS.fa
 OUTPUT_FASTA_ALI_CLASS:/home/antonios/TIC-Pipeline/sina_output.fasta
 PDF_REGION_OUTPUT:/home/antonios/regions_extract.pdf
 
 # -----------------------------------
 
-EXTRACTION_STEP:YES
+EXTRACTION_STEP:NO
 INPUT_FASTA_EXTRACTION:/home/antonios/TIC-Pipeline/sina_output.fasta
-EXTRACTION_REGION_START:10000
-EXTRACTION_REGION_END:25000
+EXTRACTION_REGION_START:1000
+EXTRACTION_REGION_END:12000
 EXTRACTION_REGION_LIMIT:100
 OUTPUT_FASTA_EXTRACTION:/home/antonios/TIC-Pipeline/zotus_with_tax.fasta
 
@@ -51,7 +51,7 @@ OUTPUT_FASTA_EXTRACTION:/home/antonios/TIC-Pipeline/zotus_with_tax.fasta
 # STEP 3: Taxonomy-Informed-Clustering #
 ########################################
 
-TAXONOMIC_CLUSTERING_STEP:YES
+TAXONOMIC_CLUSTERING_STEP:NO
 CLUSTERING_DIRECTORY:/home/antonios/TIC-Pipeline/aaa
 INPUT_FASTA_CLUSTERING:/home/antonios/TIC-Pipeline/zotus_with_tax.fasta
 FAMILY_IDENTITY:89
@@ -66,4 +66,4 @@ RESULTS_CREATION_STEP:YES
 OUTPUT_FOLDER:/home/antonios/TIC-Pipeline/results/
 OUTPUT_ASV_FASTA_WITH_TAXONOMY:zotus_with_taxonomy.fasta
 OUTPUT_ASV_TABLE:zotus_with_taxonomy.tab
-OUTPUT_SOTU_FASTA_WITH_TAXONOMY:sotu_with_taxonomy.fasta
+OUTPUT_SOTU_FASTA_WITH_TAXONOMY:sotus_with_taxonomy.fasta
