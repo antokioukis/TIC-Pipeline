@@ -14,6 +14,7 @@ def count_seq():
     out_file.close()
 
 
+print('>>> Extracting regions based on user input...')
 INPUT_FASTA_EXTRACTION = argv[1]
 EXTRACTION_REGION_START = int(argv[2])
 EXTRACTION_REGION_END = int(argv[3])
@@ -22,3 +23,5 @@ BASES_LOW_LIMIT = EXTRACTION_REGION_LIMIT * 0.8
 OUTPUT_FASTA_EXTRACTION = argv[5]
 
 count_seq()
+
+print('\tDone')

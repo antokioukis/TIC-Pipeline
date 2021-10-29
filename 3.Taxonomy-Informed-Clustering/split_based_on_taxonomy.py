@@ -93,6 +93,16 @@ for i in tqdm(range(0, len(input_contents), 2)):
     sequence = input_contents[i+1]
     curr_taxonomy = header.split('tax=')[1]
     out_file_name = check_valid_names(curr_taxonomy).replace('(', '').replace(')', '')
+    tokens = out_file_name.split('_')
+    counter = 1
+    new_out_file_name_tokens = list()
+    for curr_token in tokens:
+        if counter < 7:
+            new_out_file_name_tokens.append(curr_token)
+        counter += 1
+    new_out_file_name = '_'.join(new_out_file_name_tokens)
+    if '.fasta' not in new_out_file_name:
+        new_out_file_name += '.fasta'
     out_file = open(MAIN_DIR + out_file_name, 'a+')
     new_header = header.split('tax=')[0] + 'tax=' + out_file_name.split('.')[0].replace('_', ';') + ';'
     out_file.write(new_header + '\n')

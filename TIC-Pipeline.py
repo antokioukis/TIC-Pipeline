@@ -10,6 +10,17 @@ def read_file(filename):
     return content
 
 
+print('######################')
+print('#   Pipeline Start   #')
+print('######################')
+if not isfile('config_options.txt'):
+    print('File:config_options.txt not present in current directory.')
+    print('Exiting...')
+    exit(1)
+if not isfile('tool_and_db_options.ini'):
+    print('File:tool_and_db_options.ini not present in current directory.')
+    print('Exiting...')
+    exit(1)
 config_file_contents = read_file('config_options.txt')
 inifile_contents = read_file('tool_and_db_options.ini')
 for ini_line in inifile_contents:
@@ -124,12 +135,12 @@ if TESTING_MODE == 'YES':
                                SORT_ME_RNA_TOOL, CLUSTERING_TOOL, RAPID_NJ
                                ])
     system('python3 0.Setup_and_Testing/testing.py ' + arguments_list)
-    exit()
+    exit(0)
 elif TESTING_MODE == 'NO':
     print('This is the production mode of the TIC-Pipeline.')
 
 if SAMPLES_PROCESS_STEP == 'YES':
-    print('Processing Samples')
+    print('>>> Processing')
     if not isdir(USER_FASTQ_FOLDER):
         print('Specified Directory with FASTQ files not present')
         print('Exiting')
@@ -168,7 +179,7 @@ elif SAMPLES_PROCESS_STEP == 'NO':
     print('Skipping Processing of Samples')
 
 if ASV_CREATION_STEP == 'YES':
-    print('Denoising Samples')
+    print('>>> Denoising Samples')
     if not isdir(USER_FASTQ_FOLDER):
         print('Specified Directory with FASTQ files not present')
         print('Exiting')
@@ -182,7 +193,7 @@ elif ASV_CREATION_STEP == 'NO':
     print('Skipping Denoising')
 
 if ALIGNMENT_CLASSIFICATION_STEP == 'YES':
-    print('Classifying with SINA and SILVA ARB')
+    print('>>> Classifying with SINA and SILVA ARB...')
     if not isfile(SILVA_ARB):
         print('Specified SILVA_ARB File not present')
         print('Exiting')
@@ -250,20 +261,23 @@ if TAXONOMIC_CLUSTERING_STEP == 'YES':
         print('Exiting')
         exit(1)
     else:
+        print('>>> Splitting based on taxonomy...')
         arguments_list = ' '.join([CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING])
         cmd = 'python3 3.Taxonomy-Informed-Clustering/split_based_on_taxonomy.py '
         cmd += ' -d ' + CLUSTERING_DIRECTORY + ' -i ' + INPUT_FASTA_CLUSTERING
         system(cmd)
+        print('\tDone')
+        print('>>> Running TIC...')
         arguments_list = ' '.join([CLUSTERING_DIRECTORY, FAMILY_IDENTITY, GENERA_IDENTITY, SPECIES_IDENTITY])
         cmd = 'python3 3.Taxonomy-Informed-Clustering/complex_TIC.py '
         cmd += ' -f ' + FAMILY_IDENTITY + ' -g ' + GENERA_IDENTITY + ' -s ' + SPECIES_IDENTITY
         cmd += ' -t ' + CLUSTERING_TOOL + ' -n ' + THREADS + ' -d ' + CLUSTERING_DIRECTORY
         system(cmd)
+        print('\tDone')
 elif TAXONOMIC_CLUSTERING_STEP == 'NO':
     print('Skipping Taxonomic Clustering Step')
 
 if RESULTS_CREATION_STEP == 'YES':
-    print('Creating Results')
     if isdir(OUTPUT_FOLDER):
         print('Specified OUTPUT_FOLDER Directory already present')
         print('Exiting')
@@ -277,11 +291,18 @@ if RESULTS_CREATION_STEP == 'YES':
         print('Exiting')
         exit(1)
     else:
+        print('>>> Creating Results...')
         arguments_list = ' '.join([OUTPUT_FOLDER, OUTPUT_ASV_FASTA_WITH_TAXONOMY, OUTPUT_ASV_TABLE,
                                    CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL,
                                    OUTPUT_SOTU_FASTA_WITH_TAXONOMY, SILVA_ARB, SINA_EXECUTABLE])
         system('python3 4.Results_Processing/create_fasta_and_table.py ' + arguments_list)
+        print('\tDone')
+        print('>>> Cleaning up...')
         arguments_list = ' '.join([INPUT_FASTA_EXTRACTION, OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY])
         system('python3 4.Results_Processing/cleaning.py ' + arguments_list)
+        print('\tDone')
+        print('#####################')
+        print('# Pipeline Complete #')
+        print('#####################')
 elif ALIGNMENT_CLASSIFICATION_STEP == 'NO':
     print('Skipping Alignment and Classification Step')

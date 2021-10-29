@@ -30,7 +30,6 @@ def fastq_merge_pairs(forward_file, reverse_file):
     cmd += '/merged.fasta -fastq_trunctail ' + TRIM_SCORE + ' -fastq_minmergelen ' + MINMERGELEN
     cmd += ' -fastq_maxmergelen ' + MAXMERGELEN + ' -report ' + USER_FASTQ_FOLDER + '/report.txt '
     cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
-    #print(cmd)
     system(cmd)
 
 
@@ -43,7 +42,6 @@ def trimming():
         cmd = CLUSTERING_TOOL + " -fastx_filter " + USER_FASTQ_FOLDER + '/merged.fasta -fastq_stripleft '
         cmd += FORWARD_TRIM + ' -fastq_stripright ' + REVERSE_TRIM + ' -fastqout ' + USER_FASTQ_FOLDER + '/trimmed.fastq '
         cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
-    #print(cmd)
     system(cmd)
 
 
@@ -56,7 +54,6 @@ def trim_one_side(forward_file):
         cmd = CLUSTERING_TOOL + " -fastx_filter " + forward_file + " -fastq_stripleft " + FORWARD_TRIM
         cmd += " -fastqout " + USER_FASTQ_FOLDER + "/trimmed.fastq "
         cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'        
-    #print(cmd)
     system(cmd)
 
 
@@ -64,7 +61,6 @@ def filtering():
     cmd = CLUSTERING_TOOL + " -fastq_filter " + USER_FASTQ_FOLDER + '/trimmed.fastq --fastq_maxee_rate '
     cmd += EXPECTED_ERROR_RATE + ' -fastaout ' + USER_FASTQ_FOLDER + '/filtered.fasta '
     cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
-    #print(cmd)
     system(cmd)
 
 
@@ -75,7 +71,6 @@ def filter_merged_one_side(forward_file):
     cmd += ' -fastq_maxee_rate ' + EXPECTED_ERROR_RATE + ' -fastq_trunclen ' + str(minLength)
     cmd += ' -fastaout filtered.fasta '
     cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
-    #print(cmd)
     system(cmd)
 
 
@@ -88,7 +83,6 @@ def dereplication():
         cmd = CLUSTERING_TOOL + " --derep_fulllength " + USER_FASTQ_FOLDER + '/filtered.fasta -sizeout '
         cmd += '-minuniquesize 1 -threads ' + THREADS + ' --output ' + USER_FASTQ_FOLDER + '/unique.fasta '
         cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt' 
-    #print(cmd)
     system(cmd)
 
 

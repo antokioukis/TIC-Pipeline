@@ -52,7 +52,12 @@ sudo ./KronaTools-2.8/install.pl
 echo '    Done'
 
 
-# download template data
+echo 'Downloading Template Data'
+wget http://129.187.44.105:8082/template_data.zip
+unzip template_data.zip
+rm template_data.zip
+echo '    Done'
+
 
 CWD=$(pwd)
 echo 'SILVA_ARB:'$CWD'/SILVA_138.1_SSURef_NR99_12_06_20_opt.arb' >> ../tool_and_db_options.ini

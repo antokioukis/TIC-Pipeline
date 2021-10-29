@@ -38,7 +38,6 @@ def dereplication_merged():
         cmd = CLUSTERING_TOOL + " --derep_fulllength " + USER_FASTQ_FOLDER + '/merged.fasta -sizeout '
         cmd += '-sizein -threads ' + THREADS + ' --output ' + USER_FASTQ_FOLDER + '/dereped.fasta '
         cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
-    #print(cmd)
     system(cmd)
 
 
@@ -63,17 +62,16 @@ def unoise():
         cmd = CLUSTERING_TOOL + " -cluster_unoise " + USER_FASTQ_FOLDER + '/sorted.fasta -minsize ' + MIN_ZOTU_SIZE
         cmd += ' -centroids 1.Denoising/zotus.fasta '
         cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
-    #print(cmd)
     system(cmd)
 
 
 def remove_chimeras():
     top_directory = getcwd()
     chdir('1.Denoising/')
-    print(">>> Filtering out non 16S ZOTUs ... ")
+    print(">>> Filtering out non 16S ZOTUs... ")
     cmd = SORT_ME_RNA_TOOL + ' --ref ' + SORT_ME_RNA_DB1 + ' --ref ' + SORT_ME_RNA_DB2
     cmd += ' --reads zotus.fasta --fastx --aligned good_ZOTUS --other other_ZOTUS'
-    cmd += ' --workdir sortme -e 0.1'
+    cmd += ' --workdir sortme -e 0.1 >/dev/null 2>&1'
     try:
         system(cmd)
     except BaseException:
@@ -81,23 +79,23 @@ def remove_chimeras():
     else:
         system("rm -rf sortme/kvdb")
         remove('zotus.fasta')
-        print("Done.\n\n")
+        print("\tDone")
     chdir(top_directory)
 
 
 def create_zotu_table():
+    print('>>> Creating ZOTU table...')
     top_directory = getcwd()
     chdir('1.Denoising/')
     cmd = top_directory + "/0.Setup_and_Testing/usearch -otutab " + USER_FASTQ_FOLDER + '/merged.fasta -zotus good_ZOTUS.fa'
     cmd += " -otutabout ZOTUs-Table.tab -id 0.97  -threads " + THREADS
     cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     try:
-        print(cmd)
         system(cmd)
     except BaseException:
         print("ZOTU table formation command failed\n")
     else:
-        print("Done.\n\n")
+        print("\tDone")
     chdir(top_directory)
 
 
