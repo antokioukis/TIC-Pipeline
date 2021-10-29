@@ -53,7 +53,7 @@ def trim_one_side(forward_file):
     else:
         cmd = CLUSTERING_TOOL + " -fastx_filter " + forward_file + " -fastq_stripleft " + FORWARD_TRIM
         cmd += " -fastqout " + USER_FASTQ_FOLDER + "/trimmed.fastq "
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'        
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
@@ -82,7 +82,7 @@ def dereplication():
     else:
         cmd = CLUSTERING_TOOL + " --derep_fulllength " + USER_FASTQ_FOLDER + '/filtered.fasta -sizeout '
         cmd += '-minuniquesize 1 -threads ' + THREADS + ' --output ' + USER_FASTQ_FOLDER + '/unique.fasta '
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt' 
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
