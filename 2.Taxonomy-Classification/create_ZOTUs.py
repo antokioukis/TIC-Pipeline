@@ -17,11 +17,11 @@ def dereplication_merged():
     if 'usearch' in CLUSTERING_TOOL:
         cmd = CLUSTERING_TOOL + " -fastx_uniques " + OUTPUT_FASTA_EXTRACTION + ' -sizeout '
         cmd += '-sizein -threads ' + THREADS + ' -fastaout ' + USER_FASTQ_FOLDER + '/dereped.fasta '
-        #cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     else:
         cmd = CLUSTERING_TOOL + " --derep_fulllength " + OUTPUT_FASTA_EXTRACTION + ' -sizeout '
         cmd += '-sizein --output ' + USER_FASTQ_FOLDER + '/dereped.fasta '
-        #cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
