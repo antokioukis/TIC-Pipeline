@@ -1,13 +1,37 @@
 from os import system
 from sys import argv
+from glob import glob
 
-SILVA_ARB = argv[1]
-SINA_EXECUTABLE = argv[2]
-INPUT_FASTA_ALI_CLASS = argv[3]
-PDF_REGION_OUTPUT = argv[4]
-OUTPUT_FASTA_ALI_CLASS = argv[5]
+USER_FASTQ_FOLDER = argv[1]
+CLUSTERING_TOOL = argv[2]
+THREADS = argv[3]
 
-cmd = SINA_EXECUTABLE + ' --quiet --in=' + INPUT_FASTA_ALI_CLASS + ' --out=' + OUTPUT_FASTA_ALI_CLASS + ' --db='
+SILVA_ARB = argv[4]
+SINA_EXECUTABLE = argv[5]
+PDF_REGION_OUTPUT = argv[6]
+OUTPUT_FASTA_ALI_CLASS = argv[7]
+
+
+def merging_all_samples():
+    all_uniques = glob(USER_FASTQ_FOLDER + '/*_unique.fasta')
+    output_file = open(USER_FASTQ_FOLDER + '/merged.fasta', 'w+')
+    for curr_sample in all_uniques:
+        sample_name = curr_sample.split('/')[-1].split('_')[0]
+        with open(curr_sample) as fp:
+            while True:
+                line = fp.readline()
+                if not line:
+                    break
+                if line[0] == '>':
+                    output_file.write(line[:-1] + ';barcodelabel=' + sample_name + '\n')
+                else:
+                    output_file.write(line)
+    output_file.close()
+
+
+merging_all_samples()
+
+cmd = SINA_EXECUTABLE + ' --quiet --in=' + USER_FASTQ_FOLDER + '/merged.fasta --out=' + OUTPUT_FASTA_ALI_CLASS + ' --db='
 cmd += SILVA_ARB + ' --turn all --search --meta-fmt csv --lca-fields=tax_slv  --fasta-write-dna'
 system(cmd)
 print('\tDone')

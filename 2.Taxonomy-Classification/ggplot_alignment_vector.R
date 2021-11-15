@@ -18,4 +18,5 @@ g3 <- g1 + xlab("SINA positions") + ylab("Counts")
 g4 <- g3 + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
             panel.background = element_blank(), axis.line = element_line(colour = "black"))
 g5 <- g4 + labs(title = "Sum of SINA aligned positions")
-ggsave(output_pdf, g5)
+g6 <- g5 + scale_x_continuous(breaks = scales::pretty_breaks(n = 20))
+ggsave(output_pdf, width = 15,  height = 15,  units = c("in"), g6)

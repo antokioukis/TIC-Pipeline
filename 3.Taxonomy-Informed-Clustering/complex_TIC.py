@@ -959,13 +959,13 @@ print('Known Genera Clustering starting. Similarity Threshold:' + str(species_si
 genera_level_fastas = get_curr_level_fastas(5)
 create_species_of_known_genera(genera_level_fastas)
 print('Known Genera Clustering done')
-print('Unknown Genera, Known Family Search starting. Similarity Threshold:' + str(species_similarity))
+print('Unknown Genera, Known Family Search starting. Similarity Threshold:' + str(genera_similarity))
 family_level_fastas = get_curr_level_fastas(4)
 # navigate to species_centroids directory and create the targets for the blast
 # the 4 says to which level you must have as the last known
 gather_species(5, '.base.fasta')
 search_unknown_families_in_known_genera(family_level_fastas)
-print('Unknown Genera, Known Family Search starting. Similarity Threshold:' + str(genera_similarity))
+print('Unknown Genera, Known Family Search starting. Similarity Threshold:' + str(family_similarity))
 gather_known_genera(2)
 gather_unknown_genera(5, 1)
 search_unknown_genera_in_known_genera()

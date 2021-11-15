@@ -14,10 +14,10 @@ In 16S rRNA sequence-based diversity analysis, a common practice is the clusteri
 ### Organization
 TIC-Pipeline is composed of 4 steps that can be run independently or as a set.
 
-    1.ASV-Creation
+    1.Denoising
     2.Taxonomy-Classification
     3.Taxonomy-Informed-Clustering
-    4.Results_Processing
+    4.Results_Reporting
 
 Running them in the given order simplifies the process as the outputs of each step are often the inputs of the next. There is also an extra folder where the original data is recommended to be placed to keep the analysis of one study in a compact and organized structure. Inside the Original-Data folder are contained the template files that served as basis for the TIC-Pipeline presentation that can be used for training purposes. Before running any script, please make sure you have read and fully understood the corresponding section of the documentation for each step.
 

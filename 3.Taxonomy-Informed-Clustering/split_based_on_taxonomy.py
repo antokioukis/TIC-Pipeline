@@ -52,23 +52,23 @@ def check_valid_names(input_taxonomy):
         valid_names_list.append(domain)
     else:
         return('other.fasta')
-    if phylum and not (phylum == 'uncultured' or phylum == 'unknown'):
+    if phylum and not (phylum == 'uncultured' or phylum == 'unknown' or phylum == 'Incertae'):
         valid_names_list.append(phylum)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if class_s and not (class_s == 'uncultured' or class_s == 'unknown'):
+    if class_s and not (class_s == 'uncultured' or class_s == 'unknown' or phylum == 'Incertae'):
         valid_names_list.append(class_s)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if order_o and not (order_o == 'uncultured' or order_o == 'unknown'):
+    if order_o and not (order_o == 'uncultured' or order_o == 'unknown' or phylum == 'Incertae'):
         valid_names_list.append(order_o)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if family and not (family == 'uncultured' or family == 'unknown'):
+    if family and not (family == 'uncultured' or family == 'unknown' or phylum == 'Incertae'):
         valid_names_list.append(family)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if genus and not (genus == 'uncultured' or genus == 'unknown'):
+    if genus and not (genus == 'uncultured' or genus == 'unknown' or phylum == 'Incertae'):
         valid_names_list.append(genus)
     return('_'.join(valid_names_list) + '.fasta')
 
@@ -103,8 +103,8 @@ for i in tqdm(range(0, len(input_contents), 2)):
     new_out_file_name = '_'.join(new_out_file_name_tokens)
     if '.fasta' not in new_out_file_name:
         new_out_file_name += '.fasta'
-    out_file = open(MAIN_DIR + out_file_name, 'a+')
-    new_header = header.split('tax=')[0] + 'tax=' + out_file_name.split('.')[0].replace('_', ';') + ';'
+    out_file = open(MAIN_DIR + new_out_file_name, 'a+')
+    new_header = header.split('tax=')[0] + 'tax=' + new_out_file_name.split('.')[0].replace('_', ';') + ';'
     out_file.write(new_header + '\n')
     out_file.write(sequence + '\n')
     out_file.close()

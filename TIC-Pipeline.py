@@ -35,8 +35,8 @@ for line in config_file_contents:
         CLUSTERING_TOOL = tokens[1]
     elif tokens[0] == 'SAMPLES_PROCESS_STEP':
         SAMPLES_PROCESS_STEP = tokens[1]
-    elif tokens[0] == 'ASV_CREATION_STEP':
-        ASV_CREATION_STEP = tokens[1]
+    elif tokens[0] == 'ZOTU_CREATION_STEP':
+        ZOTU_CREATION_STEP = tokens[1]
     elif tokens[0] == 'USER_FASTQ_FOLDER':
         USER_FASTQ_FOLDER = tokens[1]
     elif tokens[0] == 'TRIM_SCORE':
@@ -75,8 +75,6 @@ for line in config_file_contents:
         SILVA_ARB = tokens[1]
     elif tokens[0] == 'SINA_EXECUTABLE':
         SINA_EXECUTABLE = tokens[1]
-    elif tokens[0] == 'INPUT_FASTA_ALI_CLASS':
-        INPUT_FASTA_ALI_CLASS = tokens[1]
     elif tokens[0] == 'OUTPUT_FASTA_ALI_CLASS':
         OUTPUT_FASTA_ALI_CLASS = tokens[1]
     elif tokens[0] == 'PDF_REGION_OUTPUT':
@@ -99,20 +97,22 @@ for line in config_file_contents:
         CLUSTERING_DIRECTORY = tokens[1]
     elif tokens[0] == 'INPUT_FASTA_CLUSTERING':
         INPUT_FASTA_CLUSTERING = tokens[1]
+    elif tokens[0] == 'OUTPUT_ZOTUS_EXTRACTION':
+        OUTPUT_ZOTUS_EXTRACTION = tokens[1]
     elif tokens[0] == 'FAMILY_IDENTITY':
         FAMILY_IDENTITY = tokens[1]
     elif tokens[0] == 'GENERA_IDENTITY':
         GENERA_IDENTITY = tokens[1]
     elif tokens[0] == 'SPECIES_IDENTITY':
         SPECIES_IDENTITY = tokens[1]
-    elif tokens[0] == 'RESULTS_CREATION_STEP':
-        RESULTS_CREATION_STEP = tokens[1]
-    elif tokens[0] == 'OUTPUT_ASV_FASTA_WITH_TAXONOMY':
-        OUTPUT_ASV_FASTA_WITH_TAXONOMY = tokens[1]
+    elif tokens[0] == 'RESULTS_REPORTING_STEP':
+        RESULTS_REPORTING_STEP = tokens[1]
+    elif tokens[0] == 'OUTPUT_ZOTU_FASTA_WITH_TAXONOMY':
+        OUTPUT_ZOTU_FASTA_WITH_TAXONOMY = tokens[1]
     elif tokens[0] == 'INPUT_FASTA_CLUSTERING':
         INPUT_FASTA_CLUSTERING = tokens[1]
-    elif tokens[0] == 'OUTPUT_ASV_TABLE':
-        OUTPUT_ASV_TABLE = tokens[1]
+    elif tokens[0] == 'OUTPUT_ZOTU_TABLE':
+        OUTPUT_ZOTU_TABLE = tokens[1]
     elif tokens[0] == 'OUTPUT_FOLDER':
         OUTPUT_FOLDER = tokens[1]
     elif tokens[0] == 'KRONA_TOOL':
@@ -178,20 +178,6 @@ if SAMPLES_PROCESS_STEP == 'YES':
 elif SAMPLES_PROCESS_STEP == 'NO':
     print('Skipping Processing of Samples')
 
-if ASV_CREATION_STEP == 'YES':
-    print('>>> Denoising Samples')
-    if not isdir(USER_FASTQ_FOLDER):
-        print('Specified Directory with FASTQ files not present')
-        print('Exiting')
-        exit(1)
-    else:
-        arguments_list = ' '.join([USER_FASTQ_FOLDER, CLUSTERING_TOOL, THREADS, MIN_DENOISED_SIZE,
-                                   SORT_ME_RNA_DB1, SORT_ME_RNA_DB2, SORT_ME_RNA_TOOL, RAPID_NJ
-                                   ])
-        system('python3 1.Denoising/create_ASVs.py ' + arguments_list)
-elif ASV_CREATION_STEP == 'NO':
-    print('Skipping Denoising')
-
 if ALIGNMENT_CLASSIFICATION_STEP == 'YES':
     print('>>> Classifying with SINA and SILVA ARB...')
     if not isfile(SILVA_ARB):
@@ -202,14 +188,11 @@ if ALIGNMENT_CLASSIFICATION_STEP == 'YES':
         print('Specified SINA_EXECUTABLE not present')
         print('Exiting')
         exit(1)
-    if not isfile(INPUT_FASTA_ALI_CLASS):
-        print('Specified INPUT_FASTA_ALI_CLASS File not present')
-        print('Exiting')
-        exit(1)
     else:
-        arguments_list = ' '.join([SILVA_ARB, SINA_EXECUTABLE, INPUT_FASTA_ALI_CLASS, PDF_REGION_OUTPUT,
+        arguments_list = ' '.join([USER_FASTQ_FOLDER, CLUSTERING_TOOL, THREADS, SILVA_ARB, SINA_EXECUTABLE, PDF_REGION_OUTPUT,
                                    OUTPUT_FASTA_ALI_CLASS])
         system('python3 2.Taxonomy-Classification/create_sina_alignment.py ' + arguments_list)
+
 elif ALIGNMENT_CLASSIFICATION_STEP == 'NO':
     print('Skipping Alignment and Classification Step')
 
@@ -241,6 +224,21 @@ if EXTRACTION_STEP == 'YES':
         system('python3 2.Taxonomy-Classification/update_taxonomy.py ' + arguments_list)
 elif EXTRACTION_STEP == 'NO':
     print('Skipping Region Extraction Step')
+
+if ZOTU_CREATION_STEP == 'YES':
+    print('>>> Creating ZOTUs from samples')
+    if not isdir(USER_FASTQ_FOLDER):
+        print('Specified Directory with FASTQ files not present')
+        print('Exiting')
+        exit(1)
+    else:
+        arguments_list = ' '.join([USER_FASTQ_FOLDER, CLUSTERING_TOOL, THREADS, MIN_DENOISED_SIZE,
+                                   SORT_ME_RNA_DB1, SORT_ME_RNA_DB2, SORT_ME_RNA_TOOL, RAPID_NJ,
+                                   OUTPUT_FASTA_EXTRACTION, OUTPUT_ZOTUS_EXTRACTION
+                                   ])
+        system('python3 2.Taxonomy-Classification/create_ZOTUs.py ' + arguments_list)
+elif ZOTU_CREATION_STEP == 'NO':
+    print('Skipping Creation of ZOTUs')
 
 if TAXONOMIC_CLUSTERING_STEP == 'YES':
     print('Taxonomic Clustering')
@@ -277,7 +275,7 @@ if TAXONOMIC_CLUSTERING_STEP == 'YES':
 elif TAXONOMIC_CLUSTERING_STEP == 'NO':
     print('Skipping Taxonomic Clustering Step')
 
-if RESULTS_CREATION_STEP == 'YES':
+if RESULTS_REPORTING_STEP == 'YES':
     if isdir(OUTPUT_FOLDER):
         print('Specified OUTPUT_FOLDER Directory already present')
         print('Exiting')
@@ -292,17 +290,18 @@ if RESULTS_CREATION_STEP == 'YES':
         exit(1)
     else:
         print('>>> Creating Results...')
-        arguments_list = ' '.join([OUTPUT_FOLDER, OUTPUT_ASV_FASTA_WITH_TAXONOMY, OUTPUT_ASV_TABLE,
+        arguments_list = ' '.join([OUTPUT_FOLDER, OUTPUT_ZOTU_FASTA_WITH_TAXONOMY,
+                                   OUTPUT_ZOTU_TABLE,
                                    CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL,
                                    OUTPUT_SOTU_FASTA_WITH_TAXONOMY, SILVA_ARB, SINA_EXECUTABLE])
-        system('python3 4.Results_Processing/create_fasta_and_table.py ' + arguments_list)
+        system('python3 4.Results_Reporting/create_fasta_and_table.py ' + arguments_list)
         print('\tDone')
         print('>>> Cleaning up...')
-        arguments_list = ' '.join([INPUT_FASTA_EXTRACTION, OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY])
-        system('python3 4.Results_Processing/cleaning.py ' + arguments_list)
+        arguments_list = ' '.join([OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY])
+        system('python3 4.Results_Reporting/cleaning.py ' + arguments_list)
         print('\tDone')
         print('#####################')
         print('# Pipeline Complete #')
         print('#####################')
-elif ALIGNMENT_CLASSIFICATION_STEP == 'NO':
-    print('Skipping Alignment and Classification Step')
+elif RESULTS_REPORTING_STEP == 'NO':
+    print('Skipping Results Reporting Step')
