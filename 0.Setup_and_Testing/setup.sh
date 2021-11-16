@@ -65,7 +65,7 @@ echo 'SINA_EXECUTABLE:'$CWD'/sina-1.7.2-linux/sina' >> ../tool_and_db_options.in
 echo 'SORT_ME_RNA_DB1:'$CWD'/silva-bac-16s-id90.fasta' >> ../tool_and_db_options.ini
 echo 'SORT_ME_RNA_DB2:'$CWD'/silva-arc-16s-id95.fasta' >> ../tool_and_db_options.ini
 echo 'SORT_ME_RNA_TOOL:'$CWD'/sortmerna-4.3.3-Linux/bin/sortmerna' >> ../tool_and_db_options.ini
-echo 'CLUSTERING_TOOL:'$CWD'/usearch' >> ../tool_and_db_options.ini
+echo 'CLUSTERING_TOOL:'$CWD'/vsearch' >> ../tool_and_db_options.ini
 echo 'KRONA_TOOL:'$CWD'/KronaTools-2.8/scripts/ImportText.pl' >> ../tool_and_db_options.ini
 echo 'RAPID_NJ:'$CWD'/rapidNJ/bin/rapidnj' >> ../tool_and_db_options.ini
 echo 'AL_CLUSTERING_TOOL:'$CWD'/usearch' >> ../tool_and_db_options.ini

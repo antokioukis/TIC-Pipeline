@@ -40,18 +40,18 @@ def sort_merged():
 def unoise():
     if 'usearch' in CLUSTERING_TOOL:
         cmd = CLUSTERING_TOOL + " -unoise3 " + USER_FASTQ_FOLDER + '/sorted.fasta -minsize ' + MIN_ZOTU_SIZE
-        cmd += ' -zotus 2.Taxonomy-Classification/zotus.fasta '
+        cmd += ' -zotus 3.Extraction-Denoising/zotus.fasta '
         cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     else:
         cmd = CLUSTERING_TOOL + " -cluster_unoise " + USER_FASTQ_FOLDER + '/sorted.fasta -minsize ' + MIN_ZOTU_SIZE
-        cmd += ' -centroids 2.Taxonomy-Classification/zotus.fasta '
+        cmd += ' -centroids 3.Extraction-Denoising/zotus.fasta '
         cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
 def remove_chimeras():
     top_directory = getcwd()
-    chdir('2.Taxonomy-Classification/')
+    chdir('3.Extraction-Denoising/')
     print(">>> Filtering out non 16S ZOTUs... ")
     cmd = SORT_ME_RNA_TOOL + ' --ref ' + SORT_ME_RNA_DB1 + ' --ref ' + SORT_ME_RNA_DB2
     cmd += ' --reads zotus.fasta --fastx --aligned good_ZOTUS --other other_ZOTUS'
@@ -70,7 +70,7 @@ def remove_chimeras():
 def create_zotu_table():
     print('>>> Creating ZOTU table...')
     top_directory = getcwd()
-    chdir('2.Taxonomy-Classification/')
+    chdir('3.Extraction-Denoising/')
     cmd = top_directory + "/0.Setup_and_Testing/usearch -otutab " + USER_FASTQ_FOLDER + '/merged.fasta -zotus good_ZOTUS.fa'
     cmd += " -otutabout ZOTUs-Table.tab -id 0.97  -threads " + THREADS
     cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
@@ -91,7 +91,7 @@ def create_ASVs():
     create_zotu_table()
     remove(USER_FASTQ_FOLDER + '/dereped.fasta')
     remove(USER_FASTQ_FOLDER + '/sorted.fasta')
-    system('mv 2.Taxonomy-Classification/good_ZOTUS.fa ' + OUTPUT_ZOTUS_EXTRACTION)
+    system('mv 3.Extraction-Denoising/good_ZOTUS.fa ' + OUTPUT_ZOTUS_EXTRACTION)
 
 
 create_ASVs()

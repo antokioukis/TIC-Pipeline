@@ -10,10 +10,10 @@ TESTING_MODE:NO
 THREADS:4
 
 #############################
-# STEP 1: CREATION OF ZOTUS #
+# STEP 1: SAMPLE PROCESSING #
 #############################
 
-SAMPLES_PROCESS_STEP:NO
+SAMPLES_PROCESS_STEP:YES
 USER_FASTQ_FOLDER:/home/antonios/fastq_pipe
 TRIM_SCORE:20
 MAXDIFF:50
@@ -24,17 +24,19 @@ FORWARD_TRIM:10
 REVERSE_TRIM:10
 EXPECTED_ERROR_RATE:0.005
 
-####################################################
-# STEP 2: ALIGNMENT, CLASSIFICATION AND EXTRACTION #
-####################################################
+########################################
+# STEP 2: ALIGNMENT AND CLASSIFICATION #
+########################################
 
-ALIGNMENT_CLASSIFICATION_STEP:NO
+ALIGNMENT_CLASSIFICATION_STEP:YES
 OUTPUT_FASTA_ALI_CLASS:/home/antonios/TIC-Pipeline/sina_output.fasta
 PDF_REGION_OUTPUT:/home/antonios/regions_extract.pdf
 
-# -----------------------------------
+####################################
+# STEP 3: EXTRACTION AND DENOISING #
+####################################
 
-EXTRACTION_STEP:NO
+EXTRACTION_STEP:YES
 INPUT_FASTA_EXTRACTION:/home/antonios/TIC-Pipeline/sina_output.fasta
 EXTRACTION_REGION_START:1000
 EXTRACTION_REGION_END:12000
@@ -43,16 +45,16 @@ OUTPUT_FASTA_EXTRACTION:/home/antonios/TIC-Pipeline/extracted_with_tax.fasta
 
 # -----------------------------------
 
-ZOTU_CREATION_STEP:NO
+ZOTU_CREATION_STEP:YES
 MIN_DENOISED_SIZE:4
 OUTPUT_ZOTUS_EXTRACTION:/home/antonios/TIC-Pipeline/zotus_with_tax.fasta
 
 
 ########################################
-# STEP 3: Taxonomy-Informed-Clustering #
+# STEP 4: Taxonomy-Informed-Clustering #
 ########################################
 
-TAXONOMIC_CLUSTERING_STEP:NO
+TAXONOMIC_CLUSTERING_STEP:YES
 CLUSTERING_DIRECTORY:/home/antonios/TIC-Pipeline/aaa
 INPUT_FASTA_CLUSTERING:/home/antonios/TIC-Pipeline/zotus_with_tax.fasta
 FAMILY_IDENTITY:89
@@ -60,7 +62,7 @@ GENERA_IDENTITY:93
 SPECIES_IDENTITY:97
 
 ############################
-# STEP 4: Results Creation #
+# STEP 5: Results Creation #
 ############################
 
 RESULTS_REPORTING_STEP:YES

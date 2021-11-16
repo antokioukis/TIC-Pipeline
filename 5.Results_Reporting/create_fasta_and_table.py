@@ -73,7 +73,7 @@ for line in zotus_with_taxonomy_contents:
 
 
 out_tab = open(OUTPUT_FOLDER + '/' + OUTPUT_ASV_TABLE, 'w+')
-tab_contents = read_file('2.Taxonomy-Classification/ZOTUs-Table.tab')
+tab_contents = read_file('3.Extraction-Denoising/ZOTUs-Table.tab')
 for line in tab_contents:
     if line[0] == '#':
         out_tab.write(line + '\tTaxonomy\n')

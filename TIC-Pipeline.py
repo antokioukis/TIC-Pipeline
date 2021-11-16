@@ -174,7 +174,7 @@ if SAMPLES_PROCESS_STEP == 'YES':
                                    MINMERGELEN, MAXMERGELEN, FORWARD_TRIM, REVERSE_TRIM, EXPECTED_ERROR_RATE, THREADS,
                                    MINPCTID
                                    ])
-        system('python3 1.Denoising/process_samples.py ' + arguments_list)
+        system('python3 1.Sample-Processing/process_samples.py ' + arguments_list)
 elif SAMPLES_PROCESS_STEP == 'NO':
     print('Skipping Processing of Samples')
 
@@ -218,10 +218,10 @@ if EXTRACTION_STEP == 'YES':
     else:
         arguments_list = ' '.join([INPUT_FASTA_EXTRACTION, EXTRACTION_REGION_START, EXTRACTION_REGION_END,
                                    EXTRACTION_REGION_LIMIT, OUTPUT_FASTA_EXTRACTION])
-        system('python3 2.Taxonomy-Classification/extract_regions.py ' + arguments_list)
+        system('python3 3.Extraction-Denoising/extract_regions.py ' + arguments_list)
         OUTPUT_CSV_ALI_CLASS = OUTPUT_FASTA_ALI_CLASS.split('.')[0] + '.csv'
         arguments_list = ' '.join([OUTPUT_FASTA_EXTRACTION, OUTPUT_CSV_ALI_CLASS])
-        system('python3 2.Taxonomy-Classification/update_taxonomy.py ' + arguments_list)
+        system('python3 3.Extraction-Denoising/update_taxonomy.py ' + arguments_list)
 elif EXTRACTION_STEP == 'NO':
     print('Skipping Region Extraction Step')
 
@@ -236,7 +236,7 @@ if ZOTU_CREATION_STEP == 'YES':
                                    SORT_ME_RNA_DB1, SORT_ME_RNA_DB2, SORT_ME_RNA_TOOL, RAPID_NJ,
                                    OUTPUT_FASTA_EXTRACTION, OUTPUT_ZOTUS_EXTRACTION
                                    ])
-        system('python3 2.Taxonomy-Classification/create_ZOTUs.py ' + arguments_list)
+        system('python3 3.Extraction-Denoising/create_ZOTUs.py ' + arguments_list)
 elif ZOTU_CREATION_STEP == 'NO':
     print('Skipping Creation of ZOTUs')
 
@@ -261,13 +261,13 @@ if TAXONOMIC_CLUSTERING_STEP == 'YES':
     else:
         print('>>> Splitting based on taxonomy...')
         arguments_list = ' '.join([CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING])
-        cmd = 'python3 3.Taxonomy-Informed-Clustering/split_based_on_taxonomy.py '
+        cmd = 'python3 4.Taxonomy-Informed-Clustering/split_based_on_taxonomy.py '
         cmd += ' -d ' + CLUSTERING_DIRECTORY + ' -i ' + INPUT_FASTA_CLUSTERING
         system(cmd)
         print('\tDone')
         print('>>> Running TIC...')
         arguments_list = ' '.join([CLUSTERING_DIRECTORY, FAMILY_IDENTITY, GENERA_IDENTITY, SPECIES_IDENTITY])
-        cmd = 'python3 3.Taxonomy-Informed-Clustering/complex_TIC.py '
+        cmd = 'python3 4.Taxonomy-Informed-Clustering/complex_TIC.py '
         cmd += ' -f ' + FAMILY_IDENTITY + ' -g ' + GENERA_IDENTITY + ' -s ' + SPECIES_IDENTITY
         cmd += ' -t ' + CLUSTERING_TOOL + ' -n ' + THREADS + ' -d ' + CLUSTERING_DIRECTORY
         system(cmd)
@@ -294,11 +294,11 @@ if RESULTS_REPORTING_STEP == 'YES':
                                    OUTPUT_ZOTU_TABLE,
                                    CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL,
                                    OUTPUT_SOTU_FASTA_WITH_TAXONOMY, SILVA_ARB, SINA_EXECUTABLE])
-        system('python3 4.Results_Reporting/create_fasta_and_table.py ' + arguments_list)
+        system('python3 5.Results_Reporting/create_fasta_and_table.py ' + arguments_list)
         print('\tDone')
         print('>>> Cleaning up...')
         arguments_list = ' '.join([OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY])
-        system('python3 4.Results_Reporting/cleaning.py ' + arguments_list)
+        system('python3 5.Results_Reporting/cleaning.py ' + arguments_list)
         print('\tDone')
         print('#####################')
         print('# Pipeline Complete #')
