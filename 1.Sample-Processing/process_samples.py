@@ -25,11 +25,18 @@ def read_file(filename):
 
 
 def fastq_merge_pairs(forward_file, reverse_file):
-    cmd = CLUSTERING_TOOL + ' -fastq_mergepairs ' + forward_file + ' -reverse ' + reverse_file + ' '
-    cmd += '-fastq_maxdiffs ' + MAXDIFF + ' -fastq_pctid ' + MINPCTID + ' -fastqout ' + USER_FASTQ_FOLDER
-    cmd += '/merged.fasta -fastq_trunctail ' + TRIM_SCORE + ' -fastq_minmergelen ' + MINMERGELEN
-    cmd += ' -fastq_maxmergelen ' + MAXMERGELEN + ' -report ' + USER_FASTQ_FOLDER + '/report.txt '
-    cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+    if 'usearch' in CLUSTERING_TOOL:
+        cmd = CLUSTERING_TOOL + ' -fastq_mergepairs ' + forward_file + ' -reverse ' + reverse_file + ' '
+        cmd += '-fastq_maxdiffs ' + MAXDIFF + ' -fastq_pctid ' + MINPCTID + ' -fastqout ' + USER_FASTQ_FOLDER
+        cmd += '/merged.fasta -fastq_trunctail ' + TRIM_SCORE + ' -fastq_minmergelen ' + MINMERGELEN
+        cmd += ' -fastq_maxmergelen ' + MAXMERGELEN + ' -report ' + USER_FASTQ_FOLDER + '/report.txt '
+        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+    else:
+        cmd = CLUSTERING_TOOL + ' --fastq_mergepairs ' + forward_file + ' --reverse ' + reverse_file + ' '
+        cmd += '-fastq_maxdiffs ' + MAXDIFF + ' -fastq_maxdiffpct ' + MINPCTID + ' -fastqout ' + USER_FASTQ_FOLDER
+        cmd += '/merged.fasta -fastq_truncqual ' + TRIM_SCORE + ' -fastq_minmergelen ' + MINMERGELEN
+        cmd += ' -fastq_maxmergelen ' + MAXMERGELEN
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
@@ -128,8 +135,9 @@ def process_samples():
                 print('Merging command failed with a critical failure. Exiting...\n')
                 exit(1)
             print("\tMerging pairs " + forward_file + ' and ' + reverse_file + ' from sample ' + sample_name + '... Done')
-            system('cat ' + USER_FASTQ_FOLDER + '/report.txt >> ' + top_directory + '/log_file.txt')
-            remove(USER_FASTQ_FOLDER + '/report.txt')
+            if 'usearch' in CLUSTERING_TOOL:
+                system('cat ' + USER_FASTQ_FOLDER + '/report.txt >> ' + top_directory + '/log_file.txt')
+                remove(USER_FASTQ_FOLDER + '/report.txt')
             print('\tTrimming...')
             try:
                 trimming()

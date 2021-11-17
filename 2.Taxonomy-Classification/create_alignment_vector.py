@@ -19,21 +19,22 @@ def find_differences(s):
 
 
 def create_vector(input_file, out_dir):
-    position_vector = [0] * 50000
-    content = read_file(input_file)
     position_vector_file = open(out_dir + "/alignment_vector.csv", "w+")
-    for i in range(len(content)):
-        if(">" not in content[i]):
-            align_pos = find_differences(content[i])
-            for j in align_pos:
-                position_vector[j] = position_vector[j] + 1
+    position_vector = [0] * 50000
+    filepath = input_file
+    with open(filepath) as fp:
+        line = fp.readline()
+        while line:
+            if(">" not in line):
+                align_pos = find_differences(line)
+                for j in align_pos:
+                    position_vector[j] = position_vector[j] + 1
+            line = fp.readline()
     ready_vec = ','.join(str(e) for e in position_vector)
     position_vector_file.write(ready_vec + '\n')
     position_vector_file.close()
 
 
-# read arguments for the three levels of similarity
-# as well as the absolute path of the MAIN_DIR
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input_file", required=True, help="Input FASTA file", type=str)
 parser.add_argument("-o", "--out_dir", required=True, help="Output DIR", type=str)

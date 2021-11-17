@@ -52,23 +52,23 @@ def check_valid_names(input_taxonomy):
         valid_names_list.append(domain)
     else:
         return('other.fasta')
-    if phylum and not (phylum == 'uncultured' or phylum == 'unknown' or phylum == 'Incertae'):
+    if phylum and not (phylum == 'uncultured' or phylum == 'unknown' or 'Incertae' in phylum):
         valid_names_list.append(phylum)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if class_s and not (class_s == 'uncultured' or class_s == 'unknown' or phylum == 'Incertae'):
+    if class_s and not (class_s == 'uncultured' or class_s == 'unknown' or 'Incertae' in class_s):
         valid_names_list.append(class_s)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if order_o and not (order_o == 'uncultured' or order_o == 'unknown' or phylum == 'Incertae'):
+    if order_o and not (order_o == 'uncultured' or order_o == 'unknown' or 'Incertae' in order_o):
         valid_names_list.append(order_o)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if family and not (family == 'uncultured' or family == 'unknown' or phylum == 'Incertae'):
+    if family and not (family == 'uncultured' or family == 'unknown' or 'Incertae' in family):
         valid_names_list.append(family)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if genus and not (genus == 'uncultured' or genus == 'unknown' or phylum == 'Incertae'):
+    if genus and not (genus == 'uncultured' or genus == 'unknown' or 'Incertae' in genus):
         valid_names_list.append(genus)
     return('_'.join(valid_names_list) + '.fasta')
 
