@@ -32,7 +32,7 @@ def merging_all_samples():
 merging_all_samples()
 
 cmd = SINA_EXECUTABLE + ' --quiet --in=' + USER_FASTQ_FOLDER + '/merged.fasta --out=' + OUTPUT_FASTA_ALI_CLASS + ' --db='
-cmd += SILVA_ARB + ' --turn all --search --meta-fmt csv --lca-fields=tax_slv  --fasta-write-dna'
+cmd += SILVA_ARB + ' --turn all --search --meta-fmt csv --lca-fields=tax_slv  --fasta-write-dna --threads ' + str(THREADS)
 system(cmd)
 print('\tDone')
 

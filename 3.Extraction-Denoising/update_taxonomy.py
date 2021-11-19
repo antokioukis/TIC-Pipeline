@@ -15,6 +15,7 @@ OUTPUT_CSV_ALI_CLASS = argv[2]
 
 sina_dict = dict()
 sina_csv = read_file(OUTPUT_CSV_ALI_CLASS)[1:]
+print('Incorporating Taxonomy Information')
 for i in tqdm(range(len(sina_csv))):
     curr_line = sina_csv[i]
     line_tokens = curr_line.split(',')

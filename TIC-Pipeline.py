@@ -10,6 +10,121 @@ def read_file(filename):
     return content
 
 
+def test_parameters_processing_step():
+    if not isdir(USER_FASTQ_FOLDER):
+        print('Specified Directory with FASTQ files not present')
+        print('Exiting')
+        exit(1)
+    if int(FORWARD_TRIM) < 5:
+        print('FORWARD_TRIM is < 5')
+        print('Exiting')
+        exit(1)
+    if int(FORWARD_TRIM) > 25:
+        print('FORWARD_TRIM is > 25')
+        print('Exiting')
+        exit(1)
+    if int(REVERSE_TRIM) < 5:
+        print('REVERSE_TRIM is < 5')
+        print('Exiting')
+        exit(1)
+    if int(REVERSE_TRIM) > 25:
+        print('REVERSE_TRIM is > 25')
+        print('Exiting')
+        exit(1)
+    if int(TRIM_SCORE) < 3:
+        print('REVERSE_TRIM is < 3')
+        print('Exiting')
+        exit(1)
+    if int(TRIM_SCORE) > 40:
+        print('REVERSE_TRIM is > 40')
+        print('Exiting')
+        exit(1)
+    if int(TRIM_SCORE) < 0:
+        print('REVERSE_TRIM is < 0')
+        print('Exiting')
+        exit(1)
+    if float(EXPECTED_ERROR_RATE) < 0:
+        print('EXPECTED_ERROR_RATE is < 0')
+        print('Exiting')
+        exit(1)
+    if float(EXPECTED_ERROR_RATE) > 1:
+        print('EXPECTED_ERROR_RATE is > 1')
+        print('Exiting')
+        exit(1)
+    if int(MINMERGELEN) > int(MAXMERGELEN):
+        print('MINMERGELEN > MAXMERGELEN')
+        print('Exiting')
+        exit(1)
+    return 0
+
+
+def test_parameters_extraction_step():
+    if not isfile(INPUT_FASTA_EXTRACTION):
+        print('Specified INPUT_FASTA_EXTRACTION File not present')
+        print('Exiting')
+        exit(1)
+    if int(EXTRACTION_REGION_START) > 50000 or int(EXTRACTION_REGION_START) < 0:
+        print('EXTRACTION_REGION_START over the limits of 0, 50000')
+        print('Exiting')
+        exit(1)
+    if int(EXTRACTION_REGION_END) > 50000 or int(EXTRACTION_REGION_END) < 0:
+        print('EXTRACTION_REGION_END over the limits of 0, 50000')
+        print('Exiting')
+        exit(1)
+    if int(EXTRACTION_REGION_START) >= int(EXTRACTION_REGION_END):
+        print('Specified EXTRACTION_REGION_START >=  EXTRACTION_REGION_END')
+        print('Exiting')
+        exit(1)
+    return 0
+
+
+def test_parameters_clustering_step():
+    if not isfile(INPUT_FASTA_CLUSTERING):
+        print('Specified INPUT_FASTA_CLUSTERING File not present')
+        print('Exiting')
+        exit(1)
+    if int(FAMILY_IDENTITY) > 100 or int(FAMILY_IDENTITY) < 0:
+        print('FAMILY_IDENTITY over the limits of 0, 100')
+        print('Exiting')
+        exit(1)
+    if int(GENERA_IDENTITY) > 100 or int(GENERA_IDENTITY) < 0:
+        print('GENERA_IDENTITY over the limits of 0, 100')
+        print('Exiting')
+        exit(1)
+    if int(SPECIES_IDENTITY) > 100 or int(SPECIES_IDENTITY) < 0:
+        print('SPECIES_IDENTITY over the limits of 0, 100')
+        print('Exiting')
+        exit(1)
+    if int(FAMILY_IDENTITY) > int(GENERA_IDENTITY):
+        print('FAMILY_IDENTITY >  GENERA_IDENTITY')
+        print('Exiting')
+        exit(1)
+    if int(FAMILY_IDENTITY) > int(SPECIES_IDENTITY):
+        print('FAMILY_IDENTITY >  SPECIES_IDENTITY')
+        print('Exiting')
+        exit(1)
+    if int(GENERA_IDENTITY) > int(SPECIES_IDENTITY):
+        print('GENERA_IDENTITY >  SPECIES_IDENTITY')
+        print('Exiting')
+        exit(1)
+    return 0
+
+
+def test_parameters_results_step():
+    if isdir(OUTPUT_FOLDER):
+        print('Specified OUTPUT_FOLDER Directory already present')
+        print('Exiting')
+        exit(1)
+    if not isdir(CLUSTERING_DIRECTORY):
+        print('Specified CLUSTERING_DIRECTORY Directory not present')
+        print('Exiting')
+        exit(1)
+    if not isfile(INPUT_FASTA_CLUSTERING):
+        print('Specified INPUT_FASTA_CLUSTERING File not present')
+        print('Exiting')
+        exit(1)
+
+
 print('######################')
 print('#   Pipeline Start   #')
 print('######################')
@@ -33,6 +148,8 @@ for line in config_file_contents:
         TESTING_MODE = tokens[1]
     elif tokens[0] == 'CLUSTERING_TOOL':
         CLUSTERING_TOOL = tokens[1]
+    elif tokens[0] == 'AL_CLUSTERING_TOOL':
+        AL_CLUSTERING_TOOL = tokens[1]
     elif tokens[0] == 'SAMPLES_PROCESS_STEP':
         SAMPLES_PROCESS_STEP = tokens[1]
     elif tokens[0] == 'ZOTU_CREATION_STEP':
@@ -141,35 +258,7 @@ elif TESTING_MODE == 'NO':
 
 if SAMPLES_PROCESS_STEP == 'YES':
     print('>>> Processing')
-    if not isdir(USER_FASTQ_FOLDER):
-        print('Specified Directory with FASTQ files not present')
-        print('Exiting')
-        exit(1)
-    if int(FORWARD_TRIM) < 5:
-        print('FORWARD_TRIM is <5')
-        print('Exiting')
-        exit(1)
-    if int(FORWARD_TRIM) > 25:
-        print('FORWARD_TRIM is >25')
-        print('Exiting')
-        exit(1)
-    if int(REVERSE_TRIM) < 5:
-        print('REVERSE_TRIM is <5')
-        print('Exiting')
-        exit(1)
-    if int(REVERSE_TRIM) > 25:
-        print('REVERSE_TRIM is >25')
-        print('Exiting')
-        exit(1)
-    if int(TRIM_SCORE) < 3:
-        print('REVERSE_TRIM is <3')
-        print('Exiting')
-        exit(1)
-    if int(TRIM_SCORE) > 20:
-        print('REVERSE_TRIM is >20')
-        print('Exiting')
-        exit(1)
-    else:
+    if not test_parameters_processing_step():
         arguments_list = ' '.join([CLUSTERING_TOOL, MAXDIFF, USER_FASTQ_FOLDER, TRIM_SCORE,
                                    MINMERGELEN, MAXMERGELEN, FORWARD_TRIM, REVERSE_TRIM, EXPECTED_ERROR_RATE, THREADS,
                                    MINPCTID
@@ -198,24 +287,8 @@ elif ALIGNMENT_CLASSIFICATION_STEP == 'NO':
 
 
 if EXTRACTION_STEP == 'YES':
-    print('Region Extraction')
-    if not isfile(INPUT_FASTA_EXTRACTION):
-        print('Specified INPUT_FASTA_EXTRACTION File not present')
-        print('Exiting')
-        exit(1)
-    if int(EXTRACTION_REGION_START) > 50000 or int(EXTRACTION_REGION_START) < 0:
-        print('EXTRACTION_REGION_START over the limits of 0, 50000')
-        print('Exiting')
-        exit(1)
-    if int(EXTRACTION_REGION_END) > 50000 or int(EXTRACTION_REGION_END) < 0:
-        print('EXTRACTION_REGION_END over the limits of 0, 50000')
-        print('Exiting')
-        exit(1)
-    if int(EXTRACTION_REGION_START) >= int(EXTRACTION_REGION_END):
-        print('Specified EXTRACTION_REGION_START >=  EXTRACTION_REGION_END')
-        print('Exiting')
-        exit(1)
-    else:
+    print('>>> Region Extraction')
+    if not test_parameters_extraction_step():
         arguments_list = ' '.join([INPUT_FASTA_EXTRACTION, EXTRACTION_REGION_START, EXTRACTION_REGION_END,
                                    EXTRACTION_REGION_LIMIT, OUTPUT_FASTA_EXTRACTION])
         system('python3 3.Extraction-Denoising/extract_regions.py ' + arguments_list)
@@ -241,24 +314,8 @@ elif ZOTU_CREATION_STEP == 'NO':
     print('Skipping Creation of ZOTUs')
 
 if TAXONOMIC_CLUSTERING_STEP == 'YES':
-    print('Taxonomic Clustering')
-    if not isfile(INPUT_FASTA_CLUSTERING):
-        print('Specified INPUT_FASTA_CLUSTERING File not present')
-        print('Exiting')
-        exit(1)
-    if int(FAMILY_IDENTITY) > 100 or int(FAMILY_IDENTITY) < 0:
-        print('FAMILY_IDENTITY over the limits of 0, 100')
-        print('Exiting')
-        exit(1)
-    if int(GENERA_IDENTITY) > 100 or int(GENERA_IDENTITY) < 0:
-        print('GENERA_IDENTITY over the limits of 0, 100')
-        print('Exiting')
-        exit(1)
-    if int(SPECIES_IDENTITY) > 100 or int(SPECIES_IDENTITY) < 0:
-        print('SPECIES_IDENTITY over the limits of 0, 100')
-        print('Exiting')
-        exit(1)
-    else:
+    print('>>>Taxonomic Clustering')
+    if not test_parameters_clustering_step():
         print('>>> Splitting based on taxonomy...')
         arguments_list = ' '.join([CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING])
         cmd = 'python3 4.Taxonomy-Informed-Clustering/split_based_on_taxonomy.py '
@@ -276,28 +333,16 @@ elif TAXONOMIC_CLUSTERING_STEP == 'NO':
     print('Skipping Taxonomic Clustering Step')
 
 if RESULTS_REPORTING_STEP == 'YES':
-    if isdir(OUTPUT_FOLDER):
-        print('Specified OUTPUT_FOLDER Directory already present')
-        print('Exiting')
-        exit(1)
-    elif not isdir(CLUSTERING_DIRECTORY):
-        print('Specified CLUSTERING_DIRECTORY Directory not present')
-        print('Exiting')
-        exit(1)
-    elif not isfile(INPUT_FASTA_CLUSTERING):
-        print('Specified INPUT_FASTA_CLUSTERING File not present')
-        print('Exiting')
-        exit(1)
-    else:
+    if not test_parameters_results_step():
         print('>>> Creating Results...')
         arguments_list = ' '.join([OUTPUT_FOLDER, OUTPUT_ZOTU_FASTA_WITH_TAXONOMY,
                                    OUTPUT_ZOTU_TABLE,
                                    CLUSTERING_DIRECTORY, INPUT_FASTA_CLUSTERING, KRONA_TOOL,
-                                   OUTPUT_SOTU_FASTA_WITH_TAXONOMY, SILVA_ARB, SINA_EXECUTABLE])
+                                   OUTPUT_SOTU_FASTA_WITH_TAXONOMY, SILVA_ARB, SINA_EXECUTABLE, USER_FASTQ_FOLDER])
         system('python3 5.Results_Reporting/create_fasta_and_table.py ' + arguments_list)
         print('\tDone')
         print('>>> Cleaning up...')
-        arguments_list = ' '.join([OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY])
+        arguments_list = ' '.join([OUTPUT_FASTA_EXTRACTION, CLUSTERING_DIRECTORY, OUTPUT_ZOTUS_EXTRACTION, USER_FASTQ_FOLDER])
         system('python3 5.Results_Reporting/cleaning.py ' + arguments_list)
         print('\tDone')
         print('#####################')

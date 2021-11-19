@@ -20,32 +20,32 @@ def dereplication_merged():
         cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     else:
         cmd = CLUSTERING_TOOL + " --derep_fulllength " + OUTPUT_FASTA_EXTRACTION + ' -sizeout '
-        cmd += '-sizein --output ' + USER_FASTQ_FOLDER + '/dereped.fasta '
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += '-sizein --output ' + USER_FASTQ_FOLDER + '/dereped.fasta -threads ' + THREADS
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
 def sort_merged():
     if 'usearch' in CLUSTERING_TOOL:
         cmd = CLUSTERING_TOOL + " -sortbysize " + USER_FASTQ_FOLDER + '/dereped.fasta'
-        cmd += ' -fastaout ' + USER_FASTQ_FOLDER + '/sorted.fasta '
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += ' -fastaout ' + USER_FASTQ_FOLDER + '/sorted.fasta -threads ' + THREADS
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     else:
         cmd = CLUSTERING_TOOL + " -sortbysize " + USER_FASTQ_FOLDER + '/dereped.fasta'
-        cmd += ' -output ' + USER_FASTQ_FOLDER + '/sorted.fasta '
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += ' -output ' + USER_FASTQ_FOLDER + '/sorted.fasta -threads ' + THREADS
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
 def unoise():
     if 'usearch' in CLUSTERING_TOOL:
         cmd = CLUSTERING_TOOL + " -unoise3 " + USER_FASTQ_FOLDER + '/sorted.fasta -minsize ' + MIN_ZOTU_SIZE
-        cmd += ' -zotus 3.Extraction-Denoising/zotus.fasta '
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += ' -zotus 3.Extraction-Denoising/zotus.fasta -threads ' + THREADS
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     else:
         cmd = CLUSTERING_TOOL + " -cluster_unoise " + USER_FASTQ_FOLDER + '/sorted.fasta -minsize ' + MIN_ZOTU_SIZE
-        cmd += ' -centroids 3.Extraction-Denoising/zotus.fasta '
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += ' -centroids 3.Extraction-Denoising/zotus.fasta -threads ' + THREADS
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
@@ -54,7 +54,7 @@ def remove_chimeras():
     chdir('3.Extraction-Denoising/')
     print(">>> Filtering out non 16S ZOTUs... ")
     cmd = SORT_ME_RNA_TOOL + ' --ref ' + SORT_ME_RNA_DB1 + ' --ref ' + SORT_ME_RNA_DB2
-    cmd += ' --reads zotus.fasta --fastx --aligned good_ZOTUS --other other_ZOTUS'
+    cmd += ' --reads zotus.fasta --fastx --aligned good_ZOTUS --other other_ZOTUS --threads ' + THREADS
     cmd += ' --workdir sortme -e 0.1 >/dev/null 2>&1'
     try:
         system(cmd)

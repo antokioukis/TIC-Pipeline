@@ -40,6 +40,7 @@ KRONA_TOOL = argv[6]
 OUTPUT_SOTU_FASTA_WITH_TAXONOMY = argv[7]
 SILVA_ARB = argv[8]
 SINA_EXECUTABLE = argv[9]
+USER_FASTQ_FOLDER = argv[10]
 
 mkdir(OUTPUT_FOLDER)
 zotus_seqs_dict = fasta2dict(INPUT_FASTA_CLUSTERING)
@@ -95,7 +96,7 @@ for key, value in taxonomy_counters_dict.items():
     out_file.write(str(value) + '\t' + key.replace(';', '\t') + '\n')
 out_file.close()
 
-system(KRONA_TOOL + ' ' + OUTPUT_FOLDER + 'for_krona.tab')
+system(KRONA_TOOL + ' ' + OUTPUT_FOLDER + 'for_krona.tab 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt')
 system('mv text.krona.html ' + OUTPUT_FOLDER + '/krona_plot.html')
 system('rm ' + OUTPUT_FOLDER + 'for_krona.tab')
 

@@ -965,7 +965,7 @@ family_level_fastas = get_curr_level_fastas(4)
 # the 4 says to which level you must have as the last known
 gather_species(5, '.base.fasta')
 search_unknown_families_in_known_genera(family_level_fastas)
-print('Unknown Genera, Known Family Search starting. Similarity Threshold:' + str(family_similarity))
+print('Unknown Family Search starting. Similarity Threshold:' + str(family_similarity))
 gather_known_genera(2)
 gather_unknown_genera(5, 1)
 search_unknown_genera_in_known_genera()

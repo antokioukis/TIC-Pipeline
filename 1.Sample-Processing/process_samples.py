@@ -29,13 +29,13 @@ def fastq_merge_pairs(forward_file, reverse_file):
         cmd = CLUSTERING_TOOL + ' -fastq_mergepairs ' + forward_file + ' -reverse ' + reverse_file + ' '
         cmd += '-fastq_maxdiffs ' + MAXDIFF + ' -fastq_pctid ' + MINPCTID + ' -fastqout ' + USER_FASTQ_FOLDER
         cmd += '/merged.fasta -fastq_trunctail ' + TRIM_SCORE + ' -fastq_minmergelen ' + MINMERGELEN
-        cmd += ' -fastq_maxmergelen ' + MAXMERGELEN + ' -report ' + USER_FASTQ_FOLDER + '/report.txt '
+        cmd += ' -fastq_maxmergelen ' + MAXMERGELEN + ' -report ' + USER_FASTQ_FOLDER + '/report.txt -threads ' + THREADS
         cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     else:
         cmd = CLUSTERING_TOOL + ' --fastq_mergepairs ' + forward_file + ' --reverse ' + reverse_file + ' '
         cmd += '-fastq_maxdiffs ' + MAXDIFF + ' -fastq_maxdiffpct ' + MINPCTID + ' -fastqout ' + USER_FASTQ_FOLDER
         cmd += '/merged.fasta -fastq_truncqual ' + TRIM_SCORE + ' -fastq_minmergelen ' + MINMERGELEN
-        cmd += ' -fastq_maxmergelen ' + MAXMERGELEN
+        cmd += ' -fastq_maxmergelen ' + MAXMERGELEN + ' -threads ' + THREADS
         cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
@@ -43,38 +43,38 @@ def fastq_merge_pairs(forward_file, reverse_file):
 def trimming():
     if 'usearch' in CLUSTERING_TOOL:
         cmd = CLUSTERING_TOOL + " -fastx_truncate " + USER_FASTQ_FOLDER + '/merged.fasta -stripleft '
-        cmd += FORWARD_TRIM + ' -stripright ' + REVERSE_TRIM + ' -fastqout ' + USER_FASTQ_FOLDER + '/trimmed.fastq '
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += FORWARD_TRIM + ' -stripright ' + REVERSE_TRIM + ' -fastqout ' + USER_FASTQ_FOLDER + '/trimmed.fastq -threads ' + THREADS
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     else:
         cmd = CLUSTERING_TOOL + " -fastx_filter " + USER_FASTQ_FOLDER + '/merged.fasta -fastq_stripleft '
-        cmd += FORWARD_TRIM + ' -fastq_stripright ' + REVERSE_TRIM + ' -fastqout ' + USER_FASTQ_FOLDER + '/trimmed.fastq '
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += FORWARD_TRIM + ' -fastq_stripright ' + REVERSE_TRIM + ' -fastqout ' + USER_FASTQ_FOLDER + '/trimmed.fastq -threads ' + THREADS
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
 def trim_one_side(forward_file):
     if 'usearch' in CLUSTERING_TOOL:
         cmd = CLUSTERING_TOOL + " -fastx_truncate " + forward_file + " -stripleft " + FORWARD_TRIM
-        cmd += " -fastqout " + USER_FASTQ_FOLDER + "/trimmed.fastq "
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += " -fastqout " + USER_FASTQ_FOLDER + "/trimmed.fastq -threads " + THREADS
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     else:
         cmd = CLUSTERING_TOOL + " -fastx_filter " + forward_file + " -fastq_stripleft " + FORWARD_TRIM
-        cmd += " -fastqout " + USER_FASTQ_FOLDER + "/trimmed.fastq "
-        cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+        cmd += " -fastqout " + USER_FASTQ_FOLDER + "/trimmed.fastq -threads " + THREADS
+        cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
 def filtering():
     cmd = CLUSTERING_TOOL + " -fastq_filter " + USER_FASTQ_FOLDER + '/trimmed.fastq --fastq_maxee_rate '
-    cmd += EXPECTED_ERROR_RATE + ' -fastaout ' + USER_FASTQ_FOLDER + '/filtered.fasta '
-    cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
+    cmd += EXPECTED_ERROR_RATE + ' -fastaout ' + USER_FASTQ_FOLDER + '/filtered.fasta -threads ' + THREADS
+    cmd += ' 2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'
     system(cmd)
 
 
 def filter_merged_one_side(forward_file):
     curr_mean, curr_sd = seqFileStats(forward_file)
     minLength = curr_mean - int(0.1*curr_mean) - int(FORWARD_TRIM)  # remove the primer triming size plus 10% of the mean size
-    cmd = CLUSTERING_TOOL + ' -fastq_filter trimmed.fastq -fastq_truncqual 20'
+    cmd = CLUSTERING_TOOL + ' -fastq_filter trimmed.fastq -fastq_truncqual 20 -threads ' + THREADS
     cmd += ' -fastq_maxee_rate ' + EXPECTED_ERROR_RATE + ' -fastq_trunclen ' + str(minLength)
     cmd += ' -fastaout filtered.fasta '
     cmd += '2>>' + USER_FASTQ_FOLDER + '/log_file.txt' + ' 1>>' + USER_FASTQ_FOLDER + '/log_file.txt'

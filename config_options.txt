@@ -28,7 +28,7 @@ EXPECTED_ERROR_RATE:0.005
 # STEP 2: ALIGNMENT AND CLASSIFICATION #
 ########################################
 
-ALIGNMENT_CLASSIFICATION_STEP:NO
+ALIGNMENT_CLASSIFICATION_STEP:YES
 OUTPUT_FASTA_ALI_CLASS:/home/antonios/TIC-Pipeline/sina_output.fasta
 PDF_REGION_OUTPUT:/home/antonios/regions_extract.pdf
 
