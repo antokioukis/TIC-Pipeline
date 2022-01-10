@@ -1,4 +1,4 @@
-<img src=http://129.187.44.105:8082/tic_pipeline_logo.png width="700">
+![TIC-LOGO-v2](https://user-images.githubusercontent.com/8244618/139100265-7fb3319d-93a9-47f4-a617-ffe82a33b77d.png)
 
 # A list of Python scripts for the analysis of microbial profiles and illumination of the diversity contained within
 
