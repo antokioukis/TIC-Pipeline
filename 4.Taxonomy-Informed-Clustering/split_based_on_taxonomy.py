@@ -52,23 +52,38 @@ def check_valid_names(input_taxonomy):
         valid_names_list.append(domain)
     else:
         return('other.fasta')
-    if phylum and not (phylum == 'uncultured' or phylum == 'unknown' or 'Incertae' in phylum):
+    # The list defines the keywords by which we drop the taxa at each level.
+    # Some are deliberately left uncomplete to cover more possible combination
+    no_goes = [
+               "uncultur",
+               "unknown",
+               "incertae",
+               "unkdom",
+               "unkking",
+               "unkphyl",
+               "unkclass",
+               "unkorder",
+               "unkfam",
+               "unkgen",
+               "unkspec",
+               ]
+    if phylum and not any([True for ng in no_goes if ng in phylum.lower()]):
         valid_names_list.append(phylum)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if class_s and not (class_s == 'uncultured' or class_s == 'unknown' or 'Incertae' in class_s):
+    if class_s and not any([True for ng in no_goes if ng in class_s.lower()]):
         valid_names_list.append(class_s)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if order_o and not (order_o == 'uncultured' or order_o == 'unknown' or 'Incertae' in order_o):
+    if order_o and not any([True for ng in no_goes if ng in order_o.lower()]):
         valid_names_list.append(order_o)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if family and not (family == 'uncultured' or family == 'unknown' or 'Incertae' in family):
+    if family and not any([True for ng in no_goes if ng in family.lower()]):
         valid_names_list.append(family)
     else:
         return('_'.join(valid_names_list) + '.fasta')
-    if genus and not (genus == 'uncultured' or genus == 'unknown' or 'Incertae' in genus):
+    if genus and not any([True for ng in no_goes if ng in genus.lower()]):
         valid_names_list.append(genus)
     return('_'.join(valid_names_list) + '.fasta')
 
