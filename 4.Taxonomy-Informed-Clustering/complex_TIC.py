@@ -746,7 +746,7 @@ def update_family_stats(curr_fasta, level='none'):
                 out_file_name = curr_name + '_UNKCLASS_UNKORDER_FOTU' + str(target_hit_family_num)
                 out_file_name += curr_gotu_species_number + '.stats'
             elif level == 'phylum':  # RECHECK
-                new_taxonomy = old_taxonomy + 'UNKPHYLUM;UNKCLASS;UNKORDER;FOTU'
+                new_taxonomy = old_taxonomy.split(";")[0] + 'UNKPHYLUM;UNKCLASS;UNKORDER;FOTU'
                 new_taxonomy += str(target_hit_family_num) + ';' + ';'.join(old_taxonomy.split(';')[-3:]) + '\n'
                 out_file_name = curr_name + '_UNKPHYLUM_UNKCLASS_UNKORDER_FOTU' + str(target_hit_family_num)
                 out_file_name += curr_gotu_species_number + '.stats'
